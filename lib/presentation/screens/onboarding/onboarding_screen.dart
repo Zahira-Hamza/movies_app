@@ -92,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               isSecond: isSecond,
               onBack: index > 0 ? _goToPreviousPage : null, // لو مش التانية
             );
-          }).toList(),
+          }),
         ],
       ),
     );

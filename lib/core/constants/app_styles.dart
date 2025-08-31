@@ -14,7 +14,7 @@ class AppStyles {
   static final TextStyle regular16gray = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.normal,
-    color: Colors.white.withOpacity(0.6),
+    color: Colors.grey.withOpacity(0.6),
   );
   static final TextStyle regular16white = GoogleFonts.inter(
     fontSize: 16,
