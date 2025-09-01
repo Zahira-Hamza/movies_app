@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/presentation/screens/login/login_screen.dart';
 import 'package:movies_app/presentation/screens/onboarding/onboarding_screen.dart';
 
 import 'core/routes/app_routes.dart';
@@ -17,7 +18,10 @@ class MoviesApp extends StatelessWidget {
       initialRoute: AppRoutes.OnBoardingRoute,
       routes: {
         AppRoutes.OnBoardingRoute: (context) => OnboardingScreen(),
+        AppRoutes.loginScreenRoute:(context)=>LoginScreen()
       },
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.dark,
     );
   }
 }

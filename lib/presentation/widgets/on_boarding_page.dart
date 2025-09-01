@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/app_styles.dart';
+import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/presentation/screens/login/login_screen.dart';
 
 import '../../core/constants/app_colors.dart';
 
@@ -10,7 +12,7 @@ class OnboardingPage extends StatelessWidget {
   final VoidCallback? onBack;
   final bool isLast;
   final bool isSecond;
-
+  final String buttonText;
   const OnboardingPage({
     super.key,
     required this.image,
@@ -21,6 +23,7 @@ class OnboardingPage extends StatelessWidget {
     this.onBack,
     required this.isLast,
     this.isSecond = false,
+    this.buttonText="next"
   });
 
   @override
@@ -120,9 +123,8 @@ class OnboardingPage extends StatelessWidget {
                           ),
                           child: const Text("Back"),
                         ),
-                      ElevatedButton(
-                        onPressed: onNext,
-                        style: ElevatedButton.styleFrom(
+                       ElevatedButton(onPressed:onNext
+                       , style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.yellowPrimaryColor,
                           padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.015,

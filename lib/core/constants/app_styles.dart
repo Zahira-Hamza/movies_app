@@ -31,4 +31,9 @@ class AppStyles {
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
+ static ThemeData darkTheme= ThemeData(
+scaffoldBackgroundColor: AppColors.blackPrimaryColor,
+   textTheme: TextTheme(titleSmall:TextStyle(fontSize: 14,
+       fontWeight:FontWeight.w500))
+  );
 }
