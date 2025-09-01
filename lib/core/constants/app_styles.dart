@@ -31,4 +31,10 @@ class AppStyles {
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
+
+  static final TextStyle regularRoboto = GoogleFonts.roboto(
+    fontSize: 16,
+    color: AppColors.yellowPrimaryColor,
+    fontWeight: FontWeight.w400,
+  );
 }

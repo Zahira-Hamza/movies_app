@@ -1,3 +1,4 @@
 class AppRoutes {
-  static const String OnBoardingRoute = "onboarding_screen";
+  static const String onBoardingRoute = "onboarding_screen";
+  static const String registerRoute = "register_screen";
 }
