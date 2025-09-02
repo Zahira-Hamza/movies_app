@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movies_app/core/constants/app_colors.dart';
-import 'package:movies_app/core/constants/app_styles.dart';
+import 'package:movies_app/core/constants/styles/app_colors.dart';
+import 'package:movies_app/core/constants/styles/app_styles.dart';
 
 class ForgetPassword extends StatelessWidget {
   static const String routeName = '/forget_screen';

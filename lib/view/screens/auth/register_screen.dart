@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/constants/app_assets.dart';
-import 'package:movies_app/core/constants/app_colors.dart';
-import 'package:movies_app/core/constants/app_styles.dart';
-import 'package:movies_app/core/constants/validators.dart';
-import 'package:movies_app/presentation/widgets/auth/carousel_avatares.dart';
-import 'package:movies_app/presentation/widgets/auth/toggle_switch_language.dart';
-import 'package:movies_app/presentation/widgets/custom_text_form_field.dart';
-import 'package:movies_app/presentation/widgets/custome_elevated_button.dart';
+import 'package:movies_app/core/constants/styles/app_assets.dart';
+import 'package:movies_app/core/constants/styles/app_colors.dart';
+import 'package:movies_app/core/constants/styles/app_styles.dart';
+import 'package:movies_app/core/utils/validators.dart';
+import 'package:movies_app/view/widgets/auth/carousel_avatares.dart';
+import 'package:movies_app/view/widgets/auth/toggle_switch_language.dart';
+import 'package:movies_app/view/widgets/custom_text_form_field.dart';
+import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

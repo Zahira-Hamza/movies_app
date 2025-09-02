@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/routes/app_routes.dart';
 import '../../widgets/on_boarding_page.dart';
 import 'first_on_boarding_page.dart';
 
@@ -61,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _finishOnboarding() {
     //todo: navigate to auth screen
-    debugPrint("Finish Onboarding");
+    Navigator.pushNamed(context, AppRoutes.registerRoute);
   }
 
   void _skip() {

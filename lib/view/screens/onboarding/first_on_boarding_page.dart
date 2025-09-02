@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_styles.dart';
+import '../../../core/constants/styles/app_colors.dart';
+import '../../../core/constants/styles/app_styles.dart';
 
 class FirstOnboardingPage extends StatelessWidget {
   final VoidCallback onNext;

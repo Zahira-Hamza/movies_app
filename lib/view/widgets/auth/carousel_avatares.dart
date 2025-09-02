@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart'
     show CarouselSlider, CarouselOptions;
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/constants/app_assets.dart';
+import 'package:movies_app/core/constants/styles/app_assets.dart';
 
 class CarouselAvatares extends StatelessWidget {
   const CarouselAvatares({super.key});

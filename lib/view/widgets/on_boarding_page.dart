@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/constants/app_styles.dart';
+import 'package:movies_app/core/constants/styles/app_styles.dart';
 
-import '../../core/constants/app_colors.dart';
+import '../../core/constants/styles/app_colors.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String image, title;
