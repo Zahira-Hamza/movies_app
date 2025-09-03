@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
+import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/core/routes/app_routes.dart';
 import 'package:movies_app/core/utils/validators.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
@@ -65,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 50),
                 Center(
                   child: Image.asset(
-                    AppAssets.appLogo,
+                    'assets/images/icons/appLogo.png',
                     height: MediaQuery.sizeOf(context).height * 0.12,
                     fit: BoxFit.fill,
                   ),
@@ -180,10 +182,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomeElevatedButton(
-                    label: AppLocalizations.of(context)!.login_with_google,
-                    onPressed:
-                        _handleGoogleLogin, // Use the method without snackbar
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        color: AppColors.yellowPrimaryColor,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(AppAssets.googleIcon),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.login_with_google,
+                          style: AppStyles.regularRoboto.copyWith(
+                            color: AppColors.blackPrimaryColor,
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 16),

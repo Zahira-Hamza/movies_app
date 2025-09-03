@@ -5,6 +5,7 @@ class AppAssets {
   static const String phoneIcon = 'assets/images/icons/phone_icon.svg';
   static const String englishIcon = 'assets/images/icons/english_icon.svg';
   static const String arabicIcon = 'assets/images/icons/arabic_icon.svg';
+  static const String googleIcon = 'assets/images/icons/google_icon.svg';
   static const String avatar1 = 'assets/images/avatars/avatar1.png';
   static const String avatar2 = 'assets/images/avatars/avatar2.png';
   static const String avatar3 = 'assets/images/avatars/avatar3.png';
@@ -15,6 +16,7 @@ class AppAssets {
   static const String avatar8 = 'assets/images/avatars/avatar8.png';
   static const String avatar9 = 'assets/images/avatars/avatar9.png';
   static const String homeTab = 'assets/images/icons/home_tab.png';
+  static const String appLogo = 'assets/images/icons/appLogo.png';
   static const String homeTabSelected =
       'assets/images/icons/home_tab_selected.png';
   static const String searchTab = 'assets/images/icons/search_tab.png';
@@ -26,5 +28,4 @@ class AppAssets {
   static const String profileTab = 'assets/images/icons/profile_tab.png';
   static const String profileTabSelected =
       'assets/images/icons/profile_tab_selected.png';
-  static const String appLogo = 'assets/images/icons/app_logo.png';
 }
