@@ -4,6 +4,8 @@ import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 
+import '../../core/constants/styles/app_assets.dart';
+
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
 
@@ -72,7 +74,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     height: screenSize.height * .02,
                   ),
                   CustomTextFormField(
-                      image: 'assets/icons/phone.svg', hint: 'phone'),
+                      image: AppAssets.phoneIcon, hint: 'phone'),
                   SizedBox(
                     height: screenSize.height * .015,
                   ),
