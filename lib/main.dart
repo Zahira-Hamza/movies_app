@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:movies_app/presentation/screens/update_profile.dart';
+import 'package:movies_app/core/constants/styles/app_theme.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/view/screens/auth/register_screen.dart';
+import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 
 import 'core/routes/app_routes.dart';
+import 'view/screens/auth/forget_password.dart';
 
 void main() {
   runApp(MoviesApp());
@@ -13,11 +16,17 @@ class MoviesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.updateProfileRoute,
+      initialRoute: AppRoutes.onBoardingRoute,
+      theme: AppTheme.appTheme,
       routes: {
-        AppRoutes.OnBoardingRoute: (_) => OnboardingScreen(),
-        AppRoutes.updateProfileRoute: (_) => UpdateProfile()
+        AppRoutes.onBoardingRoute: (context) => OnboardingScreen(),
+        AppRoutes.registerRoute: (context) => RegisterScreen(),
+        // AppRoutes.loginRoute: (context) => LoginScreen(),
+        AppRoutes.forgetPasswordRoute: (context) => ForgetPassword(),
       },
+      locale: Locale('ar'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
