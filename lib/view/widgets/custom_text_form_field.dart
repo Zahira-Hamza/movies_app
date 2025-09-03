@@ -41,9 +41,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       style: AppStyles.regular16white,
       decoration: InputDecoration(
         hintText: widget.hint,
-        prefixIconConstraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
+        prefixIconConstraints: BoxConstraints(maxWidth: 40, maxHeight: 40),
         prefixIcon: Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: SvgPicture.asset(
             widget.image,
             width: 25,

@@ -3,23 +3,50 @@ import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 
 class CustomeElevatedButton extends StatelessWidget {
-  const CustomeElevatedButton(
-      {super.key, required this.label, this.width, required this.onPressed});
+  const CustomeElevatedButton({
+    Key? key,
+    required this.label,
+    this.width,
+    required this.onPressed,
+    this.backGrounColor,
+    this.labelColor = AppColors.blackPrimaryColor,
+  }) : super(key: key);
 
   final String label;
   final double? width;
   final VoidCallback onPressed;
+  final Color? backGrounColor;
+  final Color? labelColor;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return SizedBox(
+      width: width ?? double.infinity,
+      child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-            fixedSize: Size(width ?? MediaQuery.sizeOf(context).width, 56)),
-        child: Text(
-          label,
-          style: AppStyles.regularRoboto
-              .copyWith(color: AppColors.blackPrimaryColor, fontSize: 20),
-        ));
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          backgroundColor: backGrounColor ?? AppColors.yellowPrimaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          fixedSize: Size(width ?? MediaQuery.sizeOf(context).width, 56),
+        ),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: AppStyles.regularRoboto.copyWith(
+              color: labelColor,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.visible,
+            maxLines: 2, // ← بيدعم سطرين لو النص طويل
+            softWrap: true,
+          ),
+        ),
+      ),
+    );
   }
 }
