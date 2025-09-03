@@ -1,0 +1,21 @@
+{
+    "@@locale": "ar",
+    "register":"انشاء حساب",
+    "@register": {},
+    "name":"الاسم",
+    "@name": {},
+    "email":"البريد الالكتروني",
+    "@email": {},
+    "password":"الرقم السري",
+    "@password": {},
+    "confirm_password":"تاكيد الرقم السري",
+    "@confirm_password": {},
+    "phone_number":"رقم الهاتف",
+    "@phone_number": {},
+    "create_account":"انشاء حساب",
+    "@create_account": {},
+    "have_account":"تمتلك حساب بالفعل ؟",
+    "@have_account": {},
+    "login":"تسجيل الدخول",
+    "@login": {}
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 
 class CustomTextFormField extends StatefulWidget {
@@ -31,7 +32,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: isObsecure,
-      autovalidateMode: AutovalidateMode.onUnfocus,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      cursorColor: AppColors.white,
       keyboardType: widget.keyboardType,
       controller: widget.controller,
       onChanged: widget.onChanged,
@@ -39,10 +41,15 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       style: AppStyles.regular16white,
       decoration: InputDecoration(
         hintText: widget.hint,
-        prefixIcon: SvgPicture.asset(
-          widget.image,
-          width: 31,
-          fit: BoxFit.scaleDown,
+        prefixIconConstraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: SvgPicture.asset(
+            widget.image,
+            width: 25,
+            height: 25,
+            fit: BoxFit.scaleDown,
+          ),
         ),
         suffixIcon: widget.isPassword
             ? IconButton(

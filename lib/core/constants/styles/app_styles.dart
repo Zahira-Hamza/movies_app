@@ -26,7 +26,7 @@ class AppStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.blackPrimaryColor,
   );
-  static final TextStyle Bold20white = GoogleFonts.inter(
+  static final TextStyle bold20white = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.bold,
     color: Colors.white,

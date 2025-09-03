@@ -3,6 +3,7 @@ import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/core/utils/validators.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/auth/carousel_avatares.dart';
 import 'package:movies_app/view/widgets/auth/toggle_switch_language.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
@@ -27,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: Text(AppLocalizations.of(context)!.register),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -51,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       CustomTextFormField(
                         image: AppAssets.nameIcon,
-                        hint: 'Name',
+                        hint: AppLocalizations.of(context)!.name,
                         controller: nameController,
                         validator: (value) {
                           return Validators.validateName(value);
@@ -59,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                         image: AppAssets.emailIcon,
-                        hint: 'Email',
+                        hint: AppLocalizations.of(context)!.email,
                         controller: emailController,
                         validator: (value) {
                           return Validators.validateEmail(value);
@@ -67,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                         image: AppAssets.passwordIcon,
-                        hint: 'Password',
+                        hint: AppLocalizations.of(context)!.password,
                         isPassword: true,
                         controller: passwordController,
                         validator: (value) {
@@ -76,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                         image: AppAssets.passwordIcon,
-                        hint: 'Confirm Password',
+                        hint: AppLocalizations.of(context)!.confirm_password,
                         isPassword: true,
                         controller: confirmPasswordController,
                         validator: (value) {
@@ -86,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                         image: AppAssets.phoneIcon,
-                        hint: 'Phone Number',
+                        hint: AppLocalizations.of(context)!.confirm_password,
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
@@ -94,7 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       CustomeElevatedButton(
-                          onPressed: () {}, label: 'Create Account'),
+                          onPressed: () {}, label: AppLocalizations.of(context)!.create_account),
                     ],
                   ),
                 ),
@@ -103,13 +104,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Already Have Account ?',
+                    AppLocalizations.of(context)!.have_account,
                     style: AppStyles.regularRoboto
                         .copyWith(fontSize: 14, color: AppColors.white),
                   ),
                   TextButton(
                       onPressed: () {},
-                      child: Text('Login',
+                      child: Text(AppLocalizations.of(context)!.login,
                           style:
                               AppStyles.regularRoboto.copyWith(fontSize: 14)))
                 ],

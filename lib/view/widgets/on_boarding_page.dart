@@ -50,7 +50,7 @@ class OnboardingPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(title, style: AppStyles.Bold20white),
+                Text(title, style: AppStyles.bold20white),
                 SizedBox(height: screenHeight * 0.02),
 
                 ///  desc يظهر بس لو مش null أو مش فاضي
