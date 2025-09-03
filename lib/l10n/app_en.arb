@@ -1,0 +1,61 @@
+{
+
+    "@@locale": "en",
+
+    "register":"Register",
+
+    "@register": {},
+
+    "name":"Name",
+
+    "@name": {},
+
+    "email":"Email",
+
+    "@email": {},
+
+    "password":"Password",
+
+    "@password": {},
+
+    "confirm_password":"Confirm Password",
+
+    "@confirm_password": {},
+
+    "phone_number":"Phone Number",
+
+    "@phone_number": {},
+
+    "create_account":"Create Account",
+
+    "@create_account": {},
+
+    "have_account":"Already Have Account?",
+
+    "@have_account": {},
+
+    "login":"Login",
+
+    "@login": {},
+
+    "forgot_password": "Forgot Password?",
+
+    "@forgot_password": {},
+
+    "dont_have_account": "Don't Have Account ?",
+
+    "@dont_have_account": {},
+
+    "create_one": "Create One",
+
+    "@create_one": {},
+
+    "or": "OR",
+
+    "@or": {},
+
+    "login_with_google": "Login With Google",
+
+    "@login_with_google": {}
+
+}

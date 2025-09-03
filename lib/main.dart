@@ -1,27 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/presentation/screens/login/login_screen.dart';
-import 'package:movies_app/presentation/screens/onboarding/onboarding_screen.dart';
+
+import 'package:movies_app/core/constants/styles/app_theme.dart';
+
+import 'package:movies_app/l10n/app_localizations.dart';
+
+import 'package:movies_app/view/screens/auth/register_screen.dart';
+
+import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
+
+
 
 import 'core/routes/app_routes.dart';
 
+import 'view/screens/auth/forget_password.dart';
+import 'view/screens/auth/login_screen.dart';
+
+
+
 void main() {
+
   runApp(const MoviesApp());
+
 }
 
+
+
 class MoviesApp extends StatelessWidget {
-  const MoviesApp({super.key});
+
+ const MoviesApp({super.key});
+
+
 
   @override
+
   Widget build(BuildContext context) {
+
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.OnBoardingRoute,
+
+      initialRoute: AppRoutes.onBoardingRoute,
+
+      theme: AppTheme.appTheme,
+
       routes: {
-        AppRoutes.OnBoardingRoute: (context) => OnboardingScreen(),
-        AppRoutes.loginScreenRoute:(context)=>LoginScreen()
+
+        AppRoutes.onBoardingRoute: (context) => OnboardingScreen(),
+
+        AppRoutes.registerRoute: (context) => RegisterScreen(),
+
+AppRoutes.loginRoute: (context) => LoginScreen(),
+
+        AppRoutes.forgetPasswordRoute: (context) => ForgetPassword(),
+
       },
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.dark,
+
+      locale: Locale('en'),
+
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+
+      supportedLocales: AppLocalizations.supportedLocales,
+
     );
+
   }
+
 }
