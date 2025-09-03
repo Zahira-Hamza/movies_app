@@ -14,4 +14,16 @@ class AppAssets {
   static const String avatar7 = 'assets/images/avatars/avatar7.png';
   static const String avatar8 = 'assets/images/avatars/avatar8.png';
   static const String avatar9 = 'assets/images/avatars/avatar9.png';
+  static const String homeTab = 'assets/images/icons/home_tab.png';
+  static const String homeTabSelected =
+      'assets/images/icons/home_tab_selected.png';
+  static const String searchTab = 'assets/images/icons/search_tab.png';
+  static const String searchTabSelected =
+      'assets/images/icons/search_tab_selected.png';
+  static const String browseTab = 'assets/images/icons/browse_tab.png';
+  static const String browseTabSelected =
+      'assets/images/icons/browse_tab_selected.png';
+  static const String profileTab = 'assets/images/icons/profile_tab.png';
+  static const String profileTabSelected =
+      'assets/images/icons/profile_tab_selected.png';
 }

@@ -4,7 +4,8 @@ import 'package:movies_app/core/constants/styles/app_styles.dart';
 
 class AppTheme {
   static ThemeData appTheme = ThemeData(
-    scaffoldBackgroundColor: AppColors.blackPrimaryColor,
+    // scaffoldBackgroundColor: AppColors.blackPrimaryColor,
+    scaffoldBackgroundColor: AppColors.white,
     appBarTheme: AppBarTheme(
         backgroundColor: AppColors.blackPrimaryColor,
         foregroundColor: AppColors.yellowPrimaryColor,
