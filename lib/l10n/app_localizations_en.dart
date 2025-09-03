@@ -34,4 +34,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login => 'Login';
+  @override
+
+// TODO: implement create_one
+
+  String get create_one => 'Create One';
+
+
+
+  @override
+
+// TODO: implement dont_have_account
+
+  String get dont_have_account => "Don't Have Account?";
+
+
+
+  @override
+
+// TODO: implement forgot_password
+
+  String get forgot_password => 'Forgot Password?';
+
+
+
+  @override
+
+// TODO: implement login_with_google
+
+  String get login_with_google => 'Login With Google';
+
+
+
+  @override
+
+// TODO: implement or
+
+  String get or => 'OR';
+
 }

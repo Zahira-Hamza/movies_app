@@ -6,9 +6,10 @@ import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile.dart';
 import 'core/routes/app_routes.dart';
 import 'view/screens/auth/forget_password.dart';
+import 'view/screens/auth/login_screen.dart';
 
 void main() {
-  runApp(MoviesApp());
+  runApp(const MoviesApp());
 }
 
 class MoviesApp extends StatelessWidget {
@@ -23,9 +24,9 @@ class MoviesApp extends StatelessWidget {
       routes: {
         AppRoutes.onBoardingRoute: (context) => OnboardingScreen(),
         AppRoutes.registerRoute: (context) => RegisterScreen(),
-        // AppRoutes.loginRoute: (context) => LoginScreen(),
+        AppRoutes.loginRoute: (context) => LoginScreen(),
         AppRoutes.forgetPasswordRoute: (context) => ForgetPassword(),
-        AppRoutes.updateProfileRoute: (context) => UpdateProfile()
+        AppRoutes.updateProfileRoute: (context) => UpdateProfile(),
       },
       locale: Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,

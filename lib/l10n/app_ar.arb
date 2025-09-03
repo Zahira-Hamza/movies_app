@@ -1,21 +1,61 @@
 {
+
     "@@locale": "ar",
+
     "register":"انشاء حساب",
+
     "@register": {},
+
     "name":"الاسم",
+
     "@name": {},
+
     "email":"البريد الالكتروني",
+
     "@email": {},
+
     "password":"الرقم السري",
+
     "@password": {},
+
     "confirm_password":"تاكيد الرقم السري",
+
     "@confirm_password": {},
+
     "phone_number":"رقم الهاتف",
+
     "@phone_number": {},
+
     "create_account":"انشاء حساب",
+
     "@create_account": {},
+
     "have_account":"تمتلك حساب بالفعل ؟",
+
     "@have_account": {},
+
     "login":"تسجيل الدخول",
-    "@login": {}
+
+    "@login": {},
+
+    "forgot_password": "هل نسيت كلمة المرور؟",
+
+    "@forgot_password": {},
+
+    "dont_have_account": "ليس لديك حساب؟",
+
+    "@dont_have_account": {},
+
+    "create_one": "إنشاء حساب",
+
+    "@create_one": {},
+
+    "or": "أو",
+
+    "@or": {},
+
+    "login_with_google": "تسجيل الدخول عبر جوجل",
+
+    "@login_with_google":{}
+
 }

@@ -110,7 +110,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         .copyWith(fontSize: 14, color: AppColors.white),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       child: Text(AppLocalizations.of(context)!.login,
                           style:
                               AppStyles.regularRoboto.copyWith(fontSize: 14)))
