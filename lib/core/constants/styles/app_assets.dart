@@ -26,5 +26,5 @@ class AppAssets {
   static const String profileTab = 'assets/images/icons/profile_tab.png';
   static const String profileTabSelected =
       'assets/images/icons/profile_tab_selected.png';
-  static const String appLogo = 'assets/images/app_logo.png';
+  static const String appLogo = 'assets/images/icons/app_logo.png';
 }
