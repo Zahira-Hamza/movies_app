@@ -3,7 +3,7 @@ import 'package:movies_app/core/constants/styles/app_theme.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/auth/register_screen.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
-
+import 'package:movies_app/view/screens/update_profile.dart';
 import 'core/routes/app_routes.dart';
 import 'view/screens/auth/forget_password.dart';
 
@@ -12,6 +12,8 @@ void main() {
 }
 
 class MoviesApp extends StatelessWidget {
+  const MoviesApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,8 +25,9 @@ class MoviesApp extends StatelessWidget {
         AppRoutes.registerRoute: (context) => RegisterScreen(),
         // AppRoutes.loginRoute: (context) => LoginScreen(),
         AppRoutes.forgetPasswordRoute: (context) => ForgetPassword(),
+        AppRoutes.updateProfileRoute: (context) => UpdateProfile()
       },
-      locale: Locale('ar'),
+      locale: Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
     );

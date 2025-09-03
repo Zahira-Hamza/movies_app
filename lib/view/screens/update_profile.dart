@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
+import 'package:movies_app/view/widgets/custom_text_form_field.dart';
+import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 
 class UpdateProfile extends StatefulWidget {
+  const UpdateProfile({super.key});
+
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
 }
@@ -37,7 +40,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
           style: AppStyles.regular16white
               .copyWith(color: AppColors.yellowPrimaryColor, fontSize: 18),
         ),
-       
       ),
       body: Column(
         children: [
@@ -64,56 +66,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                        fillColor: AppColors.grey,
-                        filled: true,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 18.0, right: 15),
-                          child: SvgPicture.asset(
-                            'assets/icons/person.svg',
-                            height: screenSize.height * .03,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        )),
-                  ),
+                  CustomTextFormField(
+                      image: 'assets/icons/person.svg', hint: 'name'),
                   SizedBox(
                     height: screenSize.height * .02,
                   ),
-                  TextField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                        fillColor: AppColors.grey,
-                        filled: true,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 15),
-                          child: SvgPicture.asset(
-                            'assets/icons/phone.svg',
-                            height: screenSize.height * .03,
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        )),
-                  ),
+                  CustomTextFormField(
+                      image: 'assets/icons/phone.svg', hint: 'phone'),
                   SizedBox(
                     height: screenSize.height * .015,
                   ),
@@ -121,40 +80,31 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     onPressed: () {},
                     child: Text(
                       'Reset Password',
-                      style: AppStyles.semiBold20black.copyWith(
+                      style: AppStyles.regular16white.copyWith(
                         color: AppColors.white,
                       ),
                     ),
                   ),
                   Spacer(),
                   SizedBox(
-                    height: screenSize.height * .06,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          backgroundColor: AppColors.red),
-                      child: Text('Delete Account',
-                          style: AppStyles.semiBold20black
-                              .copyWith(color: AppColors.white)),
-                    ),
-                  ),
+                      height: screenSize.height * .06,
+                      width: double.infinity,
+                      child: CustomeElevatedButton(
+                        label: 'Delete Account',
+                        backGrounColor: AppColors.red,
+                        labelColor: AppColors.white,
+                        onPressed: () {},
+                      )),
                   SizedBox(
                     height: screenSize.height * .022,
                   ),
                   SizedBox(
                     height: screenSize.height * .06,
                     width: double.infinity,
-                    child: ElevatedButton(
+                    child: CustomeElevatedButton(
+                      label: 'Update Data',
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          backgroundColor: AppColors.yellowPrimaryColor),
-                      child:
-                          Text('Update Data', style: AppStyles.semiBold20black),
+                      labelColor: AppColors.blackPrimaryColor,
                     ),
                   ),
                   SizedBox(
@@ -180,8 +130,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
             padding: EdgeInsets.all(16),
             height: MediaQuery.sizeOf(context).height * .42,
             decoration: BoxDecoration(
-                color: AppColors.grey,
-                borderRadius: BorderRadius.circular(24)),
+                color: AppColors.grey, borderRadius: BorderRadius.circular(24)),
             child: Column(
               children: [
                 Expanded(
