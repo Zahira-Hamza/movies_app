@@ -13,7 +13,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
+  int currentPage = 0;
 
   final List<Map<String, String>> onboardingData = [
     {
@@ -74,7 +74,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        onPageChanged: (index) => setState(() => _currentPage = index),
+        onPageChanged: (index) => setState(() => currentPage = index),
         children: [
           FirstOnboardingPage(onNext: _goToNextPage),
           ...onboardingData.asMap().entries.map((entry) {

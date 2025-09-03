@@ -6,6 +6,8 @@ import 'package:movies_app/core/constants/styles/app_styles.dart';
 class ForgetPassword extends StatelessWidget {
   static const String routeName = '/forget_screen';
 
+  const ForgetPassword({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

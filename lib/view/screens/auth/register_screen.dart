@@ -87,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       CustomTextFormField(
                         image: AppAssets.phoneIcon,
-                        hint: AppLocalizations.of(context)!.confirm_password,
+                        hint: AppLocalizations.of(context)!.phone_number,
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
@@ -95,7 +95,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       CustomeElevatedButton(
-                          onPressed: () {}, label: AppLocalizations.of(context)!.create_account),
+                          onPressed: () {},
+                          label: AppLocalizations.of(context)!.create_account),
                     ],
                   ),
                 ),

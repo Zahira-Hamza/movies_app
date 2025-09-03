@@ -8,11 +8,15 @@ class CustomeElevatedButton extends StatelessWidget {
     required this.label,
     this.width,
     required this.onPressed,
+    this.backGrounColor,
+    this.labelColor = AppColors.blackPrimaryColor,
   }) : super(key: key);
 
   final String label;
   final double? width;
   final VoidCallback onPressed;
+  final Color? backGrounColor;
+  final Color? labelColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,22 +26,23 @@ class CustomeElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          backgroundColor: AppColors.yellowPrimaryColor,
+          backgroundColor: backGrounColor ?? AppColors.yellowPrimaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
+          fixedSize: Size(width ?? MediaQuery.sizeOf(context).width, 56),
         ),
         child: Align(
           alignment: Alignment.center,
           child: Text(
             label,
             style: AppStyles.regularRoboto.copyWith(
-              color: AppColors.blackPrimaryColor,
+              color: labelColor,
               fontSize: 18,
             ),
             textAlign: TextAlign.center,
             overflow: TextOverflow.visible,
-            maxLines: 2, // ← مهم عشان يدعم سطرين لو النص طويل
+            maxLines: 2, // ← بيدعم سطرين لو النص طويل
             softWrap: true,
           ),
         ),
@@ -45,4 +50,3 @@ class CustomeElevatedButton extends StatelessWidget {
     );
   }
 }
-
