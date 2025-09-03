@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_theme.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/auth/register_screen.dart';
+import 'package:movies_app/view/screens/home/bottom_nav_bar.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile.dart';
+
 import 'core/routes/app_routes.dart';
 import 'view/screens/auth/forget_password.dart';
 import 'view/screens/auth/login_screen.dart';
@@ -27,6 +29,7 @@ class MoviesApp extends StatelessWidget {
         AppRoutes.loginRoute: (context) => LoginScreen(),
         AppRoutes.forgetPasswordRoute: (context) => ForgetPassword(),
         AppRoutes.updateProfileRoute: (context) => UpdateProfile(),
+        AppRoutes.bottomNavBarRoute: (context) => BottomNavBar(),
       },
       locale: Locale('en'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,

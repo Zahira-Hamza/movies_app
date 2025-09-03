@@ -9,6 +9,8 @@ import 'package:movies_app/view/widgets/auth/toggle_switch_language.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 
+import '../../../core/routes/app_routes.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -23,6 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -40,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 width: double.infinity,
                 child: CarouselAvatares(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -95,7 +98,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       CustomeElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // Validate the form first
+                            if (formKey.currentState!.validate()) {
+                              // If form is valid, show success snackbar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    "Registration Successful",
+                                    style: AppStyles.regularRoboto
+                                        .copyWith(color: AppColors.grey),
+                                  ),
+                                  backgroundColor: AppColors
+                                      .yellowPrimaryColor, // You might want to define this color
+                                  duration: const Duration(seconds: 3),
+                                  behavior: SnackBarBehavior.floating,
+                                  // Optional: Add action to navigate to login
+                                  action: SnackBarAction(
+                                    label: AppLocalizations.of(context)!.login,
+                                    textColor: AppColors.grey,
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                          AppRoutes.bottomNavBarRoute);
+                                    },
+                                  ),
+                                ),
+                              );
+
+                              // Here you would typically send the data to your backend
+                              // and navigate to the next screen after successful registration
+                            }
+                          },
                           label: AppLocalizations.of(context)!.create_account),
                     ],
                   ),
