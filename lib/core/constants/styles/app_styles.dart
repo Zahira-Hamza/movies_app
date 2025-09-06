@@ -21,6 +21,11 @@ class AppStyles {
     fontWeight: FontWeight.normal,
     color: Colors.white,
   );
+  static final TextStyle regular20white = GoogleFonts.inter(
+    fontSize: 20,
+    fontWeight: FontWeight.normal,
+    color: Colors.white,
+  );
   static final TextStyle semiBold20black = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.w500,

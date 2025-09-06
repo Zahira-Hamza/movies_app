@@ -22,13 +22,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
     List<Widget> tabs = [
-      const HomeTab(),
+       HomeTab(),
       const SearchTab(),
       const BrowseTab(),
       const ProfileTab(),
     ];
 
     return Scaffold(
+      extendBody: true,
       body: tabs[selectedIndex],
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(
