@@ -8,7 +8,13 @@ import 'package:movies_app/data/models/categories/category_model.dart';
 
 class HomeTab extends StatefulWidget {
   final int selectedCategoryIndex;
-  const HomeTab({super.key, this.selectedCategoryIndex = 0});
+  final ValueChanged<int> onCategoryChanged;
+
+  const HomeTab({
+    super.key,
+    required this.selectedCategoryIndex,
+    required this.onCategoryChanged,
+  });
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -18,14 +24,12 @@ class _HomeTabState extends State<HomeTab> {
   int currentIndex = 0;
   late Future<List<Map<String, dynamic>>> futureMovies;
   late Future<List<Map<String, dynamic>>> futureMoviesByGenre;
-  int selectedCategoryIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    futureMovies = RemoteDataSource().fetchMovies(); // fetchItems returns List<Map>
-    selectedCategoryIndex = widget.selectedCategoryIndex;
-    final initialGenre = CategoryModel.categories[0].apiValue;
+    futureMovies = RemoteDataSource().fetchMovies();
+    final initialGenre = CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
     futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: initialGenre);
   }
 
@@ -33,14 +37,6 @@ class _HomeTabState extends State<HomeTab> {
     setState(() {
       futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: genre);
     });
-  }
-
-  void _onCategorySelected(int index) {
-    setState(() {
-      selectedCategoryIndex = index;
-    });
-    final selectedGenre = CategoryModel.categories[index].apiValue;
-    _loadMoviesForCategory(selectedGenre);
   }
 
   @override
@@ -125,15 +121,11 @@ class _HomeTabState extends State<HomeTab> {
                           children: [
                             Text(
                               CategoryModel
-                                  .categories[selectedCategoryIndex].name,
+                                  .categories[widget.selectedCategoryIndex].name,
                               style: AppStyles.regular16white,
                             ),
                             TextButton(
                               onPressed: () {
-                                final nextIndex =
-                                    (selectedCategoryIndex + 1) %
-                                        CategoryModel.categories.length;
-                                _onCategorySelected(nextIndex);
                               },
                               child: Row(
                                 children: [

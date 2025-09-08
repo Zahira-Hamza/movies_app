@@ -6,6 +6,7 @@ import 'package:movies_app/view/screens/home/tabs/search/search_tab.dart';
 
 import '../../../core/constants/styles/app_assets.dart';
 import '../../../core/constants/styles/app_colors.dart';
+import '../../../data/models/categories/category_model.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -16,13 +17,22 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 0;
+  int selectedCategoryIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
+
     List<Widget> tabs = [
-       HomeTab(),
+      HomeTab(
+        selectedCategoryIndex: selectedCategoryIndex,
+        onCategoryChanged: (newIndex) {
+          setState(() {
+            selectedCategoryIndex = newIndex;
+          });
+        },
+      ),
       const SearchTab(),
       const BrowseTab(),
       const ProfileTab(),
@@ -49,6 +59,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
           child: BottomNavigationBar(
             currentIndex: selectedIndex,
             onTap: (index) {
+              // If we're returning to the home tab, change the category
+              if (index == 0 && selectedIndex != 0) {
+                setState(() {
+                  selectedCategoryIndex = (selectedCategoryIndex + 1) % CategoryModel.categories.length;
+                });
+              }
+
               setState(() {
                 selectedIndex = index;
               });
@@ -56,8 +73,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
             elevation: 0,
-            showSelectedLabels: false, // No labels
-            showUnselectedLabels: false, // No labels
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
             items: [
               _buildBottomNavigationBarItem(
                 index: 0,
@@ -102,7 +119,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         AssetImage(selectedIconName),
         color: AppColors.yellowPrimaryColor,
       ),
-      label: '', // Empty label
+      label: '',
     );
   }
 }
