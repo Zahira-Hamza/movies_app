@@ -3,32 +3,32 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/data_sources/remote_data_source.dart';
-import 'package:movies_app/data/models/movies/movie.dart';
 import 'package:movies_app/view/widgets/film_poster/custom_film_poster.dart';
-
-import 'package:movies_app/categories/data/models/category_model.dart';
+import 'package:movies_app/data/models/categories/category_model.dart';
 
 class HomeTab extends StatefulWidget {
   final int selectedCategoryIndex;
   const HomeTab({super.key, this.selectedCategoryIndex = 0});
+
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
   int currentIndex = 0;
-  late Future<List<Movie>> futureMovies;   // 🔥 fixed movies
-  late Future<List<Movie>> futureMoviesByGenre;
+  late Future<List<Map<String, dynamic>>> futureMovies;
+  late Future<List<Map<String, dynamic>>> futureMoviesByGenre;
   int selectedCategoryIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    futureMovies = RemoteDataSource().fetchMovies();
+    futureMovies = RemoteDataSource().fetchMovies(); // fetchItems returns List<Map>
     selectedCategoryIndex = widget.selectedCategoryIndex;
     final initialGenre = CategoryModel.categories[0].apiValue;
     futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: initialGenre);
   }
+
   void _loadMoviesForCategory(String genre) {
     setState(() {
       futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: genre);
@@ -42,11 +42,12 @@ class _HomeTabState extends State<HomeTab> {
     final selectedGenre = CategoryModel.categories[index].apiValue;
     _loadMoviesForCategory(selectedGenre);
   }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
-      body: FutureBuilder<List<Movie>>(
+      body: FutureBuilder<List<Map<String, dynamic>>>(
         future: futureMovies,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -63,7 +64,7 @@ class _HomeTabState extends State<HomeTab> {
             children: [
               Positioned.fill(
                 child: Image.network(
-                  movies[currentIndex].poster,
+                  movies[currentIndex]['medium_cover_image'] ?? '',
                   fit: BoxFit.fill,
                 ),
               ),
@@ -93,8 +94,8 @@ class _HomeTabState extends State<HomeTab> {
                       CarouselSlider(
                         items: movies.map((movie) {
                           return CustomFilmPoster(
-                            imagePath: movie.poster,
-                            rating: movie.rating.toString(),
+                            imagePath: movie['medium_cover_image'] ?? '',
+                            rating: (movie['rating'] ?? 0).toString(),
                             height: screenSize.height * 0.6,
                             width: screenSize.width * 0.6,
                           );
@@ -122,9 +123,11 @@ class _HomeTabState extends State<HomeTab> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text( CategoryModel
-                                .categories[selectedCategoryIndex].name,
-                              style: AppStyles.regular16white,),
+                            Text(
+                              CategoryModel
+                                  .categories[selectedCategoryIndex].name,
+                              style: AppStyles.regular16white,
+                            ),
                             TextButton(
                               onPressed: () {
                                 final nextIndex =
@@ -148,38 +151,46 @@ class _HomeTabState extends State<HomeTab> {
                           ],
                         ),
                       ),
-      FutureBuilder<List<Movie>>(
-        future: futureMoviesByGenre,
-        builder: (context, genreSnapshot) {
-          if (genreSnapshot.connectionState ==
-              ConnectionState.waiting) {
-            return const Center(
-                child: CircularProgressIndicator());
-          } else if (genreSnapshot.hasError) {
-            return Center(
-                child: Text("Error: ${genreSnapshot.error}"));
-          } else if (!genreSnapshot.hasData ||
-              genreSnapshot.data!.isEmpty) {
-            return const Center(child: Text("No movies found"));
-          }
+                      FutureBuilder<List<Map<String, dynamic>>>(
+                        future: futureMoviesByGenre,
+                        builder: (context, genreSnapshot) {
+                          if (genreSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (genreSnapshot.hasError) {
+                            return Center(
+                                child:
+                                Text("Error: ${genreSnapshot.error}"));
+                          } else if (!genreSnapshot.hasData ||
+                              genreSnapshot.data!.isEmpty) {
+                            return const Center(child: Text("No movies found"));
+                          }
 
-    final genreMovies = genreSnapshot.data!;
-                   return SizedBox(
-                        height: screenSize.height * 0.28,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          itemCount:genreMovies.length,
-                          itemBuilder: (context, index) {
-                            return CustomFilmPoster(
-                              imagePath: genreMovies [index].poster,
-                              rating: genreMovies [index].rating.toString(),
-                            );
-                          },
-                          separatorBuilder: (context, index) =>
-                          const SizedBox(width: 10),
-                        ),
-                   );},)
+                          final genreMovies = genreSnapshot.data!;
+                          return SizedBox(
+                            height: screenSize.height * 0.28,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 8),
+                              itemCount: genreMovies.length,
+                              itemBuilder: (context, index) {
+                                return CustomFilmPoster(
+                                  imagePath:
+                                  genreMovies[index]['medium_cover_image'] ??
+                                      '',
+                                  rating:
+                                  (genreMovies[index]['rating'] ?? 0)
+                                      .toString(),
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                              const SizedBox(width: 10),
+                            ),
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),

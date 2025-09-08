@@ -16,20 +16,20 @@ String apiValue;
     ),
     CategoryModel(
       name: 'Adventure',
-        apiValue: 'adventure'
+      apiValue: 'adventure'
 
     ),
     CategoryModel(
       name: 'Animation',
-        apiValue: 'animation'
+      apiValue: 'animation'
     ),
     CategoryModel(
       name: 'Horror',
-        apiValue: 'horror'
+      apiValue: 'horror'
     ),
     CategoryModel(
       name: 'Comedy',
-        apiValue: 'comedy'
+      apiValue: 'comedy'
     ),
   ];
 }
