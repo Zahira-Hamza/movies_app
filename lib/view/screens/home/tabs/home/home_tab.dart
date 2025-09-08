@@ -84,7 +84,8 @@ class _HomeTabState extends State<HomeTab> {
                     children: [
                       SizedBox(height: screenSize.height * 0.05),
                       Center(
-                        child: Image.asset("assets/images/available_now.png"),
+                        child: Image.asset("assets/images/available_now.png",
+                        ),
                       ),
                       const SizedBox(height: 20),
                       CarouselSlider(
