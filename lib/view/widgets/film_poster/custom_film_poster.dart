@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 class CustomFilmPoster extends StatelessWidget {
   final String imagePath;
   final String rating;
@@ -18,12 +20,15 @@ class CustomFilmPoster extends StatelessWidget {
     Size screenSize = MediaQuery.sizeOf(context);
     return Stack(
       children: [
-        ClipRRect(borderRadius: BorderRadius.circular(20),
-          child: Image.asset(
-            imagePath,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: CachedNetworkImage(
+            imageUrl: imagePath,
             fit: BoxFit.cover,
             height: height ?? screenSize.height * 0.26,
             width: width ?? screenSize.width * 0.33,
+            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
         Positioned(
@@ -57,7 +62,5 @@ class CustomFilmPoster extends StatelessWidget {
         ),
       ],
     );
-
   }
-
 }

@@ -37,6 +37,8 @@ dependencies:
   flutter_native_splash: ^2.4.4
   google_fonts: ^6.3.0
   flutter_svg: ^2.2.0
+  http: ^1.2.2
+  cached_network_image: ^3.2.3
   flutter_localizations:
     sdk: flutter
 
