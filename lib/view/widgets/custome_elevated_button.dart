@@ -4,13 +4,13 @@ import 'package:movies_app/core/constants/styles/app_styles.dart';
 
 class CustomeElevatedButton extends StatelessWidget {
   const CustomeElevatedButton({
-    Key? key,
+    super.key,
     required this.label,
     this.width,
     required this.onPressed,
     this.backGrounColor,
     this.labelColor = AppColors.blackPrimaryColor,
-  }) : super(key: key);
+  });
 
   final String label;
   final double? width;

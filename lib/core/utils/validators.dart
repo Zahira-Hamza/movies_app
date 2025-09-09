@@ -26,6 +26,15 @@ class Validators {
     if (value.length < 8) {
       return "Password must be at least 8 characters";
     }
+
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+      return "Password must contain at least one uppercase letter";
+    }
+
+    if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(value)) {
+      return "Password must contain at least one special character";
+    }
+
     return null;
   }
 
@@ -39,13 +48,13 @@ class Validators {
     return null;
   }
 
-  static String? validatePhone(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Phone is required";
-    }
-    if (!RegExp(r'^[0-9]{10,11}$').hasMatch(value)) {
-      return "Enter a valid phone number";
-    }
-    return null;
+static String? validatePhone(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Phone is required";
   }
+  if (!RegExp(r'^(010|011|012|015)[0-9]{8}$').hasMatch(value)) {
+    return "Enter a valid Egyptian phone number";
+  }
+  return null;
+}
 }
