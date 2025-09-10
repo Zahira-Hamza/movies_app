@@ -8,12 +8,12 @@ class CustomFilmPoster extends StatelessWidget {
   final double? width;
 
   const CustomFilmPoster({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.rating,
     this.height,
     this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
