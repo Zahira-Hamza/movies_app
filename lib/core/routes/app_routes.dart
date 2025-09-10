@@ -5,5 +5,5 @@ class AppRoutes {
   static const String loginRoute = "login_screen";
   static const String forgetPasswordRoute = "forget_screen";
   static const String bottomNavBarRoute = "bottom_nav_bar";
-  static const String homeTabRoute="home_tab";
+  static const String homeTabRoute = "home_tab";
 }

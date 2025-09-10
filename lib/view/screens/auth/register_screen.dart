@@ -49,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: CarouselAvatares(
                   onPageChanged: (index, _) {
                     if (currentAvatar == index) return;
-                    currentAvatar = index ;
+                    currentAvatar = index;
                     setState(() {});
                   },
                 ),
@@ -114,8 +114,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             UIUtils.showLoading(context);
                           } else if (state is RegisterError) {
                             UIUtils.hideLoading(context);
-                            UIUtils.showMessage(state.message, context);
-                          } else if (state is RegisterSuccess){
+                            UIUtils.showMessage(
+                                state.message, context, AppColors.red);
+                          } else if (state is RegisterSuccess) {
                             UIUtils.hideLoading(context);
                             Navigator.of(context)
                                 .pushReplacementNamed(AppRoutes.loginRoute);
@@ -152,7 +153,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacementNamed(AppRoutes.loginRoute);
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoutes.loginRoute);
                       },
                       child: Text(AppLocalizations.of(context)!.login,
                           style:

@@ -21,10 +21,15 @@ class UIUtils {
 
   static void hideLoading(BuildContext context) => Navigator.of(context).pop();
 
-  static void showMessage(String message, BuildContext context) =>
+  static void showMessage(
+          String message, BuildContext context, Color backgroundColor) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadiusGeometry.circular(12)),
-          backgroundColor: AppColors.red,
-          content: Center(child: Text(message,style: AppStyles.regular16white,))));
+          backgroundColor: backgroundColor,
+          content: Center(
+              child: Text(
+            message,
+            style: AppStyles.regular16white,
+          ))));
 }

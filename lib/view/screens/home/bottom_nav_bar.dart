@@ -62,7 +62,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               // If we're returning to the home tab, change the category
               if (index == 0 && selectedIndex != 0) {
                 setState(() {
-                  selectedCategoryIndex = (selectedCategoryIndex + 1) % CategoryModel.categories.length;
+                  selectedCategoryIndex = (selectedCategoryIndex + 1) %
+                      CategoryModel.categories.length;
                 });
               }
 

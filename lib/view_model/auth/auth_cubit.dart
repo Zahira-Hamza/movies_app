@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/data/models/auth/login_request.dart';
 import 'package:movies_app/data/models/auth/register_request.dart';
+import 'package:movies_app/data/models/auth/reset_password_request.dart';
 import 'package:movies_app/data/repositories/auth_repository.dart';
 import 'package:movies_app/view_model/auth/auth_states.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
-  final AuthRepository _repository =AuthRepository();
+  final AuthRepository _repository = AuthRepository();
 
   Future<void> register(RegisterRequest request) async {
     emit(RegisterLoading());
@@ -21,8 +22,17 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _repository.login(request);
     result.fold(
-      (faliure) => emit(RegisterError(faliure.errorMessage)),
+      (faliure) => emit(LoginError(faliure.errorMessage)),
       (_) => emit(LoginSuccess()),
     );
+  }
+
+  Future<void> resetPassword(ResetPasswordRequest request) async {
+    emit(ResetPasswordLoading());
+    final result = await _repository.resetPasssword(request);
+    result.fold((faliure) => emit(ResetPasswordError(faliure.errorMessage)),
+        (data) {
+      emit(ResetPasswordSuccess(data));
+    });
   }
 }

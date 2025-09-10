@@ -7,6 +7,7 @@ import 'package:movies_app/view/screens/home/bottom_nav_bar.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import 'core/routes/app_routes.dart';
 import 'view/screens/auth/forget_password.dart';
 import 'view/screens/auth/login_screen.dart';
@@ -20,8 +21,15 @@ class MoviesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.registerRoute,

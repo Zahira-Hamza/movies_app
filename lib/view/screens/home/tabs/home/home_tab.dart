@@ -29,7 +29,8 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     futureMovies = RemoteDataSource().fetchMovies();
-    final initialGenre = CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
+    final initialGenre =
+        CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
     futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: initialGenre);
   }
 
@@ -121,12 +122,12 @@ class _HomeTabState extends State<HomeTab> {
                           children: [
                             Text(
                               CategoryModel
-                                  .categories[widget.selectedCategoryIndex].name,
+                                  .categories[widget.selectedCategoryIndex]
+                                  .name,
                               style: AppStyles.regular16white,
                             ),
                             TextButton(
-                              onPressed: () {
-                              },
+                              onPressed: () {},
                               child: Row(
                                 children: [
                                   Text(
@@ -152,8 +153,7 @@ class _HomeTabState extends State<HomeTab> {
                                 child: CircularProgressIndicator());
                           } else if (genreSnapshot.hasError) {
                             return Center(
-                                child:
-                                Text("Error: ${genreSnapshot.error}"));
+                                child: Text("Error: ${genreSnapshot.error}"));
                           } else if (!genreSnapshot.hasData ||
                               genreSnapshot.data!.isEmpty) {
                             return const Center(child: Text("No movies found"));
@@ -165,20 +165,19 @@ class _HomeTabState extends State<HomeTab> {
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 8),
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               itemCount: genreMovies.length,
                               itemBuilder: (context, index) {
                                 return CustomFilmPoster(
-                                  imagePath:
-                                  genreMovies[index]['medium_cover_image'] ??
+                                  imagePath: genreMovies[index]
+                                          ['medium_cover_image'] ??
                                       '',
-                                  rating:
-                                  (genreMovies[index]['rating'] ?? 0)
+                                  rating: (genreMovies[index]['rating'] ?? 0)
                                       .toString(),
                                 );
                               },
                               separatorBuilder: (context, index) =>
-                              const SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                             ),
                           );
                         },

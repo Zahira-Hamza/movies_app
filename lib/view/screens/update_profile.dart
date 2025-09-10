@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/core/routes/app_routes.dart';
-import 'package:movies_app/data/models/auth/reset_password_data.dart';
-import 'package:movies_app/data/models/user/user_profile.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
+import 'package:movies_app/core/utils/validators.dart';
+import 'package:movies_app/data/models/user/update_user_profile_request.dart';
 import 'package:movies_app/view/screens/update_profile/reset_password_dialog.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
-import 'package:movies_app/view_model/auth/auth_api_service.dart';
-import 'package:movies_app/view_model/profile_api_service.dart';
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
+import 'package:movies_app/view_model/profile/profile_states.dart';
 
 import '../../core/constants/styles/app_assets.dart';
 
@@ -20,17 +22,19 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
-  final List<String> avatars = [
-    'assets/images/avatars/avatar 1.png',
-    'assets/images/avatars/avatar 2.png',
-    'assets/images/avatars/avatar 3.png',
-    'assets/images/avatars/avatar 4.png',
-    'assets/images/avatars/avatar 5.png',
-    'assets/images/avatars/avatar 6.png',
-    'assets/images/avatars/avatar 7.png',
-    'assets/images/avatars/avatar 8.png',
-    'assets/images/avatars/avatar 9.png',
+  final List<String> avatars = const [
+    AppAssets.avatar1,
+    AppAssets.avatar2,
+    AppAssets.avatar3,
+    AppAssets.avatar4,
+    AppAssets.avatar5,
+    AppAssets.avatar6,
+    AppAssets.avatar7,
+    AppAssets.avatar8,
+    AppAssets.avatar9,
   ];
+
+  int currentAvatar = 0;
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -38,19 +42,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
 
-  UserProfile userProfile = UserProfile();
-
-  int selectedIndex = 0;
-  final profileApiService = ProfileApiService();
-
+  final _updateFormKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
-    nameController.text = userProfile.name ?? '';
-    phoneController.text = userProfile.phone ?? '';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<ProfileCubit>(context).getProfile();
+    });
   }
-
-  final _updateFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -72,195 +71,149 @@ class _UpdateProfileState extends State<UpdateProfile> {
           SizedBox(
             height: screenSize.height * .03,
           ),
-          GestureDetector(
-            onTap: () => bottomSheet(context),
-            child: Center(
-              child: Image.asset(
-                avatars[selectedIndex],
-                height: screenSize.height * .16,
-                width: screenSize.height * .16,
-                fit: BoxFit.fill,
+          BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
+            if (state is GetProfileSuccess) {
+              currentAvatar = state.user.avaterId;
+            }
+            return GestureDetector(
+              onTap: () => bottomSheet(context),
+              child: Center(
+                child: Image.asset(
+                  avatars[currentAvatar],
+                  height: screenSize.height * .16,
+                  width: screenSize.height * .16,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-          ),
+            );
+          }),
           SizedBox(
             height: screenSize.height * .03,
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Form(
-                key: _updateFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomTextFormField(
-                      controller: nameController,
-                      image: 'assets/images/icons/person.svg',
-                      hint: 'name',
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        if (value.trim().length < 3) {
-                          return 'Name must be at least 3 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: screenSize.height * .02,
-                    ),
-                    CustomTextFormField(
-                      controller: phoneController,
-                      image: AppAssets.phoneIcon,
-                      hint: 'phone',
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your phone number';
-                        }
-                        final phoneRegExp = RegExp(r'^\+201[0-9]{8,9}$');
-                        if (!phoneRegExp.hasMatch(value.trim())) {
-                          return 'Enter a valid phone number starting with +201';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: screenSize.height * .015,
-                    ),
-                    TextButton(
-                      onPressed: () => showResetPasswordDialog(
-                        context,
-                        (oldPassword, newPassword) async {
-                          ResetPasswordData resetData = ResetPasswordData(
-                              oldPassword: oldPassword,
-                              newPassword: newPassword);
-                          try {
-                            final AuthApiService apiService = AuthApiService();
-                            final message = await apiService.resetPassword(
-                                data: resetData,
-                                token:
-                                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzA5YmU5ZThhOGZmNWEyN2M3NGQ3MCIsImVtYWlsIjoib29tbWFhcnIxMTFAZ21haWwuY29tIiwiaWF0IjoxNzU3NDUzMzMwfQ.nsb2sYAb-5P1ImsDVdsyASbfNV5rWs3K7Vwu-iBGbK4');
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                message,
-                                style: TextStyle(
-                                    color: AppColors.white, fontSize: 16),
-                              ),
-                              backgroundColor: Colors.green,
-                              duration: Duration(milliseconds: 800),
-                            ));
-                          } catch (error) {
-                            print(error.toString());
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                'Failed To Reset The Password',
-                                style: TextStyle(
-                                    color: AppColors.white, fontSize: 16),
-                              ),
-                              backgroundColor: Colors.red,
-                              duration: Duration(milliseconds: 800),
-                            ));
-                          }
+              child: BlocConsumer<ProfileCubit, ProfileStates>(
+                listener: (context, state) {
+                  if (state is GetProfileLoading) {
+                    UIUtils.showLoading(context);
+                  } else if (state is GetProfileError) {
+                    UIUtils.hideLoading(context);
+
+                    UIUtils.showMessage(state.message, context, AppColors.red);
+                  } else if (state is GetProfileSuccess) {
+                    UIUtils.hideLoading(context);
+                    nameController.text = state.user.name;
+                    phoneController.text =
+                        state.user.phone.replaceFirst("+2", "");
+                  }
+                },
+                builder: (context, state) => Form(
+                  key: _updateFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextFormField(
+                        controller: nameController,
+                        image: AppAssets.nameIcon,
+                        hint: 'name',
+                        validator: (value) {
+                          return Validators.validateName(value);
                         },
                       ),
-                      child: Text(
-                        'Reset Password',
-                        style: AppStyles.regular16white.copyWith(
-                          color: AppColors.white,
+                      SizedBox(
+                        height: screenSize.height * .02,
+                      ),
+                      CustomTextFormField(
+                        controller: phoneController,
+                        image: AppAssets.phoneIcon,
+                        hint: 'phone',
+                        validator: (value) {
+                          return Validators.validatePhone(value);
+                        },
+                      ),
+                      SizedBox(
+                        height: screenSize.height * .015,
+                      ),
+                      TextButton(
+                        onPressed: () => showResetPasswordDialog(
+                          context,
+                        ),
+                        child: Text(
+                          'Reset Password',
+                          style: AppStyles.regular16white.copyWith(
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    Spacer(),
-                    SizedBox(
-                      height: screenSize.height * .06,
-                      width: double.infinity,
-                      child: CustomeElevatedButton(
-                        label: 'Delete Account',
-                        backGrounColor: AppColors.red,
-                        labelColor: AppColors.white,
-                        onPressed: () async {
-                          try {
-                            bool confirm =
-                                await showDeleteAccountDialog(context);
-                            if (!confirm) return;
-                            final message = await profileApiService.deleteAccount(
-                                token:
-                                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzA5MzBiZGFlNWFiMjM1YThhODU5YyIsImVtYWlsIjoib29tbWFhcnIxQGdtYWlsLmNvbSIsImlhdCI6MTc1NzQ1MTA1N30.5rb05cC1RdgxwLXJk--tRO27UQ0LOxfSHs-JVaRtzSA');
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                message,
-                                style: TextStyle(
-                                    color: AppColors.white, fontSize: 16),
-                              ),
-                              backgroundColor: Colors.green,
-                              duration: Duration(milliseconds: 800),
-                            ));
-                            Navigator.of(context)
-                                .pushReplacementNamed(AppRoutes.loginRoute);
-                          } catch (error) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                'Failed To Delete The Account',
-                                style: TextStyle(
-                                    color: AppColors.white, fontSize: 16),
-                              ),
-                              backgroundColor: Colors.red,
-                              duration: Duration(milliseconds: 800),
-                            ));
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenSize.height * .022,
-                    ),
-                    SizedBox(
-                      height: screenSize.height * .06,
-                      width: double.infinity,
-                      child: CustomeElevatedButton(
-                        label: 'Update Data',
-                        onPressed: () async {
-                          if (_updateFormKey.currentState!.validate()) {
-                            try {
-                              final message = await profileApiService.updateData(
-                                  profile: UserProfile(
-                                      name: nameController.text.trim(),
-                                      phone: phoneController.text.trim()),
-                                  token:
-                                      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzA5MzBiZGFlNWFiMjM1YThhODU5YyIsImVtYWlsIjoib29tbWFhcnIxQGdtYWlsLmNvbSIsImlhdCI6MTc1NzQ1MTA1N30.5rb05cC1RdgxwLXJk--tRO27UQ0LOxfSHs-JVaRtzSA');
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(
-                                  message,
-                                  style: TextStyle(
-                                      color: AppColors.white, fontSize: 16),
-                                ),
-                                backgroundColor: Colors.green,
-                                duration: Duration(milliseconds: 800),
-                              ));
-                            } catch (error) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(
-                                  'Failed To Update Data',
-                                  style: TextStyle(
-                                      color: AppColors.white, fontSize: 16),
-                                ),
-                                backgroundColor: AppColors.red,
-                                duration: Duration(milliseconds: 800),
-                              ));
+                      Spacer(),
+                      SizedBox(
+                        height: screenSize.height * .06,
+                        width: double.infinity,
+                        child: BlocListener<ProfileCubit, ProfileStates>(
+                          listener: (context, state) {
+                            if (state is DeleteProfileLoading) {
+                              UIUtils.showLoading(context);
+                            } else if (state is DeleteProfileError) {
+                              UIUtils.hideLoading(context);
+                              UIUtils.showMessage(
+                                  state.message, context, AppColors.red);
+                            } else if (state is DeleteProfileSuccess) {
+                              UIUtils.hideLoading(context);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(AppRoutes.loginRoute);
                             }
-                          }
-                        },
-                        labelColor: AppColors.blackPrimaryColor,
+                          },
+                          child: CustomeElevatedButton(
+                            label: 'Delete Account',
+                            backGrounColor: AppColors.red,
+                            labelColor: AppColors.white,
+                            onPressed: () {
+                              showDeleteAccountDialog(context);
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: screenSize.height * .036,
-                    )
-                  ],
+                      SizedBox(
+                        height: screenSize.height * .022,
+                      ),
+                      SizedBox(
+                        height: screenSize.height * .06,
+                        width: double.infinity,
+                        child: BlocListener<ProfileCubit, ProfileStates>(
+                          listener: (context, state) {
+                            if (state is UpdateProfileLoading) {
+                              UIUtils.showLoading(context);
+                            } else if (state is UpdateProfileError) {
+                              UIUtils.hideLoading(context);
+                              UIUtils.showMessage(
+                                  state.message, context, AppColors.red);
+                            } else if (state is UpdateProfileSuccess) {
+                              UIUtils.hideLoading(context);
+                              UIUtils.showMessage(state.message, context,
+                                  AppColors.yellowPrimaryColor);
+                            }
+                          },
+                          child: CustomeElevatedButton(
+                            label: 'Update Data',
+                            onPressed: () async {
+                              if (_updateFormKey.currentState!.validate()) {
+                                BlocProvider.of<ProfileCubit>(context)
+                                    .updateProfile(UpdateUserProfileRequest(
+                                        avatarId: currentAvatar,
+                                        name: nameController.text,
+                                        phone: phoneController.text));
+                              }
+                            },
+                            labelColor: AppColors.blackPrimaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenSize.height * .036,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -294,12 +247,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       crossAxisSpacing: 18,
                     ),
                     itemBuilder: (context, index) {
-                      bool isSeleected = index == selectedIndex;
+                      bool isSeleected = index == currentAvatar;
 
                       return InkWell(
                         onTap: () {
                           setState(() {
-                            selectedIndex = index;
+                            currentAvatar = index;
                             Navigator.of(context).pop();
                           });
                         },
@@ -332,58 +285,63 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Future<bool> showDeleteAccountDialog(BuildContext context) async {
     return await showDialog<bool>(
           context: context,
-          builder: (ctx) => AlertDialog(
-            backgroundColor: const Color(0xFF1A1A1A),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            title: Center(
-              child: Text(
-                'Delete Account',
-                style: TextStyle(
-                  color: AppColors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+          builder: (ctx) => BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(),
+            child: AlertDialog(
+              backgroundColor: const Color(0xFF1A1A1A),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              title: Center(
+                child: Text(
+                  'Delete Account',
+                  style: TextStyle(
+                    color: AppColors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.warning,
-                    size: 50, color: AppColors.yellowPrimaryColor),
-                SizedBox(height: 16),
-                Text(
-                  'Are you sure you want to delete your account ?\n\nThis action cannot be undone.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 16),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.warning,
+                      size: 50, color: AppColors.yellowPrimaryColor),
+                  SizedBox(height: 16),
+                  Text(
+                    'Are you sure you want to delete your account ?\n\nThis action cannot be undone.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ],
+              ),
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  ),
+                  onPressed: () => Navigator.of(ctx).pop(false),
+                  child: Text('Cancel'),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.red,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    textStyle: TextStyle(fontWeight: FontWeight.bold),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<ProfileCubit>(context).deleteProfile();
+                  },
+                  child: Text('Delete'),
                 ),
               ],
             ),
-            actionsAlignment: MainAxisAlignment.spaceEvenly,
-            actions: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                ),
-                onPressed: () => Navigator.of(ctx).pop(false),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.red,
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  textStyle: TextStyle(fontWeight: FontWeight.bold),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () => Navigator.of(ctx).pop(true),
-                child: Text('Delete'),
-              ),
-            ],
           ),
         ) ??
         false;

@@ -1,11 +1,10 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
 import '../../core/constants/api_constants.dart';
 
-class RemoteDataSource {  
+class RemoteDataSource {
   Future<List<Map<String, dynamic>>> fetchMovies({
     int? limit,
     int? page,
@@ -19,7 +18,7 @@ class RemoteDataSource {
   }) async {
     final uri = Uri.parse(ApiConstants.baseUrl + ApiConstants.listMovies);
 
- final Map<String, String> queryParameters = {
+    final Map<String, String> queryParameters = {
       'sort_by': sortBy,
       'order_by': orderBy,
       if (limit != null) 'limit': limit.toString(),

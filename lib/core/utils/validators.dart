@@ -48,13 +48,13 @@ class Validators {
     return null;
   }
 
-static String? validatePhone(String? value) {
-  if (value == null || value.isEmpty) {
-    return "Phone is required";
+  static String? validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Phone is required";
+    }
+    if (!RegExp(r'^(010|011|012|015)[0-9]{8}$').hasMatch(value)) {
+      return "Enter a valid Egyptian phone number";
+    }
+    return null;
   }
-  if (!RegExp(r'^(010|011|012|015)[0-9]{8}$').hasMatch(value)) {
-    return "Enter a valid Egyptian phone number";
-  }
-  return null;
-}
 }

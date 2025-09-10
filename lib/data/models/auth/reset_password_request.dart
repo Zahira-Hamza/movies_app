@@ -1,8 +1,8 @@
-class ResetPasswordData {
+class ResetPasswordRequest {
   final String oldPassword;
   final String newPassword;
 
-  ResetPasswordData({required this.oldPassword, required this.newPassword});
+  ResetPasswordRequest({required this.oldPassword, required this.newPassword});
 
   Map<String, dynamic> toJson() {
     return {

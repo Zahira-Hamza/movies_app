@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 
 class CarouselAvatares extends StatelessWidget {
-  const CarouselAvatares({super.key,required this.onPageChanged});
+  const CarouselAvatares({super.key, required this.onPageChanged});
 
-  final Function(int, CarouselPageChangedReason) onPageChanged; 
+  final Function(int, CarouselPageChangedReason) onPageChanged;
 
   final List<String> avatars = const [
     AppAssets.avatar1,
@@ -24,7 +24,6 @@ class CarouselAvatares extends StatelessWidget {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
     return CarouselSlider.builder(
-      
       itemCount: avatars.length,
       itemBuilder: (context, index, _) => CircleAvatar(
         backgroundImage: AssetImage(avatars[index]),

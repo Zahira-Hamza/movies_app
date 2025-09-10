@@ -3,10 +3,10 @@ abstract class AuthException {
   const AuthException(this.message);
 }
 
-class ApiException extends AuthException{
+class ApiException extends AuthException {
   const ApiException(super.message);
 }
 
-class SharedPrefException extends AuthException{
+class SharedPrefException extends AuthException {
   const SharedPrefException(super.message);
 }

@@ -21,3 +21,17 @@ class LoginError extends AuthState {
 
   LoginError(this.message);
 }
+
+class ResetPasswordLoading extends AuthState {}
+
+class ResetPasswordSuccess extends AuthState {
+  final String message;
+
+  ResetPasswordSuccess(this.message);
+}
+
+class ResetPasswordError extends AuthState {
+  final String message;
+
+  ResetPasswordError(this.message);
+}

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
+import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
+import 'package:movies_app/core/utils/validators.dart';
+import 'package:movies_app/data/models/auth/reset_password_request.dart';
+import 'package:movies_app/view_model/auth/auth_cubit.dart';
+import 'package:movies_app/view_model/auth/auth_states.dart';
 
-void showResetPasswordDialog(
-    BuildContext context, Function(String, String) onReset) {
+void showResetPasswordDialog(BuildContext context) {
   final resetFormKey = GlobalKey<FormState>();
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   bool oldObsecure = true;
   bool newObsecure = true;
-  final strongPasswordRegExp =
-      RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$');
 
   showDialog(
     context: context,
@@ -17,7 +21,7 @@ void showResetPasswordDialog(
       return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            backgroundColor: Color(0xFF1A1A1A),
+            backgroundColor: Color(0xFF1C1C1C),
             title: Center(
               child: Text(
                 'Reset Password',
@@ -39,11 +43,11 @@ void showResetPasswordDialog(
                       controller: oldPasswordController,
                       decoration: InputDecoration(
                         labelText: 'Old Password',
-                        labelStyle: TextStyle(color: Colors.white70),
+                        labelStyle: TextStyle(color: AppColors.white),
                         prefixIcon:
-                            Icon(Icons.lock_outline, color: Colors.white70),
+                            Icon(Icons.lock_outline, color: AppColors.white),
                         filled: true,
-                        fillColor: Color(0xFF222222),
+                        fillColor: AppColors.semigrey,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -57,21 +61,15 @@ void showResetPasswordDialog(
                             oldObsecure
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: Colors.white70,
+                            color: AppColors.white,
                           ),
                         ),
                       ),
                       obscureText: oldObsecure,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: AppColors.white),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (!strongPasswordRegExp.hasMatch(value)) {
-                          return 'Password must be at least 8 characters, include uppercase, lowercase, number and special character.';
-                        }
-                        return null;
+                        return Validators.validatePassword(value);
                       },
                     ),
                     SizedBox(height: 14),
@@ -79,10 +77,10 @@ void showResetPasswordDialog(
                       controller: newPasswordController,
                       decoration: InputDecoration(
                         labelText: 'New Password',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        prefixIcon: Icon(Icons.vpn_key, color: Colors.white70),
+                        labelStyle: TextStyle(color: AppColors.white),
+                        prefixIcon: Icon(Icons.vpn_key, color: AppColors.white),
                         filled: true,
-                        fillColor: Color(0xFF222222),
+                        fillColor: Color(0xFF252525),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -101,16 +99,10 @@ void showResetPasswordDialog(
                         ),
                       ),
                       obscureText: newObsecure,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: AppColors.white),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                           validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (!strongPasswordRegExp.hasMatch(value)) {
-                          return 'Password must be at least 8 characters, include uppercase, lowercase, number and special character.';
-                        }
-                        return null;
+                      validator: (value) {
+                        return Validators.validatePassword(value);
                       },
                     ),
                   ],
@@ -125,25 +117,41 @@ void showResetPasswordDialog(
                 onPressed: () => Navigator.of(ctx).pop(),
                 child: Text('Cancel'),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.yellowPrimaryColor,
-                  foregroundColor: AppColors.blackPrimaryColor,
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  textStyle: TextStyle(fontWeight: FontWeight.bold),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {
-                  if (resetFormKey.currentState!.validate()) {
-                    final oldPass = oldPasswordController.text.trim();
-                    final newPass = newPasswordController.text.trim();
-                    onReset(oldPass, newPass);
-                    Navigator.of(ctx).pop();
+              BlocListener<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is ResetPasswordLoading) {
+                    UIUtils.showLoading(context);
+                  } else if (state is ResetPasswordError) {
+                    UIUtils.hideLoading(context);
+                    UIUtils.showMessage(state.message, context, AppColors.red);
+                  } else if (state is ResetPasswordSuccess) {
+                    UIUtils.hideLoading(context);
+                    UIUtils.showMessage(
+                        state.message, context, AppColors.green);
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppRoutes.loginRoute);
                   }
                 },
-                child: Text('Reset'),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.yellowPrimaryColor,
+                    foregroundColor: AppColors.blackPrimaryColor,
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    textStyle: TextStyle(fontWeight: FontWeight.bold),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (resetFormKey.currentState!.validate()) {
+                      BlocProvider.of<AuthCubit>(context).resetPassword(
+                          ResetPasswordRequest(
+                              newPassword: newPasswordController.text,
+                              oldPassword: oldPasswordController.text));
+                    }
+                  },
+                  child: Text('Reset'),
+                ),
               ),
             ],
           );
