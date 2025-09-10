@@ -128,8 +128,7 @@ void showResetPasswordDialog(BuildContext context) {
                     UIUtils.hideLoading(context);
                     UIUtils.showMessage(
                         state.message, context, AppColors.green);
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppRoutes.loginRoute);
+                    Navigator.of(context).pop();
                   }
                 },
                 child: ElevatedButton(
