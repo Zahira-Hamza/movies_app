@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../../core/constants/api_constants.dart';
+import '../../../core/constants/api_constants.dart';
 
-class RemoteDataSource {
+class MoviesRemoteDataSource {
   Future<List<Map<String, dynamic>>> fetchMovies({
     int? limit,
     int? page,

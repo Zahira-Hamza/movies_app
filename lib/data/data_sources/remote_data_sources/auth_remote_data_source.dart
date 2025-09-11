@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:movies_app/core/constants/constants.dart';
-import 'package:movies_app/core/constants/errors/auth_exception.dart';
+import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:movies_app/data/models/auth/login_request.dart';
 import 'package:movies_app/data/models/auth/login_response.dart';
 import 'package:movies_app/data/models/auth/register_request.dart';

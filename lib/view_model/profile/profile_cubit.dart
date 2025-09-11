@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/data/models/user/update_user_profile_request.dart';
+import 'package:movies_app/data/models/user_profile/update_user_profile_request.dart';
 import 'package:movies_app/data/repositories/user_profile_repository.dart';
 import 'package:movies_app/view_model/profile/profile_states.dart';
 

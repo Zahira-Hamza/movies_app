@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushNamed(AppRoutes.forgetPasswordRoute);
+                            .pushNamed(AppRoutes.forgetPasswordScreenRoute);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.forgot_password,
@@ -104,8 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               state.message, context, AppColors.red);
                         } else if (state is LoginSuccess) {
                           UIUtils.hideLoading(context);
-                          Navigator.of(context).pushReplacementNamed(
-                              AppRoutes.bottomNavBarRoute);
+                          Navigator.of(context)
+                              .pushReplacementNamed(AppRoutes.homeScreenRoute);
                         }
                       },
                       child: CustomeElevatedButton(
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushNamed(AppRoutes.registerRoute);
+                            .pushNamed(AppRoutes.registerScreenRoute);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.create_one,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
-import 'package:movies_app/core/routes/app_routes.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/validators.dart';
 import 'package:movies_app/data/models/auth/reset_password_request.dart';

@@ -118,8 +118,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 state.message, context, AppColors.red);
                           } else if (state is RegisterSuccess) {
                             UIUtils.hideLoading(context);
-                            Navigator.of(context)
-                                .pushReplacementNamed(AppRoutes.loginRoute);
+                            Navigator.of(context).pushReplacementNamed(
+                                AppRoutes.loginScreenRoute);
                           }
                         },
                         child: CustomeElevatedButton(
@@ -154,7 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.loginRoute);
+                            .pushReplacementNamed(AppRoutes.loginScreenRoute);
                       },
                       child: Text(AppLocalizations.of(context)!.login,
                           style:

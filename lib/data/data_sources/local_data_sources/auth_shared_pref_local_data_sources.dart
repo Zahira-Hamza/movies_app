@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:movies_app/core/constants/constants.dart';
-import 'package:movies_app/core/constants/errors/auth_exception.dart';
+import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthSharedPrefLocalDataSources {

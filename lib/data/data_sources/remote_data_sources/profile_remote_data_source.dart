@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:movies_app/core/constants/constants.dart';
-import 'package:movies_app/core/constants/errors/auth_exception.dart';
+import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:movies_app/data/models/auth/user_data_response.dart';
-import 'package:movies_app/data/models/user/update_user_profile_request.dart';
-import 'package:movies_app/data/models/user/user_profile_response.dart';
+import 'package:movies_app/data/models/user_profile/update_user_profile_request.dart';
+import 'package:movies_app/data/models/user_profile/user_profile_response.dart';
 
 class ProfileRemoteDataSource {
   final Dio _dio = Dio(

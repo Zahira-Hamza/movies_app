@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
-import 'package:movies_app/core/constants/errors/auth_exception.dart';
+import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:movies_app/core/constants/errors/faliure.dart';
 import 'package:movies_app/data/data_sources/local_data_sources/auth_shared_pref_local_data_sources.dart';
 import 'package:movies_app/data/data_sources/remote_data_sources/auth_remote_data_source.dart';
@@ -19,7 +19,7 @@ class AuthRepository {
     try {
       final response = await _authRemoteDataSource.register(request);
       return Right(response.userModel);
-    } on AuthException catch (exception) {
+    } on AppException catch (exception) {
       return Left(Failure(exception.message));
     }
   }
@@ -30,7 +30,7 @@ class AuthRepository {
       log('i am in repo');
       _authSharedPrefLocalDataSources.saveToken(response.token);
       return Right(null);
-    } on AuthException catch (exception) {
+    } on AppException catch (exception) {
       return Left(Failure(exception.message));
     }
   }
@@ -43,7 +43,7 @@ class AuthRepository {
       final response =
           await _authRemoteDataSource.resetPassword(request, token);
       return Right(response.message ?? 'Password Updated !');
-    } on AuthException catch (exception) {
+    } on AppException catch (exception) {
       return Left(Failure(exception.message));
     }
   }

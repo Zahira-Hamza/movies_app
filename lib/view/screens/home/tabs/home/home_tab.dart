@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
-import 'package:movies_app/data/data_sources/remote_data_source.dart';
-import 'package:movies_app/view/widgets/film_poster/custom_film_poster.dart';
+import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
+import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
 
 class HomeTab extends StatefulWidget {
@@ -28,15 +28,16 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
-    futureMovies = RemoteDataSource().fetchMovies();
+    futureMovies = MoviesRemoteDataSource().fetchMovies();
     final initialGenre =
         CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
-    futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: initialGenre);
+    futureMoviesByGenre =
+        MoviesRemoteDataSource().fetchMovies(genre: initialGenre);
   }
 
   void _loadMoviesForCategory(String genre) {
     setState(() {
-      futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: genre);
+      futureMoviesByGenre = MoviesRemoteDataSource().fetchMovies(genre: genre);
     });
   }
 
