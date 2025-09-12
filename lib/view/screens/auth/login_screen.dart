@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/validators.dart';
+import 'package:movies_app/data/models/auth/login_request.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/auth/toggle_switch_language.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
+import 'package:movies_app/view_model/auth/auth_cubit.dart';
+import 'package:movies_app/view_model/auth/auth_states.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -19,40 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  bool isEnglish = true;
-  int initialIndex = 0;
-
-  void _showLoginSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          "Login Successful",
-          style: TextStyle(color: AppColors.grey),
-        ),
-        backgroundColor: AppColors.yellowPrimaryColor,
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
-
-  void _handleLogin() {
-    if (formKey.currentState?.validate() ?? false) {
-      _showLoginSnackbar();
-      // Add a small delay before navigation to show the snackbar
-      Future.delayed(const Duration(milliseconds: 500), () {
-        Navigator.of(context).pushNamed(AppRoutes.bottomNavBarRoute);
-      });
-    }
-  }
-
-  void _handleGoogleLogin() {
-    // Direct navigation without snackbar for Google login
-    Navigator.of(context).pushNamed(AppRoutes.bottomNavBarRoute);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushNamed(AppRoutes.forgetPasswordRoute);
+                            .pushNamed(AppRoutes.forgetPasswordScreenRoute);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.forgot_password,
@@ -121,10 +94,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: CustomeElevatedButton(
-                      label: AppLocalizations.of(context)!.login,
-                      onPressed:
-                          _handleLogin, // Use the new method with snackbar
+                    child: BlocListener<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is LoginLoading) {
+                          UIUtils.showLoading(context);
+                        } else if (state is LoginError) {
+                          UIUtils.hideLoading(context);
+                          UIUtils.showMessage(
+                              state.message, context, AppColors.red);
+                        } else if (state is LoginSuccess) {
+                          UIUtils.hideLoading(context);
+                          Navigator.of(context)
+                              .pushReplacementNamed(AppRoutes.homeScreenRoute);
+                        }
+                      },
+                      child: CustomeElevatedButton(
+                          label: AppLocalizations.of(context)!.login,
+                          onPressed: () {
+                            if (formKey.currentState?.validate() ?? false) {
+                              BlocProvider.of<AuthCubit>(context).login(
+                                  LoginRequest(
+                                      email: emailController.text,
+                                      password: passwordController.text));
+                            }
+                          }),
                     ),
                   ),
                 ),
@@ -139,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context)
-                            .pushNamed(AppRoutes.registerRoute);
+                            .pushNamed(AppRoutes.registerScreenRoute);
                       },
                       child: Text(
                         AppLocalizations.of(context)!.create_one,

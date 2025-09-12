@@ -8,12 +8,12 @@ class CustomFilmPoster extends StatelessWidget {
   final double? width;
 
   const CustomFilmPoster({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.rating,
     this.height,
     this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,8 @@ class CustomFilmPoster extends StatelessWidget {
             fit: BoxFit.cover,
             height: height ?? screenSize.height * 0.26,
             width: width ?? screenSize.width * 0.33,
-            placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+            placeholder: (context, url) =>
+                const Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),

@@ -62,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _finishOnboarding() {
     //todo: navigate to auth screen
-    Navigator.pushNamed(context, AppRoutes.loginRoute);
+    Navigator.pushNamed(context, AppRoutes.loginScreenRoute);
   }
 
   void _skip() {

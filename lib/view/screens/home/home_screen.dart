@@ -8,14 +8,14 @@ import '../../../core/constants/styles/app_assets.dart';
 import '../../../core/constants/styles/app_colors.dart';
 import '../../../data/models/categories/category_model.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   int selectedCategoryIndex = 0;
 
@@ -62,7 +62,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               // If we're returning to the home tab, change the category
               if (index == 0 && selectedIndex != 0) {
                 setState(() {
-                  selectedCategoryIndex = (selectedCategoryIndex + 1) % CategoryModel.categories.length;
+                  selectedCategoryIndex = (selectedCategoryIndex + 1) %
+                      CategoryModel.categories.length;
                 });
               }
 

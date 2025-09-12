@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
-import 'package:movies_app/data/data_sources/remote_data_source.dart';
-import 'package:movies_app/view/widgets/film_poster/custom_film_poster.dart';
+import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
+import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
 
 class HomeTab extends StatefulWidget {
@@ -28,14 +28,16 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
-    futureMovies = RemoteDataSource().fetchMovies();
-    final initialGenre = CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
-    futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: initialGenre);
+    futureMovies = MoviesRemoteDataSource().fetchMovies();
+    final initialGenre =
+        CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
+    futureMoviesByGenre =
+        MoviesRemoteDataSource().fetchMovies(genre: initialGenre);
   }
 
   void _loadMoviesForCategory(String genre) {
     setState(() {
-      futureMoviesByGenre = RemoteDataSource().fetchMovies(genre: genre);
+      futureMoviesByGenre = MoviesRemoteDataSource().fetchMovies(genre: genre);
     });
   }
 
@@ -121,12 +123,12 @@ class _HomeTabState extends State<HomeTab> {
                           children: [
                             Text(
                               CategoryModel
-                                  .categories[widget.selectedCategoryIndex].name,
+                                  .categories[widget.selectedCategoryIndex]
+                                  .name,
                               style: AppStyles.regular16white,
                             ),
                             TextButton(
-                              onPressed: () {
-                              },
+                              onPressed: () {},
                               child: Row(
                                 children: [
                                   Text(
@@ -152,8 +154,7 @@ class _HomeTabState extends State<HomeTab> {
                                 child: CircularProgressIndicator());
                           } else if (genreSnapshot.hasError) {
                             return Center(
-                                child:
-                                Text("Error: ${genreSnapshot.error}"));
+                                child: Text("Error: ${genreSnapshot.error}"));
                           } else if (!genreSnapshot.hasData ||
                               genreSnapshot.data!.isEmpty) {
                             return const Center(child: Text("No movies found"));
@@ -165,20 +166,19 @@ class _HomeTabState extends State<HomeTab> {
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               padding:
-                              const EdgeInsets.symmetric(horizontal: 8),
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               itemCount: genreMovies.length,
                               itemBuilder: (context, index) {
                                 return CustomFilmPoster(
-                                  imagePath:
-                                  genreMovies[index]['medium_cover_image'] ??
+                                  imagePath: genreMovies[index]
+                                          ['medium_cover_image'] ??
                                       '',
-                                  rating:
-                                  (genreMovies[index]['rating'] ?? 0)
+                                  rating: (genreMovies[index]['rating'] ?? 0)
                                       .toString(),
                                 );
                               },
                               separatorBuilder: (context, index) =>
-                              const SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                             ),
                           );
                         },

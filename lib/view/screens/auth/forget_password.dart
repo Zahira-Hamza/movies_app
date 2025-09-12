@@ -12,7 +12,6 @@ class ForgetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.sizeOf(context).height;
-    var screenWidth = MediaQuery.sizeOf(context).width;
     TextEditingController emailController = TextEditingController();
 
     return Scaffold(

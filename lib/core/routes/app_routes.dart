@@ -1,9 +1,9 @@
 class AppRoutes {
-  static const String updateProfileRoute = "update_profile_screen";
-  static const String onBoardingRoute = "onboarding_screen";
-  static const String registerRoute = "register_screen";
-  static const String loginRoute = "login_screen";
-  static const String forgetPasswordRoute = "forget_screen";
-  static const String bottomNavBarRoute = "bottom_nav_bar";
-  static const String homeTabRoute="home_tab";
+  static const String onBoardingScreenRoute = "onboarding_screen";
+  static const String registerScreenRoute = "register_screen";
+  static const String loginScreenRoute = "login_screen";
+  static const String forgetPasswordScreenRoute = "forget_screen";
+  static const String updateProfileScreenRoute = "update_profile_screen";
+  static const String homeScreenRoute = "home_screen";
+  static const String homeTabRoute = "home_tab";
 }

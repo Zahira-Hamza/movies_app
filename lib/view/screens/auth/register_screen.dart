@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
+import 'package:movies_app/core/routes/app_routes.dart';
 import 'package:movies_app/core/utils/validators.dart';
+import 'package:movies_app/data/models/auth/register_request.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/auth/carousel_avatares.dart';
 import 'package:movies_app/view/widgets/auth/toggle_switch_language.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
-
-import '../../../core/routes/app_routes.dart';
+import 'package:movies_app/view_model/auth/auth_cubit.dart';
+import 'package:movies_app/view_model/auth/auth_states.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -25,6 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  int currentAvatar = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: screenSize.height * .17,
                 width: double.infinity,
-                child: CarouselAvatares(),
+                child: CarouselAvatares(
+                  onPageChanged: (index, _) {
+                    if (currentAvatar == index) return;
+                    currentAvatar = index;
+                    setState(() {});
+                  },
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -97,39 +108,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           return Validators.validatePhone(value);
                         },
                       ),
-                      CustomeElevatedButton(
-                          onPressed: () {
-                            // Validate the form first
-                            if (formKey.currentState!.validate()) {
-                              // If form is valid, show success snackbar
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    "Registration Successful",
-                                    style: AppStyles.regularRoboto
-                                        .copyWith(color: AppColors.grey),
-                                  ),
-                                  backgroundColor: AppColors
-                                      .yellowPrimaryColor, // You might want to define this color
-                                  duration: const Duration(seconds: 3),
-                                  behavior: SnackBarBehavior.floating,
-                                  // Optional: Add action to navigate to login
-                                  action: SnackBarAction(
-                                    label: AppLocalizations.of(context)!.login,
-                                    textColor: AppColors.grey,
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed(
-                                          AppRoutes.bottomNavBarRoute);
-                                    },
-                                  ),
-                                ),
-                              );
-
-                              // Here you would typically send the data to your backend
-                              // and navigate to the next screen after successful registration
-                            }
-                          },
-                          label: AppLocalizations.of(context)!.create_account),
+                      BlocListener<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          if (state is RegisterLoading) {
+                            UIUtils.showLoading(context);
+                          } else if (state is RegisterError) {
+                            UIUtils.hideLoading(context);
+                            UIUtils.showMessage(
+                                state.message, context, AppColors.red);
+                          } else if (state is RegisterSuccess) {
+                            UIUtils.hideLoading(context);
+                            Navigator.of(context).pushReplacementNamed(
+                                AppRoutes.loginScreenRoute);
+                          }
+                        },
+                        child: CustomeElevatedButton(
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                BlocProvider.of<AuthCubit>(context).register(
+                                    RegisterRequest(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        confirmPassword:
+                                            confirmPasswordController.text,
+                                        phone: phoneController.text,
+                                        avaterId: currentAvatar));
+                              }
+                            },
+                            label:
+                                AppLocalizations.of(context)!.create_account),
+                      ),
                     ],
                   ),
                 ),
@@ -144,7 +153,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoutes.loginScreenRoute);
                       },
                       child: Text(AppLocalizations.of(context)!.login,
                           style:

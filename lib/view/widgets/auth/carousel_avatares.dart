@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart'
-    show CarouselSlider, CarouselOptions;
+    show CarouselSlider, CarouselOptions, CarouselPageChangedReason;
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 
 class CarouselAvatares extends StatelessWidget {
-  const CarouselAvatares({super.key});
+  const CarouselAvatares({super.key, required this.onPageChanged});
+
+  final Function(int, CarouselPageChangedReason) onPageChanged;
 
   final List<String> avatars = const [
     AppAssets.avatar1,
@@ -33,8 +35,8 @@ class CarouselAvatares extends StatelessWidget {
         enlargeFactor: .5,
         viewportFraction: 0.35,
         height: screenSize.height * 0.2,
-        initialPage: 2,
-        onPageChanged: (index, _) {},
+        initialPage: 0,
+        onPageChanged: onPageChanged,
       ),
     );
   }
