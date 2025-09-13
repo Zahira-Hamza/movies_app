@@ -24,8 +24,8 @@ class UIUtils {
   static void showMessage(
           String message, BuildContext context, Color backgroundColor) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusGeometry.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           backgroundColor: backgroundColor,
           content: Center(
               child: Text(

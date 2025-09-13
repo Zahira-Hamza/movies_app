@@ -44,11 +44,17 @@ dependencies:
 
   toggle_switch: ^2.3.0
   carousel_slider: ^5.1.1
-  intl: ^0.20.2
+  intl: ^0.19.0
+
   dio: ^5.9.0
   dartz: ^0.10.1
   flutter_bloc: ^9.1.1
   shared_preferences: ^2.5.3
+  flutter_screenutil: ^5.9.3
+  json_annotation: ^4.9.0
+
+  logger: ^2.6.0
+  retrofit: ^4.6.0
 
 
 dev_dependencies:
@@ -61,6 +67,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+  json_serializable: ^6.9.5
+  retrofit_generator: ^9.6.0
  
 
 # For information on the generic Dart part of this file, see the

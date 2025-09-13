@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../../../core/constants/api_constants.dart';
+import '../../../core/constants/api_endpoints.dart';
 
 class MoviesRemoteDataSource {
   Future<List<Map<String, dynamic>>> fetchMovies({
@@ -16,7 +16,7 @@ class MoviesRemoteDataSource {
     String sortBy = "year",
     bool? withRtRatings,
   }) async {
-    final uri = Uri.parse(ApiConstants.baseUrl + ApiConstants.listMovies);
+    final uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.listMovies);
 
     final Map<String, String> queryParameters = {
       'sort_by': sortBy,
