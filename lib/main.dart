@@ -66,7 +66,11 @@ import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_d
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/auth/register_screen.dart';
 import 'package:movies_app/view/screens/home/home_screen.dart';
+<<<<<<< HEAD
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
+=======
+import 'package:movies_app/view/screens/home/movies_details.dart';
+>>>>>>> 0eebccd8dad859b4173487ad5da9d2b3aaae720f
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile/update_profile_screen.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
@@ -89,6 +93,7 @@ class MoviesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     final dio = Dio();
     final movieApiService = MovieApiService(dio);
     final movieRepository =
@@ -137,6 +142,37 @@ class MoviesApp extends StatelessWidget {
           ),
         );
       },
+=======
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(),
+        ),
+        BlocProvider<MoviesCubit>(
+          create: (context) => MoviesCubit(MoviesRemoteDataSource()),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.homeScreenRoute,
+        theme: AppTheme.appTheme,
+        routes: {
+          AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),
+          AppRoutes.registerScreenRoute: (context) => RegisterScreen(),
+          AppRoutes.loginScreenRoute: (context) => LoginScreen(),
+          AppRoutes.forgetPasswordScreenRoute: (context) => ForgetPassword(),
+          AppRoutes.updateProfileScreenRoute: (context) => UpdateProfile(),
+          AppRoutes.homeScreenRoute: (context) => HomeScreen(),
+          AppRoutes.movieDetailsRoute: (context) => MoviesDetails(),
+        },
+        locale: Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+>>>>>>> 0eebccd8dad859b4173487ad5da9d2b3aaae720f
     );
   }
 }

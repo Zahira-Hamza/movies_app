@@ -11,6 +11,7 @@ class AppAssets {
   static const String favIcon = 'assets/images/icons/fav_icon.svg';
   static const String timeIcon = 'assets/images/icons/time_icon.svg';
   static const String rateIcon = 'assets/images/icons/star_icon.svg';
+
   static const String avatar1 = 'assets/images/avatars/avatar1.png';
   static const String avatar2 = 'assets/images/avatars/avatar2.png';
   static const String avatar3 = 'assets/images/avatars/avatar3.png';
@@ -20,6 +21,7 @@ class AppAssets {
   static const String avatar7 = 'assets/images/avatars/avatar7.png';
   static const String avatar8 = 'assets/images/avatars/avatar8.png';
   static const String avatar9 = 'assets/images/avatars/avatar9.png';
+
   static const String homeTab = 'assets/images/icons/home_tab.png';
   static const String appLogo = 'assets/images/icons/appLogo.png';
   static const String homeTabSelected =
@@ -33,6 +35,7 @@ class AppAssets {
   static const String profileTab = 'assets/images/icons/profile_tab.png';
   static const String profileTabSelected =
       'assets/images/icons/profile_tab_selected.png';
+
   static const String onBoardingPage1 =
       'assets/images/onboarding/OnBoarding_1.png';
   static const String onBoardingPage2 =
@@ -45,5 +48,6 @@ class AppAssets {
       'assets/images/onboarding/OnBoarding_5.png';
   static const String onBoardingPage6 =
       'assets/images/onboarding/OnBoarding_6.png';
+
   static const String test = 'assets/images/test.png';
 }

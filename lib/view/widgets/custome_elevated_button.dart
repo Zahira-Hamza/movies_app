@@ -45,7 +45,7 @@ class CustomeElevatedButton extends StatelessWidget {
                 ),
             textAlign: TextAlign.center,
             overflow: TextOverflow.visible,
-            maxLines: 2, // ← بيدعم سطرين لو النص طويل
+            maxLines: 2, // بيدعم سطرين لو النص طويل
             softWrap: true,
           ),
         ),
