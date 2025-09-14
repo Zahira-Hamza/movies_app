@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
 import 'package:movies_app/data/models/movies/movies_model.dart';
+
 import 'movies_states.dart';
 
 class MoviesCubit extends Cubit<MoviesState> {
@@ -37,7 +38,7 @@ class MoviesCubit extends Cubit<MoviesState> {
     try {
       final moviesByGenre = await dataSource.fetchMovies(genre: genre);
       _moviesByGenre[genre] = moviesByGenre;
-      
+
       emit(MoviesLoaded(
         movies: _allMovies,
         moviesByGenre: moviesByGenre,
@@ -47,5 +48,3 @@ class MoviesCubit extends Cubit<MoviesState> {
     }
   }
 }
-
-

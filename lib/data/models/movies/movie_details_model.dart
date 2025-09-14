@@ -1,16 +1,47 @@
-///تحويل JSON → Dart Objects.
+// ///تحويل JSON → Dart Objects.
+// //
+// // تسهيل التعامل مع استجابات API.
+// //
+// // منع الأخطاء اللي ممكن تحصل لو فضلتِ تستخدمي Maps عادية.
+// import 'package:json_annotation/json_annotation.dart';
 //
-// تسهيل التعامل مع استجابات API.
+// import 'movie_model.dart';
 //
-// منع الأخطاء اللي ممكن تحصل لو فضلتِ تستخدمي Maps عادية.
-import 'package:json_annotation/json_annotation.dart';
-
+// part 'movie_details_model.g.dart'; // سيتم توليد هذا الملف تلقائياً
+//
+// /// استجابة تفاصيل الفيلم من API
+// @JsonSerializable()
+// class MovieDetailsResponse {
+//   final String status;
+//   final String statusMessage;
+//   final MovieDetailsData data;
+//
+//   MovieDetailsResponse({
+//     required this.status,
+//     required this.statusMessage,
+//     required this.data,
+//   });
+//
+//   factory MovieDetailsResponse.fromJson(Map<String, dynamic> json) =>
+//       _$MovieDetailsResponseFromJson(json);
+//
+//   Map<String, dynamic> toJson() => _$MovieDetailsResponseToJson(this);
+// }
+//
+// /// بيانات تفاصيل الفيلم
+// @JsonSerializable()
+// class MovieDetailsData {
+//   final MovieModel movie;
+//
+//   MovieDetailsData({required this.movie});
+//
+//   factory MovieDetailsData.fromJson(Map<String, dynamic> json) =>
+//       _$MovieDetailsDataFromJson(json);
+//
+//   Map<String, dynamic> toJson() => _$MovieDetailsDataToJson(this);
+// }
 import 'movie_model.dart';
 
-part 'movie_details_model.g.dart'; // سيتم توليد هذا الملف تلقائياً
-
-/// استجابة تفاصيل الفيلم من API
-@JsonSerializable()
 class MovieDetailsResponse {
   final String status;
   final String statusMessage;
@@ -22,21 +53,29 @@ class MovieDetailsResponse {
     required this.data,
   });
 
-  factory MovieDetailsResponse.fromJson(Map<String, dynamic> json) =>
-      _$MovieDetailsResponseFromJson(json);
+  factory MovieDetailsResponse.fromJson(Map<String, dynamic> json) {
+    return MovieDetailsResponse(
+      status: _parseString(json['status']),
+      statusMessage: _parseString(json['statusMessage']),
+      data: MovieDetailsData.fromJson(json['data']),
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$MovieDetailsResponseToJson(this);
+  static String _parseString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    return value.toString();
+  }
 }
 
-/// بيانات تفاصيل الفيلم
-@JsonSerializable()
 class MovieDetailsData {
   final MovieModel movie;
 
   MovieDetailsData({required this.movie});
 
-  factory MovieDetailsData.fromJson(Map<String, dynamic> json) =>
-      _$MovieDetailsDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$MovieDetailsDataToJson(this);
+  factory MovieDetailsData.fromJson(Map<String, dynamic> json) {
+    return MovieDetailsData(
+      movie: MovieModel.fromJson(json['movie']),
+    );
+  }
 }

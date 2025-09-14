@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
-import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/validators.dart';
 import 'package:movies_app/data/models/auth/register_request.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
@@ -148,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.have_account,
-                    style: AppStyles.regularRoboto
+                    style: AppStyles.regular16Roboto
                         .copyWith(fontSize: 14, color: AppColors.white),
                   ),
                   TextButton(
@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       child: Text(AppLocalizations.of(context)!.login,
                           style:
-                              AppStyles.regularRoboto.copyWith(fontSize: 14)))
+                              AppStyles.regular16Roboto.copyWith(fontSize: 14)))
                 ],
               ),
               ToggleSwitchLanguage(),

@@ -30,6 +30,7 @@ class UIUtils {
           content: Center(
               child: Text(
             message,
-            style: AppStyles.regular16white,
+            style:
+                AppStyles.regular16white.copyWith(fontWeight: FontWeight.bold),
           ))));
 }
