@@ -28,16 +28,16 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
-    futureMovies = MoviesRemoteDataSource().fetchMovies();
+    futureMovies = MoviesRemoteDataSource().fetchMovies() as Future<List<Map<String, dynamic>>>;
     final initialGenre =
         CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
     futureMoviesByGenre =
-        MoviesRemoteDataSource().fetchMovies(genre: initialGenre);
+        MoviesRemoteDataSource().fetchMovies(genre: initialGenre) as Future<List<Map<String, dynamic>>>;
   }
 
   void _loadMoviesForCategory(String genre) {
     setState(() {
-      futureMoviesByGenre = MoviesRemoteDataSource().fetchMovies(genre: genre);
+      futureMoviesByGenre = MoviesRemoteDataSource().fetchMovies(genre: genre) as Future<List<Map<String, dynamic>>>;
     });
   }
 
@@ -132,7 +132,7 @@ class _HomeTabState extends State<HomeTab> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "See more",
+                                    "see more",
                                     style: AppStyles.regular16white.copyWith(
                                         color: AppColors.yellowPrimaryColor),
                                   ),
