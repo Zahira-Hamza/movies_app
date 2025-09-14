@@ -35,6 +35,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/styles/app_styles.dart';
 import 'genres_item.dart';
@@ -51,7 +52,8 @@ class MovieGenres extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Genres', style: AppStyles.bold24Roboto),
+          Text('Genres',
+              style: AppStyles.bold24Roboto.copyWith(fontSize: 24.sp)),
           SizedBox(height: 12),
           genres.isEmpty
               ? Container(

@@ -89,6 +89,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/styles/app_assets.dart';
@@ -144,7 +145,9 @@ class Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 11, horizontal: 14),
+      width: 122.w,
+      height: 47.h,
+      padding: EdgeInsets.symmetric(vertical: 11.h, horizontal: 14.w),
       decoration: BoxDecoration(
           color: AppColors.grey,
           borderRadius: BorderRadiusDirectional.circular(16)),
@@ -152,14 +155,16 @@ class Info extends StatelessWidget {
         children: [
           SvgPicture.asset(
             image,
-            width: 24,
-            height: 24,
+            width: 28.w,
+            height: 25.h,
             fit: BoxFit.scaleDown,
           ),
           SizedBox(width: 14),
-          Text(
-            info,
-            style: AppStyles.bold24Roboto,
+          Expanded(
+            child: Text(
+              info,
+              style: AppStyles.bold24Roboto.copyWith(fontSize: 24.sp),
+            ),
           )
         ],
       ),
