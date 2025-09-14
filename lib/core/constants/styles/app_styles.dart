@@ -37,9 +37,27 @@ class AppStyles {
     color: Colors.white,
   );
 
-  static final TextStyle regularRoboto = GoogleFonts.roboto(
-    fontSize: 16,
-    color: AppColors.yellowPrimaryColor,
-    fontWeight: FontWeight.w400,
-  );
+  static final TextStyle regular16Roboto = GoogleFonts.roboto(
+      fontSize: 16,
+      color: AppColors.yellowPrimaryColor,
+      fontWeight: FontWeight.w400,
+      decoration: TextDecoration.none);
+
+  static final TextStyle regular20Roboto = GoogleFonts.roboto(
+      fontSize: 20,
+      color: AppColors.white,
+      fontWeight: FontWeight.w400,
+      decoration: TextDecoration.none);
+
+  static final TextStyle bold20Roboto = GoogleFonts.roboto(
+      fontSize: 20,
+      color: AppColors.offWhite,
+      fontWeight: FontWeight.bold,
+      decoration: TextDecoration.none);
+
+  static final TextStyle bold24Roboto = GoogleFonts.roboto(
+      fontSize: 24,
+      color: AppColors.white,
+      fontWeight: FontWeight.bold,
+      decoration: TextDecoration.none);
 }

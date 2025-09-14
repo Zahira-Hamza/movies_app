@@ -132,7 +132,7 @@ class _HomeTabState extends State<HomeTab> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "see more",
+                                    "See more",
                                     style: AppStyles.regular16white.copyWith(
                                         color: AppColors.yellowPrimaryColor),
                                   ),

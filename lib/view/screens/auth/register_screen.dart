@@ -148,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.have_account,
-                    style: AppStyles.regularRoboto
+                    style: AppStyles.regular16Roboto
                         .copyWith(fontSize: 14, color: AppColors.white),
                   ),
                   TextButton(
@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       child: Text(AppLocalizations.of(context)!.login,
                           style:
-                              AppStyles.regularRoboto.copyWith(fontSize: 14)))
+                              AppStyles.regular16Roboto.copyWith(fontSize: 14)))
                 ],
               ),
               ToggleSwitchLanguage(),

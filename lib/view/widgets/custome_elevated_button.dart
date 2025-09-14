@@ -9,10 +9,12 @@ class CustomeElevatedButton extends StatelessWidget {
     this.width,
     required this.onPressed,
     this.backGrounColor,
+    this.labelStyle,
     this.labelColor = AppColors.blackPrimaryColor,
   });
 
   final String label;
+  final TextStyle? labelStyle;
   final double? width;
   final VoidCallback onPressed;
   final Color? backGrounColor;
@@ -36,7 +38,7 @@ class CustomeElevatedButton extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             label,
-            style: AppStyles.regularRoboto.copyWith(
+            style:labelStyle?? AppStyles.regular16Roboto.copyWith(
               color: labelColor,
               fontSize: 18,
             ),

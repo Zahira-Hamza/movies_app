@@ -4,6 +4,7 @@ import 'package:movies_app/core/constants/styles/app_theme.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/auth/register_screen.dart';
 import 'package:movies_app/view/screens/home/home_screen.dart';
+import 'package:movies_app/view/screens/home/movies_details.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile/update_profile_screen.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
@@ -32,7 +33,7 @@ class MoviesApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.registerScreenRoute,
+        initialRoute: AppRoutes.movieDetailsRoute,
         theme: AppTheme.appTheme,
         routes: {
           AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),
@@ -41,6 +42,7 @@ class MoviesApp extends StatelessWidget {
           AppRoutes.forgetPasswordScreenRoute: (context) => ForgetPassword(),
           AppRoutes.updateProfileScreenRoute: (context) => UpdateProfile(),
           AppRoutes.homeScreenRoute: (context) => HomeScreen(),
+          AppRoutes.movieDetailsRoute: (context) => MoviesDetails(),
         },
         locale: Locale('en'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,

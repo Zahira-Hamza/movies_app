@@ -8,7 +8,7 @@ class ProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.pushReplacementNamed(
+        Navigator.pushNamed(
             context, AppRoutes.updateProfileScreenRoute);
       },
       child: Center(

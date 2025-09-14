@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/constants/styles/app_assets.dart';
 
 import '../../../core/routes/app_routes.dart';
 import '../../widgets/on_boarding_page.dart';
@@ -17,31 +18,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, String>> onboardingData = [
     {
-      "image": "assets/images/onboarding/OnBoarding_2.png",
+      "image": AppAssets.onBoardingPage2,
       "title": "Discover Movies",
       "desc":
           "Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease."
     },
     {
-      "image": "assets/images/onboarding/OnBoarding_3.png",
+      "image": AppAssets.onBoardingPage3,
       "title": "Explore All Genres",
       "desc":
           "Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day."
     },
     {
-      "image": "assets/images/onboarding/OnBoarding_4.png",
+      "image": AppAssets.onBoardingPage4,
       "title": "Create Watchlists",
       "desc":
           "Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres."
     },
     {
-      "image": "assets/images/onboarding/OnBoarding_5.png",
+      "image": AppAssets.onBoardingPage5,
       "title": "Rate, Review, and Learn",
       "desc":
           "Share your thoughts on the movies you've watched. Dive deep into film details and help others discover great movies with your reviews."
     },
     {
-      "image": "assets/images/onboarding/OnBoarding_6.png",
+      "image": AppAssets.onBoardingPage6,
       "title": "Start Watching Now",
     },
   ];
@@ -62,6 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _finishOnboarding() {
     //todo: navigate to auth screen
+    
     Navigator.pushNamed(context, AppRoutes.loginScreenRoute);
   }
 
