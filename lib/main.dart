@@ -32,7 +32,7 @@ class MoviesApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.registerScreenRoute,
+        initialRoute: AppRoutes.homeScreenRoute,
         theme: AppTheme.appTheme,
         routes: {
           AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),
