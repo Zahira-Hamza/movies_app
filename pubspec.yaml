@@ -49,6 +49,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_bloc: ^9.1.1
   shared_preferences: ^2.5.3
+  flutter_screenutil: ^5.9.3
 
 
 dev_dependencies:
@@ -82,7 +83,6 @@ flutter:
     - assets/images/auth/
     - assets/images/icons/
     - assets/images/
-
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

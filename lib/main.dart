@@ -5,6 +5,7 @@ import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_d
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/auth/register_screen.dart';
 import 'package:movies_app/view/screens/home/home_screen.dart';
+import 'package:movies_app/view/screens/home/tabs/search/search_tab.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile/update_profile_screen.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
@@ -46,6 +47,7 @@ class MoviesApp extends StatelessWidget {
           AppRoutes.forgetPasswordScreenRoute: (context) => ForgetPassword(),
           AppRoutes.updateProfileScreenRoute: (context) => UpdateProfile(),
           AppRoutes.homeScreenRoute: (context) => HomeScreen(),
+          AppRoutes.searchTabRoute:(context)=> SearchTab(),
         },
         locale: Locale('en'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
