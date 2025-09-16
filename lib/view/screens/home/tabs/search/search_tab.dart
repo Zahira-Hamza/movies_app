@@ -1,69 +1,109 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
-import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
+import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
+import 'package:movies_app/view/screens/movie_details/widgets/custom_film_poster..dart';
+import 'package:movies_app/view_model/search/search_cubit.dart';
+import 'package:movies_app/view_model/search/search_states.dart';
 
-class SearchTab extends StatelessWidget {
+class SearchTab extends StatefulWidget {
   const SearchTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+  State<SearchTab> createState() => _SearchTabState();
+}
 
-    return Scaffold(
-      backgroundColor: AppColors.blackPrimaryColor,
-      body: Column(
+class _SearchTabState extends State<SearchTab> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
         children: [
-          Padding(padding: EdgeInsets.symmetric(horizontal:12,vertical: 12)),
-          Container(
-            width: screenSize.width*0.95,
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+           Container(
+            width: 0.95.sw,
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
             child: TextField(
-              style:TextStyle(color: AppColors.white),
+              style: TextStyle(color: AppColors.white),
+              onChanged: (value) {
+                context.read<SearchCubit>().searchMovies(value);
+              },
               decoration: InputDecoration(
                 prefixIcon: Padding(
-                  padding:EdgeInsets.all(16.0),
-                child: Image.asset('assets/images/icons/search_tab.png',
-                    width: 20,
-                    height: 20,),
+                  padding: EdgeInsets.all(16.w),
+                  child: Image.asset(
+                    'assets/images/icons/search_tab.png',
+                    width: 20.w,
+                    height: 20.h,
+                  ),
                 ),
                 hintText: 'Search',
-                hintStyle: const TextStyle(
-                  color:AppColors.white ,
+                hintStyle: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.w400,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                 ),
                 filled: true,
                 fillColor: AppColors.grey,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(8),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 0.7,
-              ),
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){},
-                  child: CustomFilmPoster(
-                    imagePath: "assets/images/movie1.png",
-                    rating: "8.5",
-                    height: screenSize.height * 0.3,
-                    width: screenSize.width * 0.4,
-                  ),
-                );
+            child: BlocBuilder<SearchCubit, SearchStates>(
+              builder: (context, state) {
+                if (state is SearchLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is SearchLoaded) {
+                  if (state.movies.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No movies found",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    );
+                  }
+                  return GridView.builder(
+                    padding: EdgeInsets.all(8.w),
+                    gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.w,
+                      mainAxisSpacing: 8.h,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemCount: state.movies.length,
+                    itemBuilder: (context, index) {
+                      final movie = state.movies[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(context,  MaterialPageRoute(
+                              builder: (context) => MovieDetailsPage(
+                                 movieId: movie.id ?? 0,)));
+                        },
+                        child: CustomFilmPoster(
+                          imagePath: movie.poster ?? '',
+                          rating: (movie.rating ?? 0).toString(),
+                          height: 0.3.sh,
+                          width: 0.45.sw, 
+                        ),
+                      );
+                    },
+                  );
+                } else if (state is SearchError) {
+                  return Center(
+                    child: Text(
+                      state.message,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
               },
             ),
-          ),
+          )
         ],
       ),
     );

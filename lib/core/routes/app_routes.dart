@@ -8,6 +8,7 @@ class AppRoutes {
   static const String updateProfileScreenRoute = "update_profile_screen";
   static const String homeScreenRoute = "home_screen";
   static const String homeTabRoute = "home_tab";
+  static const String searchTabRoute = "search_tab";
 
   // يفضل توحيد الاسم عشان ميبقاش فيه لخبطة
   static const String movieDetailsRoute = "movie_details";
