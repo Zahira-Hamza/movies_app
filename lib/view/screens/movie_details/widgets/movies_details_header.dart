@@ -75,6 +75,7 @@
 // }
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/styles/app_assets.dart';
@@ -103,7 +104,7 @@ class MoviesDetailsHeader extends StatelessWidget {
           decoration: BoxDecoration(
             image: imageUrl != null
                 ? DecorationImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     image: CachedNetworkImageProvider(imageUrl),
                   )
                 : null,
@@ -113,22 +114,26 @@ class MoviesDetailsHeader extends StatelessWidget {
               ? const Icon(Icons.movie, size: 100, color: Colors.white54)
               : null,
         ),
-        Container(
-          height: screenSize.height * .70,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: [
+                AppColors.blackPrimaryColor.withValues(alpha: .9),
+                AppColors.blackPrimaryColor.withValues(alpha: 0.7),
+                Colors.transparent,
+                AppColors.blackPrimaryColor.withValues(alpha: 0.7),
+                AppColors.blackPrimaryColor,
+              ],
+              stops: [0.0, 0.1, 0.5, 0.7, 1.0],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(0.7),
-              ],
-            ),
+            )),
           ),
         ),
         Positioned(
-          top: 40,
-          left: 16,
+          top: 29.h,
+          left: 16.w,
           child: IconButton(
             onPressed: () => Navigator.of(context).pop(),
             icon:
@@ -136,8 +141,8 @@ class MoviesDetailsHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 40,
-          right: 16,
+          top: 29.h,
+          right: 16.w,
           child: IconButton(
             onPressed: () {
               // add to fav list
@@ -145,23 +150,21 @@ class MoviesDetailsHeader extends StatelessWidget {
             icon: const Icon(Icons.bookmark, color: Colors.white, size: 29),
           ),
         ),
-        Positioned.fill(
+        Positioned(
+          top: 248.h,
+          left: 166.w,
+          right: 166.w,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SvgPicture.asset(AppAssets.watchIcon),
               const SizedBox(height: 20),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Text(
-                  movie.titleLong ?? movie.title,
-                  style:
-                      AppStyles.bold24Roboto.copyWith(color: AppColors.white),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Text(
+                movie.titleLong ?? movie.title,
+                style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 15),
               Text(
