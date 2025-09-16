@@ -1,48 +1,13 @@
-// import 'package:flutter/material.dart';
-// import 'package:movies_app/core/constants/styles/app_colors.dart';
-// import 'package:movies_app/core/constants/styles/app_styles.dart';
-// import 'package:movies_app/view/screens/movie_details/widgets/movie_about.dart';
-// import 'package:movies_app/view/screens/movie_details/widgets/movie_genres.dart';
-// import 'package:movies_app/view/screens/movie_details/widgets/movie_info.dart';
-// import 'package:movies_app/view/screens/movie_details/widgets/movies_details_header.dart';
-// import 'package:movies_app/view/screens/movie_details/widgets/suggested_movies.dart';
-// import 'package:movies_app/view/widgets/custome_elevated_button.dart';
-//
-// class MovieDetailsPage extends StatelessWidget {
-//   const MovieDetailsPage({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SingleChildScrollView(
-//       child: Column(
-//         children: [
-//           MoviesDetailsHeader(),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 16),
-//             child: CustomeElevatedButton(
-//                 label: 'Watch',
-//                 labelStyle:
-//                     AppStyles.bold20Roboto.copyWith(color: AppColors.white),
-//                 backGrounColor: AppColors.red,
-//                 onPressed: () {}),
-//           ),
-//           MovieInfo(),
-//           SuggestedMovies(),
-//           MovieAbout(),
-//           MovieGenres()
-//         ],
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/movie_about.dart';
+import 'package:movies_app/view/screens/movie_details/widgets/movie_cast.dart';
+import 'package:movies_app/view/screens/movie_details/widgets/movie_description.dart';
 import 'package:movies_app/view/screens/movie_details/widgets/movie_genres.dart';
 import 'package:movies_app/view/screens/movie_details/widgets/movie_info.dart';
 import 'package:movies_app/view/screens/movie_details/widgets/movies_details_header.dart';
+import 'package:movies_app/view/screens/movie_details/widgets/screenshoots_section.dart';
 import 'package:movies_app/view/screens/movie_details/widgets/suggested_movies.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 
@@ -62,6 +27,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
+    print('🎬 Loading movie details for ID: ${widget.movieId}');
+    _loadMovieDetails();
+  }
+
+  void _loadMovieDetails() {
+    if (widget.movieId == null) {
+      print('❌ ERROR: Movie ID is null!');
+      return;
+    }
     context.read<MovieDetailsCubit>().getMovieDetails(widget.movieId);
   }
 
@@ -108,17 +82,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 ? state.movie
                 : (state as MovieDetailsPartialSuccessState).movie;
 
-            // تحويل similarMovies إلى List<MovieModel> إذا لزم الأمر
             List<MovieModel> similarMovies = [];
             if (state is MovieDetailsSuccessState) {
-              if (state.similarMovies is List<MovieModel>) {
-                similarMovies = state.similarMovies as List<MovieModel>;
-              } else if (state.similarMovies is List<dynamic>) {
-                similarMovies = (state.similarMovies as List<dynamic>)
-                    .map((item) =>
-                        MovieModel.fromJson(item as Map<String, dynamic>))
-                    .toList();
-              }
+              similarMovies = state.similarMovies;
             }
 
             return _buildSuccessContent(movie, similarMovies, state);
@@ -139,8 +105,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       child: Column(
         children: [
           MoviesDetailsHeader(movie: movie),
+
+          // 1. Watch Button
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: CustomeElevatedButton(
               label: 'Watch',
               labelStyle:
@@ -149,10 +117,24 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               onPressed: () {},
             ),
           ),
+
+          // 2. Movie Info (Rating, Runtime)
           MovieInfo(movie: movie),
+
+          // 3. Screenshots
+          ScreenshotsSection(movie: movie),
+
+          // 4. Suggested Movies
           SuggestedMovies(similarMovies: similarMovies),
-          MovieAbout(movie: movie),
+
+          // 5. DESCRIPTION
+          MovieDescription(movie: movie),
+          //6.movie cast
+          MovieCastHandling(movie: movie),
+
+          // 7. Genres
           MovieGenres(genres: movie.genres),
+
           if (state is MovieDetailsPartialSuccessState)
             Padding(
               padding: const EdgeInsets.all(16.0),

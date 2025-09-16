@@ -1,24 +1,30 @@
-// // features/movie_details/presentation/cubit/movie_details_cubit.dart
+//
 // import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:movies_app/core/network/api_exceptions.dart';
+// import 'package:movies_app/data/models/movies/movie_model.dart';
 //
-// import '../../../../core/network/api_exceptions.dart';
-// import '../../../data/repositories/movie_repository_impl.dart';
-// import '../../data/models/movies/movie_model.dart';
+// import '../../data/repositories/movie_repository_impl.dart';
 //
-// // هنا بتربط الملف التابع
 // part 'movie_details_state.dart';
 //
-// /// Cubit لإدارة حالة تفاصيل الفيلم
 // class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
 //   final MovieRepositoryImpl movieRepository;
 //
 //   MovieDetailsCubit({required this.movieRepository})
 //       : super(MovieDetailsInitialState());
 //
-//   /// تحميل تفاصيل الفيلم والأفلام المشابهة
 //   Future<void> getMovieDetails(int movieId) async {
 //     try {
 //       emit(MovieDetailsLoadingState());
+//
+//       if (movieId == null) {
+//         throw ApiException(
+//           message: 'Movie ID is required',
+//           statusCode: 400,
+//           errorCode: 'MISSING_MOVIE_ID',
+//         );
+//       }
+//
 //       final movie = await movieRepository.getMovieDetails(movieId);
 //
 //       try {
@@ -28,6 +34,8 @@
 //           similarMovies: similarMovies,
 //         ));
 //       } on ApiException catch (e) {
+//         print(
+//             '⚠️ Partial success: Failed to load similar movies: ${e.message}');
 //         emit(MovieDetailsPartialSuccessState(
 //           movie: movie,
 //           errorMessage: e.message,
@@ -35,7 +43,9 @@
 //       }
 //     } on ApiException catch (e) {
 //       final isNetworkError =
-//           e.statusCode == 503 || e.errorCode == 'NO_INTERNET';
+//           e.statusCode == 503 || e.errorCode == 'NETWORK_ERROR';
+//
+//       print('❌ Movie details error: ${e.message}');
 //
 //       emit(MovieDetailsErrorState(
 //         errorMessage: e.message,
@@ -44,15 +54,17 @@
 //         isNetworkError: isNetworkError,
 //       ));
 //     } catch (e) {
+//       print('❌ Unexpected error: $e');
 //       emit(MovieDetailsErrorState(
 //         errorMessage: 'An unexpected error occurred: $e',
 //       ));
 //     }
 //   }
 //
-//   /// إعادة محاولة تحميل الأفلام المشابهة
 //   Future<void> retryLoadingSimilarMovies(int movieId) async {
 //     try {
+//       if (movieId == null) return;
+//
 //       final similarMovies = await movieRepository.getSimilarMovies(movieId);
 //
 //       if (state is MovieDetailsPartialSuccessState) {
@@ -69,7 +81,9 @@
 //         ));
 //       }
 //     } on ApiException catch (e) {
-//       print('Failed to retry loading similar movies: ${e.message}');
+//       print('❌ Failed to retry loading similar movies: ${e.message}');
+//     } catch (e) {
+//       print('❌ Unexpected error during retry: $e');
 //     }
 //   }
 // }
@@ -90,6 +104,15 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
   Future<void> getMovieDetails(int movieId) async {
     try {
       emit(MovieDetailsLoadingState());
+
+      if (movieId == null) {
+        throw ApiException(
+          message: 'Movie ID is required',
+          statusCode: 400,
+          errorCode: 'MISSING_MOVIE_ID',
+        );
+      }
+
       final movie = await movieRepository.getMovieDetails(movieId);
 
       try {
@@ -99,6 +122,8 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
           similarMovies: similarMovies,
         ));
       } on ApiException catch (e) {
+        print(
+            '⚠️ Partial success: Failed to load similar movies: ${e.message}');
         emit(MovieDetailsPartialSuccessState(
           movie: movie,
           errorMessage: e.message,
@@ -106,7 +131,10 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
       }
     } on ApiException catch (e) {
       final isNetworkError =
-          e.statusCode == 503 || e.errorCode == 'NO_INTERNET';
+          e.statusCode == 503 || e.errorCode == 'NETWORK_ERROR';
+
+      print('❌ Movie details error: ${e.message}');
+
       emit(MovieDetailsErrorState(
         errorMessage: e.message,
         statusCode: e.statusCode,
@@ -114,6 +142,7 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
         isNetworkError: isNetworkError,
       ));
     } catch (e) {
+      print('❌ Unexpected error: $e');
       emit(MovieDetailsErrorState(
         errorMessage: 'An unexpected error occurred: $e',
       ));
@@ -122,6 +151,8 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
 
   Future<void> retryLoadingSimilarMovies(int movieId) async {
     try {
+      if (movieId == null) return;
+
       final similarMovies = await movieRepository.getSimilarMovies(movieId);
 
       if (state is MovieDetailsPartialSuccessState) {
@@ -138,7 +169,9 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
         ));
       }
     } on ApiException catch (e) {
-      print('Failed to retry loading similar movies: ${e.message}');
+      print('❌ Failed to retry loading similar movies: ${e.message}');
+    } catch (e) {
+      print('❌ Unexpected error during retry: $e');
     }
   }
 }

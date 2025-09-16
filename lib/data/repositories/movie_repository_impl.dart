@@ -1,32 +1,59 @@
-// // features/movie_details/data/repositories/movie_repository_impl.dart
-// import '../../../../core/network/api_exceptions.dart';
-// import '../data_sources/movie_api_service.dart';
-// import '../models/movies/movie_model.dart'; // تأكد من أن هذا هو المسار الصحيح
+// import 'package:dio/dio.dart';
+// import 'package:movies_app/core/network/api_exceptions.dart';
+// import 'package:movies_app/data/models/movies/movie_model.dart';
 //
-// /// تطبيق الريبوزيتوري لتفاصيل الفيلم
+// import '../data_sources/movie_api_service.dart';
+//
 // class MovieRepositoryImpl {
 //   final MovieApiService movieApiService;
 //
 //   MovieRepositoryImpl({required this.movieApiService});
 //
-//   /// الحصول على تفاصيل الفيلم
 //   Future<MovieModel> getMovieDetails(int movieId) async {
 //     try {
-//       final response = await movieApiService.getMovieDetails(
-//         movieId,
-//         true, // with_images
-//         true, // with_cast
-//       );
-//
-//       if (response.status != 'ok') {
+//       if (movieId == null) {
 //         throw ApiException(
-//           message: response.statusMessage,
+//           message: 'Movie ID cannot be null',
 //           statusCode: 400,
-//           errorCode: response.status,
+//           errorCode: 'NULL_MOVIE_ID',
 //         );
 //       }
 //
-//       return response.data.movie;
+//       print('🔍 Getting movie details for ID: $movieId');
+//
+//       final response = await movieApiService.getMovieDetails(
+//         movieId,
+//         true,
+//         true,
+//       );
+//
+//       print('✅ API Response status: ${response.status}');
+//       print('📝 API Response message: ${response.statusMessage}');
+//
+//       // Handle API errors
+//       if (response.status == 'error') {
+//         throw ApiException(
+//           message: response.statusMessage,
+//           statusCode: 400,
+//           errorCode: 'API_ERROR',
+//         );
+//       }
+//
+//       if (response.data?.movie == null) {
+//         throw ApiException(
+//           message: 'Movie data is null',
+//           statusCode: 404,
+//           errorCode: 'MOVIE_NOT_FOUND',
+//         );
+//       }
+//
+//       return response.data!.movie!;
+//     } on DioException catch (e) {
+//       throw ApiException(
+//         message: 'Network error: ${e.message}',
+//         statusCode: e.response?.statusCode ?? 500,
+//         errorCode: 'NETWORK_ERROR',
+//       );
 //     } on ApiException {
 //       rethrow;
 //     } catch (e) {
@@ -34,21 +61,38 @@
 //     }
 //   }
 //
-//   /// الحصول على أفلام مشابهة
 //   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
 //     try {
+//       if (movieId == null) {
+//         throw ApiException(
+//           message: 'Movie ID cannot be null for similar movies',
+//           statusCode: 400,
+//           errorCode: 'NULL_MOVIE_ID',
+//         );
+//       }
+//
+//       print('🔍 Getting similar movies for ID: $movieId');
+//
 //       final response = await movieApiService.getMovieSuggestions(movieId);
 //
-//       // الرد من getMovieSuggestions هو List<MovieModel> مباشرة
-//       // كما يظهر في الكود المُنشأ لـ Retrofit
+//       print('✅ Found ${response.length} similar movies');
+//
 //       return response;
+//     } on DioException catch (e) {
+//       throw ApiException(
+//         message: 'Network error: ${e.message}',
+//         statusCode: e.response?.statusCode ?? 500,
+//         errorCode: 'NETWORK_ERROR',
+//       );
 //     } on ApiException {
 //       rethrow;
 //     } catch (e) {
+//       print('❌ Error loading similar movies: $e');
 //       throw ApiException(message: 'Failed to load similar movies: $e');
 //     }
 //   }
 // }
+import 'package:dio/dio.dart';
 import 'package:movies_app/core/network/api_exceptions.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
 
@@ -61,24 +105,35 @@ class MovieRepositoryImpl {
 
   Future<MovieModel> getMovieDetails(int movieId) async {
     try {
-      final response = await movieApiService.getMovieDetails(
-        movieId,
-        true, // with_images
-        true, // with_cast
-      );
-
-      print('API Response status: ${response.status}');
-      print('API Response message: ${response.statusMessage}');
-
-      if (response.status != 'ok') {
+      if (movieId == null) {
         throw ApiException(
-          message: response.statusMessage,
+          message: 'Movie ID cannot be null',
           statusCode: 400,
-          errorCode: response.status,
+          errorCode: 'NULL_MOVIE_ID',
         );
       }
 
-      if (response.data.movie == null) {
+      print('🔍 Getting movie details for ID: $movieId');
+
+      final response = await movieApiService.getMovieDetails(
+        movieId,
+        true,
+        true,
+      );
+
+      print('✅ API Response status: ${response.status}');
+      print('📝 API Response message: ${response.statusMessage}');
+
+      // Handle API errors
+      if (response.status == 'error') {
+        throw ApiException(
+          message: response.statusMessage,
+          statusCode: 400,
+          errorCode: 'API_ERROR',
+        );
+      }
+
+      if (response.data?.movie == null) {
         throw ApiException(
           message: 'Movie data is null',
           statusCode: 404,
@@ -86,7 +141,13 @@ class MovieRepositoryImpl {
         );
       }
 
-      return response.data.movie!;
+      return response.data!.movie!;
+    } on DioException catch (e) {
+      throw ApiException(
+        message: 'Network error: ${e.message}',
+        statusCode: e.response?.statusCode ?? 500,
+        errorCode: 'NETWORK_ERROR',
+      );
     } on ApiException {
       rethrow;
     } catch (e) {
@@ -96,11 +157,31 @@ class MovieRepositoryImpl {
 
   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
     try {
+      if (movieId == null) {
+        throw ApiException(
+          message: 'Movie ID cannot be null for similar movies',
+          statusCode: 400,
+          errorCode: 'NULL_MOVIE_ID',
+        );
+      }
+
+      print('🔍 Getting similar movies for ID: $movieId');
+
       final response = await movieApiService.getMovieSuggestions(movieId);
+
+      print('✅ Found ${response.length} similar movies');
+
       return response;
+    } on DioException catch (e) {
+      throw ApiException(
+        message: 'Network error: ${e.message}',
+        statusCode: e.response?.statusCode ?? 500,
+        errorCode: 'NETWORK_ERROR',
+      );
     } on ApiException {
       rethrow;
     } catch (e) {
+      print('❌ Error loading similar movies: $e');
       throw ApiException(message: 'Failed to load similar movies: $e');
     }
   }

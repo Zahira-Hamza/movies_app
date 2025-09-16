@@ -1,15 +1,11 @@
 // part of 'movie_details_cubit.dart';
 //
-// /// حالات مختلفة لصفحة تفاصيل الفيلم
 // abstract class MovieDetailsStates {}
 //
-// /// الحالة الأولية
 // class MovieDetailsInitialState extends MovieDetailsStates {}
 //
-// /// حالة التحميل
 // class MovieDetailsLoadingState extends MovieDetailsStates {}
 //
-// /// حالة النجاح
 // class MovieDetailsSuccessState extends MovieDetailsStates {
 //   final MovieModel movie;
 //   final List<MovieModel> similarMovies;
@@ -20,7 +16,6 @@
 //   });
 // }
 //
-// /// حالة الخطأ
 // class MovieDetailsErrorState extends MovieDetailsStates {
 //   final String errorMessage;
 //   final int? statusCode;
@@ -35,7 +30,6 @@
 //   });
 // }
 //
-// /// حالة نجاح جزئي (الفيلم نجح ولكن الأفلام المشابهة فشلت)
 // class MovieDetailsPartialSuccessState extends MovieDetailsStates {
 //   final MovieModel movie;
 //   final String errorMessage;
@@ -47,16 +41,12 @@
 // }
 part of 'movie_details_cubit.dart';
 
-/// حالات مختلفة لصفحة تفاصيل الفيلم
 abstract class MovieDetailsStates {}
 
-/// الحالة الأولية
 class MovieDetailsInitialState extends MovieDetailsStates {}
 
-/// حالة التحميل
 class MovieDetailsLoadingState extends MovieDetailsStates {}
 
-/// حالة النجاح
 class MovieDetailsSuccessState extends MovieDetailsStates {
   final MovieModel movie;
   final List<MovieModel> similarMovies;
@@ -67,7 +57,6 @@ class MovieDetailsSuccessState extends MovieDetailsStates {
   });
 }
 
-/// حالة الخطأ
 class MovieDetailsErrorState extends MovieDetailsStates {
   final String errorMessage;
   final int? statusCode;
@@ -82,7 +71,6 @@ class MovieDetailsErrorState extends MovieDetailsStates {
   });
 }
 
-/// حالة نجاح جزئي (الفيلم نجح ولكن الأفلام المشابهة فشلت)
 class MovieDetailsPartialSuccessState extends MovieDetailsStates {
   final MovieModel movie;
   final String errorMessage;

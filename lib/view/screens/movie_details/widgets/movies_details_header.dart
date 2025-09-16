@@ -90,70 +90,84 @@ class MoviesDetailsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Column(
+
+    final imageUrl = movie.largeCoverImage ??
+        movie.mediumCoverImage ??
+        movie.backgroundImage;
+
+    return Stack(
       children: [
         Container(
           height: screenSize.height * .70,
           width: double.infinity,
-          padding:
-              const EdgeInsets.only(right: 16, left: 16, top: 29, bottom: 8),
           decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: movie.backgroundImage != null
-                  ? CachedNetworkImageProvider(movie.backgroundImage!)
-                  : const AssetImage('assets/images/placeholder.jpg')
-                      as ImageProvider,
+            image: imageUrl != null
+                ? DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(imageUrl),
+                  )
+                : null,
+            color: AppColors.grey,
+          ),
+          child: imageUrl == null
+              ? const Icon(Icons.movie, size: 100, color: Colors.white54)
+              : null,
+        ),
+        Container(
+          height: screenSize.height * .70,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(0.7),
+              ],
             ),
           ),
+        ),
+        Positioned(
+          top: 40,
+          left: 16,
+          child: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon:
+                const Icon(Icons.arrow_back_ios, color: Colors.white, size: 29),
+          ),
+        ),
+        Positioned(
+          top: 40,
+          right: 16,
+          child: IconButton(
+            onPressed: () {
+              // add to fav list
+            },
+            icon: const Icon(Icons.bookmark, color: Colors.white, size: 29),
+          ),
+        ),
+        Positioned.fill(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      size: 29,
-                      color: AppColors.white,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      // add to fav list
-                    },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      size: 29,
-                      color: AppColors.white,
-                    ),
-                  ),
-                ],
-              ),
               SvgPicture.asset(AppAssets.watchIcon),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      movie.titleLong ??
-                          movie
-                              .title, // استخدام title كبديل إذا كان titleLong null
-                      style: AppStyles.bold24Roboto,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    movie.year.toString(),
-                    style: AppStyles.bold20Roboto,
-                  ),
-                ],
-              )
+              const SizedBox(height: 20),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Text(
+                  movie.titleLong ?? movie.title,
+                  style:
+                      AppStyles.bold24Roboto.copyWith(color: AppColors.white),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                movie.year.toString(),
+                style: AppStyles.bold20Roboto.copyWith(color: AppColors.white),
+              ),
             ],
           ),
         ),
