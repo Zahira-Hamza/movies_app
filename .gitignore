@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ignore Linux specific files
+linux/flutter/ephemeral/plugins/path_provider_linux
+linux/flutter/ephemeral/plugins/shared_preferences_linux
