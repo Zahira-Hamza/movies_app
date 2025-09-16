@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/custom_film_poster..dart';
+import 'package:movies_app/view/screens/movie_details/widgets/custom_film_poster.dart';
 import 'package:movies_app/view_model/search/search_cubit.dart';
 import 'package:movies_app/view_model/search/search_states.dart';
 
@@ -20,7 +20,7 @@ class _SearchTabState extends State<SearchTab> {
     return SafeArea(
       child: Column(
         children: [
-           Container(
+          Container(
             width: 0.95.sw,
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
             child: TextField(
@@ -67,8 +67,7 @@ class _SearchTabState extends State<SearchTab> {
                   }
                   return GridView.builder(
                     padding: EdgeInsets.all(8.w),
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8.w,
                       mainAxisSpacing: 8.h,
@@ -79,15 +78,19 @@ class _SearchTabState extends State<SearchTab> {
                       final movie = state.movies[index];
                       return InkWell(
                         onTap: () {
-                          Navigator.push(context,  MaterialPageRoute(
-                              builder: (context) => MovieDetailsPage(
-                                 movieId: movie.id ?? 0,)));
+                          Navigator.push(
+                            context,
+                           MaterialPageRoute(
+                               builder: (context) => MovieDetailsPage(
+                                  movieId: movie.id ?? 0,),
+                                  ),
+                          );
                         },
                         child: CustomFilmPoster(
                           imagePath: movie.poster ?? '',
                           rating: (movie.rating ?? 0).toString(),
                           height: 0.3.sh,
-                          width: 0.45.sw, 
+                          width: 0.4.sw,
                         ),
                       );
                     },

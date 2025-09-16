@@ -51,10 +51,6 @@ dependencies:
   flutter_bloc: ^9.1.1
   shared_preferences: ^2.5.3
   flutter_screenutil: ^5.9.3
-  json_annotation: ^4.9.0
-
-  logger: ^2.6.0
-  retrofit: ^4.6.0
 
 
 dev_dependencies:
@@ -91,7 +87,6 @@ flutter:
     - assets/images/auth/
     - assets/images/icons/
     - assets/images/
-
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
