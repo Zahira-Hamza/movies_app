@@ -92,7 +92,6 @@ import 'package:movies_app/core/network/api_exceptions.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
 import 'package:movies_app/data/repositories/movies_repository.dart';
 
-
 part 'movie_details_state.dart';
 
 class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
