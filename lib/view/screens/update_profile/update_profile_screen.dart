@@ -13,6 +13,7 @@ import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import 'package:movies_app/view_model/profile/profile_states.dart';
 
 import '../../../core/constants/styles/app_assets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});
@@ -53,7 +54,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.blackPrimaryColor,
@@ -69,7 +69,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       body: Column(
         children: [
           SizedBox(
-            height: screenSize.height * .03,
+            height: 37.h,
           ),
           BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
             if (state is GetProfileSuccess) {
@@ -80,19 +80,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
               child: Center(
                 child: Image.asset(
                   avatars[currentAvatar],
-                  height: screenSize.height * .16,
-                  width: screenSize.height * .16,
+                  height: 150.h,
+                  width: 150.h,
                   fit: BoxFit.fill,
                 ),
               ),
             );
           }),
           SizedBox(
-            height: screenSize.height * .03,
+            height: 35.h,
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0.w),
               child: BlocConsumer<ProfileCubit, ProfileStates>(
                 listener: (context, state) {
                   if (state is GetProfileLoading) {
@@ -122,7 +122,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         },
                       ),
                       SizedBox(
-                        height: screenSize.height * .02,
+                        height: 19.28.h,
                       ),
                       CustomTextFormField(
                         controller: phoneController,
@@ -133,7 +133,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         },
                       ),
                       SizedBox(
-                        height: screenSize.height * .015,
+                        height: 30.h,
                       ),
                       TextButton(
                         onPressed: () => showResetPasswordDialog(
@@ -147,70 +147,62 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         ),
                       ),
                       Spacer(),
-                      SizedBox(
-                        height: screenSize.height * .06,
-                        width: double.infinity,
-                        child: BlocListener<ProfileCubit, ProfileStates>(
-                          listener: (context, state) {
-                            if (state is DeleteProfileLoading) {
-                              UIUtils.showLoading(context);
-                            } else if (state is DeleteProfileError) {
-                              UIUtils.hideLoading(context);
-                              UIUtils.showMessage(
-                                  state.message, context, AppColors.red);
-                            } else if (state is DeleteProfileSuccess) {
-                              UIUtils.hideLoading(context);
-                              Navigator.of(context).pushReplacementNamed(
-                                  AppRoutes.loginScreenRoute);
-                            }
+                      BlocListener<ProfileCubit, ProfileStates>(
+                        listener: (context, state) {
+                          if (state is DeleteProfileLoading) {
+                            UIUtils.showLoading(context);
+                          } else if (state is DeleteProfileError) {
+                            UIUtils.hideLoading(context);
+                            UIUtils.showMessage(
+                                state.message, context, AppColors.red);
+                          } else if (state is DeleteProfileSuccess) {
+                            UIUtils.hideLoading(context);
+                            Navigator.of(context).pushReplacementNamed(
+                                AppRoutes.loginScreenRoute);
+                          }
+                        },
+                        child: CustomeElevatedButton(
+                          label: 'Delete Account',
+                          backGrounColor: AppColors.red,
+                          labelColor: AppColors.white,
+                          onPressed: () {
+                            showDeleteAccountDialog(context);
                           },
-                          child: CustomeElevatedButton(
-                            label: 'Delete Account',
-                            backGrounColor: AppColors.red,
-                            labelColor: AppColors.white,
-                            onPressed: () {
-                              showDeleteAccountDialog(context);
-                            },
-                          ),
                         ),
                       ),
                       SizedBox(
-                        height: screenSize.height * .022,
+                        height: 19.h,
                       ),
-                      SizedBox(
-                        height: screenSize.height * .06,
-                        width: double.infinity,
-                        child: BlocListener<ProfileCubit, ProfileStates>(
-                          listener: (context, state) {
-                            if (state is UpdateProfileLoading) {
-                              UIUtils.showLoading(context);
-                            } else if (state is UpdateProfileError) {
-                              UIUtils.hideLoading(context);
-                              UIUtils.showMessage(
-                                  state.message, context, AppColors.red);
-                            } else if (state is UpdateProfileSuccess) {
-                              UIUtils.hideLoading(context);
-                              UIUtils.showMessage(state.message, context,
-                                  AppColors.yellowPrimaryColor);
+                      BlocListener<ProfileCubit, ProfileStates>(
+                        listener: (context, state) {
+                          if (state is UpdateProfileLoading) {
+                            UIUtils.showLoading(context);
+                          } else if (state is UpdateProfileError) {
+                            UIUtils.hideLoading(context);
+                            UIUtils.showMessage(
+                                state.message, context, AppColors.red);
+                          } else if (state is UpdateProfileSuccess) {
+                            UIUtils.hideLoading(context);
+                            UIUtils.showMessage(state.message, context,
+                                AppColors.yellowPrimaryColor);
+                          }
+                        },
+                        child: CustomeElevatedButton(
+                          label: 'Update Data',
+                          onPressed: () async {
+                            if (_updateFormKey.currentState!.validate()) {
+                              BlocProvider.of<ProfileCubit>(context)
+                                  .updateProfile(UpdateUserProfileRequest(
+                                      avatarId: currentAvatar,
+                                      name: nameController.text,
+                                      phone: phoneController.text));
                             }
                           },
-                          child: CustomeElevatedButton(
-                            label: 'Update Data',
-                            onPressed: () async {
-                              if (_updateFormKey.currentState!.validate()) {
-                                BlocProvider.of<ProfileCubit>(context)
-                                    .updateProfile(UpdateUserProfileRequest(
-                                        avatarId: currentAvatar,
-                                        name: nameController.text,
-                                        phone: phoneController.text));
-                              }
-                            },
-                            labelColor: AppColors.blackPrimaryColor,
-                          ),
+                          labelColor: AppColors.blackPrimaryColor,
                         ),
                       ),
                       SizedBox(
-                        height: screenSize.height * .036,
+                        height: 33.h,
                       )
                     ],
                   ),
@@ -229,12 +221,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
       context: context,
       builder: (context) {
         return Padding(
-          padding: EdgeInsets.all(14.0),
+          padding: EdgeInsets.all(14.0.w),
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.w),
             height: MediaQuery.sizeOf(context).height * .42,
             decoration: BoxDecoration(
-                color: AppColors.grey, borderRadius: BorderRadius.circular(24)),
+                color: AppColors.grey,
+                borderRadius: BorderRadius.circular(24.r)),
             child: Column(
               children: [
                 Expanded(
@@ -257,7 +250,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           });
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10.w),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
                             color: isSeleected
@@ -290,7 +283,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
             child: AlertDialog(
               backgroundColor: AppColors.boldgrey,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               title: Center(
                 child: Text(
@@ -306,12 +299,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.warning,
-                      size: 50, color: AppColors.yellowPrimaryColor),
-                  SizedBox(height: 16),
+                      size: 50.sp, color: AppColors.yellowPrimaryColor),
+                  SizedBox(height: 16.h),
                   Text(
                     'Are you sure you want to delete your account ?\n\nThis action cannot be undone.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.white, fontSize: 16),
+                    style: TextStyle(color: AppColors.white, fontSize: 16.sp),
                   ),
                 ],
               ),
@@ -320,7 +313,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 TextButton(
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
                   ),
                   onPressed: () => Navigator.of(ctx).pop(false),
                   child: Text('Cancel'),
@@ -329,10 +322,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.red,
                     foregroundColor: AppColors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
                     textStyle: TextStyle(fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                   ),
                   onPressed: () {
