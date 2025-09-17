@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 
+
 class CustomeElevatedButton extends StatelessWidget {
   const CustomeElevatedButton({
     super.key,
