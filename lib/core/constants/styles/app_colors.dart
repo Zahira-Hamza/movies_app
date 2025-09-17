@@ -11,5 +11,6 @@ class AppColors {
   static const Color boldgrey = Color(0xFF1A1A1A);
   static const Color grey2 = Color(0xFF212121);
   static const Color transparent = Colors.transparent;
+  static const Color offWhite = Color(0xFFADADAD);
 
 }

@@ -1,0 +1,59 @@
+// core/network/dio_client.dart
+import 'package:dio/dio.dart';
+
+import '../constants/api_endpoints.dart';
+import 'api_exceptions.dart';
+
+/// عميل Dio مخصص مع معالجة متقدمة للاستثناءات
+class DioClient {
+  final Dio dio;
+
+  DioClient({required this.dio}) {
+    // إعدادات أساسية لـ Dio
+    dio.options = BaseOptions(
+      baseUrl: ApiEndpoints.baseUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      responseType: ResponseType.json,
+    );
+
+    // إضافة interceptor للتسجيل
+    dio.interceptors.add(LogInterceptor(
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: true,
+      responseBody: true,
+    ));
+
+    // إضافة interceptor لمعالجة الأخطاء
+    dio.interceptors.add(InterceptorsWrapper(
+      onError: (DioException error, ErrorInterceptorHandler handler) {
+        final apiException = ApiException.fromDioError(error);
+        return handler.reject(apiException as DioException);
+      },
+    ));
+  }
+
+  /// دالة GET محسنة مع معالجة الأخطاء
+  Future<dynamic> get(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    try {
+      final response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: options,
+      );
+      return response.data;
+    } on ApiException {
+      rethrow; // تمت معالجته بواسطة interceptor
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    } catch (e) {
+      throw ApiException(message: 'Unknown error: $e');
+    }
+  }
+}

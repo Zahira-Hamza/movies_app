@@ -1,44 +1,40 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
-import '../../../core/constants/api_constants.dart';
+import 'package:dio/dio.dart';
+import 'package:movies_app/core/constants/api_endpoints.dart';
+import 'package:movies_app/core/constants/errors/app_exception.dart';
+import 'package:movies_app/data/models/movies/movies_model.dart';
 
 class MoviesRemoteDataSource {
-  Future<List<Map<String, dynamic>>> fetchMovies({
-    int? limit,
+  final Dio _dio = Dio();
+
+  Future<List<MoviesModel>> fetchMovies({
     int? page,
-    String? quality,
-    int? minimumRating,
-    String? queryTerm,
+    int? limit,
     String? genre,
-    String orderBy = "desc",
     String sortBy = "year",
-    bool? withRtRatings,
+    String orderBy = "desc",
   }) async {
-    final uri = Uri.parse(ApiConstants.baseUrl + ApiConstants.listMovies);
+    try {
+      final response = await _dio.get(
+        ApiEndpoints.baseUrl + ApiEndpoints.listMovies,
+        queryParameters: {
+          "page": page,
+          "limit": limit,
+          "genre": genre,
+          "sort_by": sortBy,
+          "order_by": orderBy,
+        }..removeWhere((key, value) => value == null),
+      );
 
-    final Map<String, String> queryParameters = {
-      'sort_by': sortBy,
-      'order_by': orderBy,
-      if (limit != null) 'limit': limit.toString(),
-      if (page != null) 'page': page.toString(),
-      if (quality != null) 'quality': quality,
-      if (minimumRating != null) 'minimum_rating': minimumRating.toString(),
-      if (queryTerm != null) 'query_term': queryTerm,
-      if (genre != null) 'genre': genre,
-      if (withRtRatings != null) 'with_rt_ratings': withRtRatings.toString(),
-    };
+      if (response.data["status"] != "ok") {
+        throw ApiException("Failed to fetch movies");
+      }
 
-    final url = uri.replace(queryParameters: queryParameters).toString();
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      final List movies = body['data']['movies'] ?? [];
-      return movies.map((e) => e as Map<String, dynamic>).toList();
-    } else {
-      throw Exception("Failed to load movies.");
+      final List moviesJson = response.data["data"]["movies"] ?? [];
+      return moviesJson
+          .map((m) => MoviesModel.fromJson(m as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      throw ApiException(e.toString());
     }
   }
 }

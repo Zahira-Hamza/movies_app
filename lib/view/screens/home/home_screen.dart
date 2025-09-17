@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/view/screens/home/tabs/browse/browse_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/home/home_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/profile/profile_tab.dart';
@@ -21,9 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-    var screenHeight = MediaQuery.of(context).size.height;
-
     List<Widget> tabs = [
       HomeTab(
         selectedCategoryIndex: selectedCategoryIndex,
@@ -43,15 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: tabs[selectedIndex],
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.02, vertical: screenHeight * 0.01),
+          horizontal: 8.w,
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.grey,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(15.r), // responsive radius
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.3),
-                blurRadius: 10,
+                blurRadius: 10.r,
                 offset: const Offset(0, -2),
               ),
             ],
@@ -59,14 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: BottomNavigationBar(
             currentIndex: selectedIndex,
             onTap: (index) {
-              // If we're returning to the home tab, change the category
               if (index == 0 && selectedIndex != 0) {
                 setState(() {
                   selectedCategoryIndex = (selectedCategoryIndex + 1) %
                       CategoryModel.categories.length;
                 });
               }
-
               setState(() {
                 selectedIndex = index;
               });

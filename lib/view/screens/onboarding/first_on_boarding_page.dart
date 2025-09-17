@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/constants/styles/app_assets.dart';
 
 import '../../../core/constants/styles/app_colors.dart';
 import '../../../core/constants/styles/app_styles.dart';
@@ -17,7 +18,7 @@ class FirstOnboardingPage extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(
-          "assets/images/onboarding/OnBoarding_1.png",
+          AppAssets.onBoardingPage1,
           fit: BoxFit.cover,
         ),
 

@@ -1,10 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
-import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
-import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
+import 'package:movies_app/data/models/movies/movies_model.dart';
+import 'package:movies_app/view_model/movies/movies_cubit.dart';
+import 'package:movies_app/view_model/movies/movies_states.dart';
+
+import '../../../../../core/routes/app_routes.dart';
+import '../../../movie_details/widgets/custom_film_poster..dart';
 
 class HomeTab extends StatefulWidget {
   final int selectedCategoryIndex;
@@ -20,175 +25,202 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
   int currentIndex = 0;
-  late Future<List<Map<String, dynamic>>> futureMovies;
-  late Future<List<Map<String, dynamic>>> futureMoviesByGenre;
+  late String _currentGenre;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
-    futureMovies = MoviesRemoteDataSource().fetchMovies();
-    final initialGenre =
+    _currentGenre =
         CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
-    futureMoviesByGenre =
-        MoviesRemoteDataSource().fetchMovies(genre: initialGenre);
+    _loadInitialData();
   }
 
-  void _loadMoviesForCategory(String genre) {
-    setState(() {
-      futureMoviesByGenre = MoviesRemoteDataSource().fetchMovies(genre: genre);
-    });
+  void _loadInitialData() {
+    final cubit = context.read<MoviesCubit>();
+    if (cubit.state is! MoviesLoaded ||
+        (cubit.state as MoviesLoaded).movies.isEmpty) {
+      cubit.fetchMovies();
+    }
+    cubit.fetchMoviesByGenre(_currentGenre);
+  }
+
+  @override
+  void didUpdateWidget(HomeTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.selectedCategoryIndex != widget.selectedCategoryIndex) {
+      final newGenre =
+          CategoryModel.categories[widget.selectedCategoryIndex].apiValue;
+      if (_currentGenre != newGenre) {
+        _currentGenre = newGenre;
+        context.read<MoviesCubit>().fetchMoviesByGenre(newGenre);
+      }
+    }
+  }
+
+  void _navigateToMovieDetails(MoviesModel movie, BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.movieDetailsRoute,
+      arguments: movie.id,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     Size screenSize = MediaQuery.sizeOf(context);
-    return Scaffold(
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: futureMovies,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+
+    return SafeArea(
+      child: BlocConsumer<MoviesCubit, MoviesState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is MoviesLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("No movies found"));
-          }
+          } else if (state is MoviesError) {
+            return Center(child: Text("Error: ${state.message}"));
+          } else if (state is MoviesLoaded) {
+            final movies = state.movies;
+            final genreMovies = state.moviesByGenre;
 
-          final movies = snapshot.data!;
-
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: Image.network(
-                  movies[currentIndex]['medium_cover_image'] ?? '',
-                  fit: BoxFit.fill,
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: movies.isNotEmpty
+                      ? Image.network(
+                          movies[currentIndex].poster ?? '',
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                        )
+                      : const SizedBox.shrink(),
                 ),
-              ),
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.6),
-                        Colors.black,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withOpacity(0.6),
+                          Colors.black,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Positioned.fill(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: screenSize.height * 0.05),
-                      Center(
-                        child: Image.asset("assets/images/available_now.png"),
-                      ),
-                      const SizedBox(height: 20),
-                      CarouselSlider(
-                        items: movies.map((movie) {
-                          return CustomFilmPoster(
-                            imagePath: movie['medium_cover_image'] ?? '',
-                            rating: (movie['rating'] ?? 0).toString(),
-                            height: screenSize.height * 0.6,
-                            width: screenSize.width * 0.6,
-                          );
-                        }).toList(),
-                        options: CarouselOptions(
-                          height: screenSize.height * 0.35,
-                          enlargeCenterPage: true,
-                          viewportFraction: 0.5,
-                          enableInfiniteScroll: true,
-                          initialPage: 0,
-                          enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                          scrollPhysics: const BouncingScrollPhysics(),
-                          enlargeFactor: 0.36,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              currentIndex = index;
-                            });
-                          },
+                Positioned.fill(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: screenSize.height * 0.05),
+                        Center(
+                          child: Image.asset("assets/images/available_now.png"),
                         ),
-                      ),
-                      SizedBox(height: screenSize.height * 0.03),
-                      Image.asset("assets/images/watch_now.png"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              CategoryModel
-                                  .categories[widget.selectedCategoryIndex]
-                                  .name,
-                              style: AppStyles.regular16white,
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "see more",
-                                    style: AppStyles.regular16white.copyWith(
-                                        color: AppColors.yellowPrimaryColor),
-                                  ),
-                                  SizedBox(width: screenSize.width * 0.01),
-                                  Icon(Icons.arrow_forward,
-                                      color: AppColors.yellowPrimaryColor),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      FutureBuilder<List<Map<String, dynamic>>>(
-                        future: futureMoviesByGenre,
-                        builder: (context, genreSnapshot) {
-                          if (genreSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (genreSnapshot.hasError) {
-                            return Center(
-                                child: Text("Error: ${genreSnapshot.error}"));
-                          } else if (!genreSnapshot.hasData ||
-                              genreSnapshot.data!.isEmpty) {
-                            return const Center(child: Text("No movies found"));
-                          }
-
-                          final genreMovies = genreSnapshot.data!;
-                          return SizedBox(
-                            height: screenSize.height * 0.28,
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              itemCount: genreMovies.length,
-                              itemBuilder: (context, index) {
-                                return CustomFilmPoster(
-                                  imagePath: genreMovies[index]
-                                          ['medium_cover_image'] ??
-                                      '',
-                                  rating: (genreMovies[index]['rating'] ?? 0)
-                                      .toString(),
-                                );
+                        const SizedBox(height: 20),
+                        if (movies.isNotEmpty)
+                          CarouselSlider(
+                            items: movies.map((movie) {
+                              return GestureDetector(
+                                onTap: () =>
+                                    _navigateToMovieDetails(movie, context),
+                                child: CustomFilmPoster(
+                                  imagePath: movie.poster ?? '',
+                                  rating: (movie.rating ?? 0).toString(),
+                                  height: screenSize.height * 0.6,
+                                  width: screenSize.width * 0.6,
+                                ),
+                              );
+                            }).toList(),
+                            options: CarouselOptions(
+                              height: screenSize.height * 0.35,
+                              enlargeCenterPage: true,
+                              viewportFraction: 0.5,
+                              enableInfiniteScroll: true,
+                              enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                              scrollPhysics: const BouncingScrollPhysics(),
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  currentIndex = index;
+                                });
                               },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(width: 10),
                             ),
-                          );
-                        },
-                      )
-                    ],
+                          ),
+                        SizedBox(height: screenSize.height * 0.03),
+                        Image.asset("assets/images/watch_now.png"),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                CategoryModel
+                                    .categories[widget.selectedCategoryIndex]
+                                    .name,
+                                style: AppStyles.regular16white,
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "see more",
+                                      style: AppStyles.regular16white.copyWith(
+                                        color: AppColors.yellowPrimaryColor,
+                                      ),
+                                    ),
+                                    SizedBox(width: screenSize.width * 0.01),
+                                    Icon(Icons.arrow_forward,
+                                        color: AppColors.yellowPrimaryColor),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: screenSize.height * 0.28,
+                          child: genreMovies.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  itemCount: genreMovies.length,
+                                  itemBuilder: (context, index) {
+                                    final genreMovie = genreMovies[index];
+                                    return GestureDetector(
+                                      onTap: () => _navigateToMovieDetails(
+                                          genreMovie, context),
+                                      child: CustomFilmPoster(
+                                        imagePath: genreMovie.poster ?? '',
+                                        rating:
+                                            (genreMovie.rating ?? 0).toString(),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(width: 10),
+                                )
+                              : Center(
+                                  child: Text(
+                                    "No movies found for this category",
+                                    style: AppStyles.regular16white,
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
+              ],
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

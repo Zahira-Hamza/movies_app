@@ -9,12 +9,12 @@ class AppTheme {
         backgroundColor: AppColors.blackPrimaryColor,
         foregroundColor: AppColors.yellowPrimaryColor,
         centerTitle: true,
-        titleTextStyle: AppStyles.regularRoboto),
+        titleTextStyle: AppStyles.regular16Roboto),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.grey,
       suffixIconColor: AppColors.white,
-      hintStyle: AppStyles.regularRoboto.copyWith(color: AppColors.white),
+      hintStyle: AppStyles.regular16Roboto.copyWith(color: AppColors.white),
       enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(color: AppColors.grey)),

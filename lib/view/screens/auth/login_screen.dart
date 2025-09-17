@@ -189,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Text(
                           AppLocalizations.of(context)!.login_with_google,
-                          style: AppStyles.regularRoboto.copyWith(
+                          style: AppStyles.regular16Roboto.copyWith(
                             color: AppColors.blackPrimaryColor,
                             fontSize: 18,
                           ),

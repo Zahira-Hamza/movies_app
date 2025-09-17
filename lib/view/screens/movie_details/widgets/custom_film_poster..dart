@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
 class CustomFilmPoster extends StatelessWidget {
   final String imagePath;
@@ -52,8 +52,8 @@ class CustomFilmPoster extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/star.png',
-                    height: 20,
-                    width: 20,
+                    height: 15,
+                    width: 15,
                     fit: BoxFit.contain,
                   ),
                 ),
