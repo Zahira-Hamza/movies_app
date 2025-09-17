@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:movies_app/core/routes/app_routes.dart';
 import '../../../../core/constants/styles/app_styles.dart';
 import '../../../../data/models/movies/movie_model.dart';
 import 'custom_film_poster..dart';
@@ -44,7 +44,9 @@ class SuggestedMovies extends StatelessWidget {
                     width: double.infinity,
                     imagePath: similarMovies[index].mediumCoverImage ??
                         '', // استخدام سلسلة فارغة إذا كانت null
-                    rating: similarMovies[index].rating.toStringAsFixed(1),
+                    rating: similarMovies[index].rating.toStringAsFixed(1), onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute);
+                  },
                   ),
                 )
         ],

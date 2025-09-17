@@ -16,7 +16,6 @@ import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movie_details_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/profile/profile_cubit.dart';
-
 import 'core/routes/app_routes.dart';
 import 'data/data_sources/movie_api_service.dart';
 import 'view/screens/auth/forget_password.dart';
@@ -32,6 +31,7 @@ class MoviesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
+
     final movieApiService = MovieApiService(dio);
     final movieRepository = MoviesRepository(movieApiService: movieApiService);
 
