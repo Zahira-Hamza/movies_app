@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/view/screens/movie_details/widgets/movie_cast.dart';
@@ -27,15 +29,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-    print('🎬 Loading movie details for ID: ${widget.movieId}');
+    log('🎬 Loading movie details for ID: ${widget.movieId}');
     _loadMovieDetails();
   }
 
   void _loadMovieDetails() {
-    if (widget.movieId == null) {
-      print('❌ ERROR: Movie ID is null!');
-      return;
-    }
     context.read<MovieDetailsCubit>().getMovieDetails(widget.movieId);
   }
 
@@ -103,12 +101,17 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   ) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           MoviesDetailsHeader(movie: movie),
-
+          SizedBox(
+            height: 13.h,
+          ),
           // 1. Watch Button
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
             child: CustomeElevatedButton(
               label: 'Watch',
               labelStyle:
@@ -117,24 +120,30 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               onPressed: () {},
             ),
           ),
-
+          SizedBox(
+            height: 18.h,
+          ),
           // 2. Movie Info (Rating, Runtime)
           MovieInfo(movie: movie),
-
+          SizedBox(height: 32.h),
           // 3. Screenshots
           ScreenshotsSection(movie: movie),
-
+          SizedBox(height: 32.h),
           // 4. Suggested Movies
           SuggestedMovies(similarMovies: similarMovies),
-
+          SizedBox(height: 22.h),
           // 5. DESCRIPTION
           MovieDescription(movie: movie),
+          SizedBox(
+            height: 22.h,
+          ),
           //6.movie cast
           MovieCastHandling(movie: movie),
-
+          SizedBox(
+            height: 22.h,
+          ),
           // 7. Genres
           MovieGenres(genres: movie.genres),
-
           if (state is MovieDetailsPartialSuccessState)
             Padding(
               padding: const EdgeInsets.all(16.0),

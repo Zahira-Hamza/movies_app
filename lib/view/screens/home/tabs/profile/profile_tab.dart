@@ -42,6 +42,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       color: AppColors.grey2,
       child: DefaultTabController(
@@ -147,6 +148,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('Exit', style: AppStyles.regular20white),
+
                         SizedBox(width: 10.w),
                         Icon(Icons.logout, color: AppColors.white, size: 20.sp),
                       ],
@@ -182,7 +184,6 @@ class _ProfileTabState extends State<ProfileTab> {
                       'assets/images/icons/history.svg',
                       fit: BoxFit.scaleDown,
                     ),
-                    SizedBox(height: 10.h),
                     Padding(
                       padding: EdgeInsets.only(bottom: 18.0.h),
                       child: Text('History', style: AppStyles.regular20white),
