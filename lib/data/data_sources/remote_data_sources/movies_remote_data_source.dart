@@ -37,6 +37,4 @@ class MoviesRemoteDataSource {
       throw APIException(e.toString());
     }
   }
-
-
 }

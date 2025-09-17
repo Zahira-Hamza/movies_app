@@ -20,4 +20,12 @@ class MovieBasicInfo {
         imageUrl: json['imageURL'] as String,
         year: json['year'] as String,
       );
+
+  Map<String, dynamic> toJson() => {
+        'movieId': movieId,
+        'name': name,
+        'rating': rating,
+        'imageURL': imageUrl,
+        'year': year,
+      };
 }
