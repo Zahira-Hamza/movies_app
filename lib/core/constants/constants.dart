@@ -4,6 +4,10 @@ class ApiConstants {
   static const String loginEndpoint = 'auth/login';
   static const String resetPasswordEndPoint = 'auth/reset-password';
   static const String profileEndPoint = 'profile';
+  static const String isMovieFavEndPoint = 'favorites/is-favorite/';
+  static const String getAllFavMoviesEndPoint = 'favorites/all';
+  static const String removeFromFavMoviesEndPoint = 'favorites/remove';
+  static const String addToFavMoviesEndPoint = 'favorites/add';
 }
 
 class Constants {

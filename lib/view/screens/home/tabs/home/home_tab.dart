@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // إضافة المكتبة
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
@@ -9,7 +10,7 @@ import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_states.dart';
 
 import '../../../../../core/routes/app_routes.dart';
-import '../../../movie_details/widgets/custom_film_poster..dart';
+import '../../../movie_details/widgets/custom_film_poster.dart';
 
 class HomeTab extends StatefulWidget {
   final int selectedCategoryIndex;
@@ -63,7 +64,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
     }
   }
 
-  void _navigateToMovieDetails(MoviesModel movie, BuildContext context) {
+  void _navigateToMovieDetails(MoviesModel movie) {
     Navigator.pushNamed(
       context,
       AppRoutes.movieDetailsRoute,
@@ -74,7 +75,6 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    Size screenSize = MediaQuery.sizeOf(context);
 
     return SafeArea(
       child: BlocConsumer<MoviesCubit, MoviesState>(
@@ -93,10 +93,10 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                 Positioned.fill(
                   child: movies.isNotEmpty
                       ? Image.network(
-                          movies[currentIndex].poster ?? '',
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                        )
+                    movies[currentIndex].poster ?? '',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  )
                       : const SizedBox.shrink(),
                 ),
                 Positioned.fill(
@@ -117,27 +117,24 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(height: screenSize.height * 0.05),
+                        SizedBox(height: 50.h), // استخدام h
                         Center(
                           child: Image.asset("assets/images/available_now.png"),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h), // استخدام h
                         if (movies.isNotEmpty)
                           CarouselSlider(
                             items: movies.map((movie) {
-                              return GestureDetector(
-                                onTap: () =>
-                                    _navigateToMovieDetails(movie, context),
-                                child: CustomFilmPoster(
-                                  imagePath: movie.poster ?? '',
-                                  rating: (movie.rating ?? 0).toString(),
-                                  height: screenSize.height * 0.6,
-                                  width: screenSize.width * 0.6,
-                                ),
+                              return CustomFilmPoster(
+                                imagePath: movie.poster ?? '',
+                                rating: (movie.rating ?? 0).toString(),
+                                height: 350.h, // استخدام h
+                                width: 250.w, // استخدام w
+                                onTap: () => _navigateToMovieDetails(movie),
                               );
                             }).toList(),
                             options: CarouselOptions(
-                              height: screenSize.height * 0.35,
+                              height: 350.h, // استخدام h
                               enlargeCenterPage: true,
                               viewportFraction: 0.5,
                               enableInfiniteScroll: true,
@@ -150,10 +147,10 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                               },
                             ),
                           ),
-                        SizedBox(height: screenSize.height * 0.03),
+                        SizedBox(height: 30.h), // استخدام h
                         Image.asset("assets/images/watch_now.png"),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.symmetric(horizontal: 8.w), // استخدام w
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -173,9 +170,11 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                                         color: AppColors.yellowPrimaryColor,
                                       ),
                                     ),
-                                    SizedBox(width: screenSize.width * 0.01),
+                                    SizedBox(width: 4.w), // استخدام w
                                     Icon(Icons.arrow_forward,
-                                        color: AppColors.yellowPrimaryColor),
+                                        color: AppColors.yellowPrimaryColor,
+                                        size: 20.sp // استخدام sp
+                                    ),
                                   ],
                                 ),
                               ),
@@ -183,34 +182,33 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                           ),
                         ),
                         SizedBox(
-                          height: screenSize.height * 0.28,
+                          height: 280.h, // استخدام h
                           child: genreMovies.isNotEmpty
                               ? ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  itemCount: genreMovies.length,
-                                  itemBuilder: (context, index) {
-                                    final genreMovie = genreMovies[index];
-                                    return GestureDetector(
-                                      onTap: () => _navigateToMovieDetails(
-                                          genreMovie, context),
-                                      child: CustomFilmPoster(
-                                        imagePath: genreMovie.poster ?? '',
-                                        rating:
-                                            (genreMovie.rating ?? 0).toString(),
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(width: 10),
-                                )
+                            scrollDirection: Axis.horizontal,
+                            padding:
+                            EdgeInsets.symmetric(horizontal: 8.w), // استخدام w
+                            itemCount: genreMovies.length,
+                            itemBuilder: (context, index) {
+                              final genreMovie = genreMovies[index];
+                              return CustomFilmPoster(
+                                imagePath: genreMovie.poster ?? '',
+                                rating:
+                                (genreMovie.rating ?? 0).toString(),
+                                height: 220.h, // استخدام h
+                                width: 150.w, // استخدام w
+                                onTap: () => _navigateToMovieDetails(genreMovie),
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 10.w), // استخدام w
+                          )
                               : Center(
-                                  child: Text(
-                                    "No movies found for this category",
-                                    style: AppStyles.regular16white,
-                                  ),
-                                ),
+                            child: Text(
+                              "No movies found for this category",
+                              style: AppStyles.regular16white,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -219,7 +217,6 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
               ],
             );
           }
-
           return const Center(child: CircularProgressIndicator());
         },
       ),

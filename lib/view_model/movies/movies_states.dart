@@ -9,10 +9,12 @@ class MoviesLoading extends MoviesState {}
 class MoviesLoaded extends MoviesState {
   final List<MoviesModel> movies;
   final List<MoviesModel> moviesByGenre;
+  final bool hasMore;
 
   MoviesLoaded({
     this.movies = const [],
     this.moviesByGenre = const [],
+    this.hasMore = false,
   });
 }
 
