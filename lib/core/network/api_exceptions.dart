@@ -1,7 +1,6 @@
 // core/network/api_exceptions.dart
 import 'package:dio/dio.dart';
 
-/// فئة مخصصة لمعالجة استثناءات API بشكل متقدم
 class ApiException implements Exception {
   final String message;
   final int? statusCode;
@@ -13,7 +12,6 @@ class ApiException implements Exception {
     this.errorCode,
   });
 
-  /// تحويل استثناءات Dio إلى ApiException مخصصة
   factory ApiException.fromDioError(DioException dioError) {
     switch (dioError.type) {
       case DioExceptionType.connectionTimeout:
@@ -70,7 +68,6 @@ class ApiException implements Exception {
     }
   }
 
-  /// معالجة أخطاء الاستجابة من الخادم
   static ApiException _handleResponseError(DioException dioError) {
     final statusCode = dioError.response?.statusCode;
     final errorData = dioError.response?.data;

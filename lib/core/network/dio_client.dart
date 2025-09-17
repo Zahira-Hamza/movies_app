@@ -4,12 +4,10 @@ import 'package:dio/dio.dart';
 import '../constants/api_endpoints.dart';
 import 'api_exceptions.dart';
 
-/// عميل Dio مخصص مع معالجة متقدمة للاستثناءات
 class DioClient {
   final Dio dio;
 
   DioClient({required this.dio}) {
-    // إعدادات أساسية لـ Dio
     dio.options = BaseOptions(
       baseUrl: ApiEndpoints.baseUrl,
       connectTimeout: const Duration(seconds: 30),
@@ -17,7 +15,6 @@ class DioClient {
       responseType: ResponseType.json,
     );
 
-    // إضافة interceptor للتسجيل
     dio.interceptors.add(LogInterceptor(
       request: true,
       requestHeader: true,
@@ -26,7 +23,6 @@ class DioClient {
       responseBody: true,
     ));
 
-    // إضافة interceptor لمعالجة الأخطاء
     dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) {
         final apiException = ApiException.fromDioError(error);
@@ -35,7 +31,6 @@ class DioClient {
     ));
   }
 
-  /// دالة GET محسنة مع معالجة الأخطاء
   Future<dynamic> get(
     String url, {
     Map<String, dynamic>? queryParameters,
@@ -49,7 +44,7 @@ class DioClient {
       );
       return response.data;
     } on ApiException {
-      rethrow; // تمت معالجته بواسطة interceptor
+      rethrow;
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
     } catch (e) {

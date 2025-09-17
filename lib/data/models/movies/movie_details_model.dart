@@ -14,17 +14,17 @@ class MovieDetailsResponse {
   });
 
   factory MovieDetailsResponse.fromJson(Map<String, dynamic> json) {
-    print('📦 Response keys: ${json.keys}');
+    print(' Response keys: ${json.keys}');
 
     // Handle different response structures
     dynamic movieData;
 
     if (json.containsKey('data')) {
-      print('🔍 Found data key');
+      print(' Found data key');
       movieData = json['data'];
 
       if (movieData is Map<String, dynamic> && movieData.containsKey('movie')) {
-        print('🔍 Data contains movie key');
+        print(' Data contains movie key');
         movieData = movieData['movie'];
       } else if (movieData is Map<String, dynamic> &&
           (movieData.containsKey('id') || movieData.containsKey('title'))) {
@@ -32,17 +32,17 @@ class MovieDetailsResponse {
         // movieData remains as is
       }
     } else if (json.containsKey('movie')) {
-      print('🔍 Found movie key directly');
+      print(' Found movie key directly');
       movieData = json['movie'];
     } else if (json.containsKey('id') || json.containsKey('title')) {
-      print('🔍 JSON contains movie data at root level');
+      print(' JSON contains movie data at root level');
       movieData = json;
     } else {
-      print('🔍 Using entire json as movie data');
+      print(' Using entire json as movie data');
       movieData = json;
     }
 
-    print('🔍 Movie data type: ${movieData.runtimeType}');
+    print(' Movie data type: ${movieData.runtimeType}');
 
     return MovieDetailsResponse(
       status: _parseString(json['status']),
@@ -70,11 +70,11 @@ class MovieDetailsData {
   MovieDetailsData({this.movie});
 
   factory MovieDetailsData.fromJson(Map<String, dynamic> json) {
-    print('🎬 MovieDetailsData keys: ${json.keys}');
+    print(' MovieDetailsData keys: ${json.keys}');
 
     // If the json already contains movie data at the top level
     if (json.containsKey('id') && json.containsKey('title')) {
-      print('🔍 JSON contains movie data directly');
+      print(' JSON contains movie data directly');
       return MovieDetailsData(
         movie: MovieModel.fromJson(json),
       );
@@ -82,7 +82,7 @@ class MovieDetailsData {
 
     // If the json has a 'movie' key
     if (json.containsKey('movie')) {
-      print('🔍 JSON contains movie key');
+      print(' JSON contains movie key');
       final movieJson = json['movie'];
       if (movieJson is Map<String, dynamic>) {
         return MovieDetailsData(
@@ -91,7 +91,7 @@ class MovieDetailsData {
       }
     }
 
-    print('❌ Could not find movie data in expected structure');
+    print(' Could not find movie data in expected structure');
     return MovieDetailsData(movie: null);
   }
 }
