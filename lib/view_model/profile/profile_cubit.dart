@@ -26,12 +26,14 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-    Future<void> getProfile() async {
+  Future<void> getProfile() async {
     emit(GetProfileLoading());
     final result = await _repository.getProfile();
-    result.fold((faliure) => emit(GetProfileError(faliure.errorMessage)),
-        (data) {
-      emit(GetProfileSuccess(data));
-    },);
+    result.fold(
+      (faliure) => emit(GetProfileError(faliure.errorMessage)),
+      (data) {
+        emit(GetProfileSuccess(data));
+      },
+    );
   }
 }
