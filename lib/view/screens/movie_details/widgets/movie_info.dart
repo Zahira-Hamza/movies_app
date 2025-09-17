@@ -16,19 +16,14 @@ class MovieInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Info(image: AppAssets.favIcon, info: '15'),
-              Info(image: AppAssets.timeIcon, info: '${movie.runtime} min'),
-              Info(
-                  image: AppAssets.rateIcon,
-                  info: movie.rating.toStringAsFixed(1)),
-            ],
-          ),
+          const Info(image: AppAssets.favIcon, info: '15'),
+          Info(image: AppAssets.timeIcon, info: '${movie.runtime}'),
+          Info(
+              image: AppAssets.rateIcon,
+              info: movie.rating.toStringAsFixed(1)),
         ],
       ),
     );
@@ -46,11 +41,12 @@ class Info extends StatelessWidget {
     return Container(
       width: 122.w,
       height: 47.h,
-      padding: EdgeInsets.symmetric(vertical: 11.h, horizontal: 14.w),
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
       decoration: BoxDecoration(
           color: AppColors.grey,
-          borderRadius: BorderRadiusDirectional.circular(16)),
+          borderRadius: BorderRadiusDirectional.circular(16.r)),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SvgPicture.asset(
             image,
@@ -58,12 +54,10 @@ class Info extends StatelessWidget {
             height: 25.h,
             fit: BoxFit.scaleDown,
           ),
-          SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              info,
-              style: AppStyles.bold24Roboto.copyWith(fontSize: 24.sp),
-            ),
+          // SizedBox(width: 14),
+          Text(
+            info,
+            style: AppStyles.bold24Roboto.copyWith(fontSize: 24.sp),
           )
         ],
       ),

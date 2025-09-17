@@ -15,12 +15,23 @@ class ScreenshotsSection extends StatelessWidget {
     final hasScreenshots =
         movie.screenshots != null && movie.screenshots!.isNotEmpty;
 
-    if (!hasScreenshots) {
-      return const SizedBox.shrink();
-    }
+    // if (!hasScreenshots) {
+    //   return Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: [
+    //       Text(
+    //         'Screen Shots',
+    //         style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
+    //       ),
+    //     ],
+    //   );
+    // }
 
-    // أخذ أول 4 screenshots فقط
-    final screenshotsToShow = movie.screenshots!.take(4).toList();
+    List<String> screenshotsToShow = [];
+
+    if (hasScreenshots) {
+      screenshotsToShow = movie.screenshots!.take(4).toList();
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -31,19 +42,33 @@ class ScreenshotsSection extends StatelessWidget {
             'Screen Shots',
             style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
           ),
-          SizedBox(height: 9.h),
-          ListView.separated(
-            padding: EdgeInsets.zero,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: screenshotsToShow.length,
-            itemBuilder: (context, index) {
-              return ScreenShotItem(screenshot: screenshotsToShow[index]);
-            },
-            separatorBuilder: (context, index) => SizedBox(
-              height: 13.h,
+          SizedBox(height: 11.h),
+          Visibility(
+            visible: hasScreenshots,
+            child: ListView.separated(
+              padding: EdgeInsets.zero,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: screenshotsToShow.length,
+              itemBuilder: (context, index) {
+                return ScreenShotItem(screenshot: screenshotsToShow[index]);
+              },
+              separatorBuilder: (context, index) => SizedBox(
+                height: 13.h,
+              ),
             ),
           ),
+          Visibility(
+              visible: !hasScreenshots,
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  'ScreenShots are not available 😥',
+                  textAlign: TextAlign.center,
+                  style: AppStyles.bold20Roboto
+                      .copyWith(color: AppColors.yellowPrimaryColor),
+                ),
+              ))
         ],
       ),
     );

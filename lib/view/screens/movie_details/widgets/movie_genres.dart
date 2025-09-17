@@ -36,6 +36,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/constants/styles/app_colors.dart';
 
 import '../../../../core/constants/styles/app_styles.dart';
 import 'genres_item.dart';
@@ -69,10 +70,10 @@ class MovieGenres extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 122 / 56,
-                  ),
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 14,
+                      mainAxisSpacing: 11.h,
+                      mainAxisExtent: 66.h),
                   itemBuilder: (context, index) =>
                       GenresItem(type: genres[index]),
                 )
