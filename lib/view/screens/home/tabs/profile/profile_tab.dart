@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
+import 'package:movies_app/view_model/profile/profile_states.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -14,6 +19,27 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  @override
+  void initState() {
+    super.initState();
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<ProfileCubit>(context).getProfile();
+    });
+  }
+
+  final List<String> avatars = const [
+    AppAssets.avatar1,
+    AppAssets.avatar2,
+    AppAssets.avatar3,
+    AppAssets.avatar4,
+    AppAssets.avatar5,
+    AppAssets.avatar6,
+    AppAssets.avatar7,
+    AppAssets.avatar8,
+    AppAssets.avatar9,
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,16 +54,45 @@ class _ProfileTabState extends State<ProfileTab> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/avatars/avatar 1.png',
-                        height: 118.h,
-                      ),
-                      SizedBox(height: 15.h),
-                      Text('John Safwat', style: AppStyles.bold20white),
-                    ],
-                  ),
+                  Column(children: [
+                    BlocConsumer<ProfileCubit, ProfileStates>(
+                      listener: (context, state) {
+                        if (state is GetProfileLoading) {
+                          UIUtils.showLoading(context);
+                        } else if (state is GetProfileError) {
+                          UIUtils.hideLoading(context);
+                          UIUtils.showMessage(
+                              state.message, context, AppColors.red);
+                        } else if (state is GetProfileSuccess) {
+                          UIUtils.hideLoading(context);
+                        }
+                      },
+                      builder: (context, state) {
+                        int avatarId = 1;
+                        String name = '';
+                        if (state is GetProfileSuccess) {
+                          avatarId = state.user.avaterId;
+                          name = state.user.name;
+                        }
+                        final safeIndex =
+                            (avatarId).clamp(0, avatars.length - 1);
+                        return Column(
+                          children: [
+                            Image.asset(
+                              avatars[safeIndex],
+                              height: 118.h,
+                              fit: BoxFit.fill,
+                            ),
+                            SizedBox(height: 15.h),
+                            Text(
+                              name.isEmpty ? '' : name,
+                              style: AppStyles.bold20white,
+                            ),
+                          ],
+                        );
+                      },
+                    )
+                  ]),
                   Column(
                     children: [
                       Text('12',
