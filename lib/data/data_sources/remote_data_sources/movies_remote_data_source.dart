@@ -26,7 +26,7 @@ class MoviesRemoteDataSource {
       );
 
       if (response.data["status"] != "ok") {
-        throw ApiException("Failed to fetch movies");
+        throw APIException("Failed to fetch movies");
       }
 
       final List moviesJson = response.data["data"]["movies"] ?? [];
@@ -34,7 +34,9 @@ class MoviesRemoteDataSource {
           .map((m) => MoviesModel.fromJson(m as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      throw ApiException(e.toString());
+      throw APIException(e.toString());
     }
   }
+
+
 }

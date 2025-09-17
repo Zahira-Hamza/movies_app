@@ -1,25 +1,44 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movies_app/core/utils/ui_utils.dart';
+import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
+import 'package:movies_app/view_model/movies/fav_movies_states.dart';
 
 import '../../../../core/constants/styles/app_assets.dart';
 import '../../../../core/constants/styles/app_colors.dart';
 import '../../../../core/constants/styles/app_styles.dart';
 import '../../../../data/models/movies/movie_model.dart';
 
-class MoviesDetailsHeader extends StatelessWidget {
+class MoviesDetailsHeader extends StatefulWidget {
   final MovieModel movie;
 
   const MoviesDetailsHeader({super.key, required this.movie});
 
   @override
+  State<MoviesDetailsHeader> createState() => _MoviesDetailsHeaderState();
+}
+
+class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<FavMoviesCubit>(context)
+          .isFavMovie(widget.movie.id.toString());
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
-    final imageUrl = movie.largeCoverImage ??
-        movie.mediumCoverImage ??
-        movie.backgroundImage;
+    final imageUrl = widget.movie.largeCoverImage ??
+        widget.movie.mediumCoverImage ??
+        widget.movie.backgroundImage;
 
     return Stack(
       children: [
@@ -67,12 +86,26 @@ class MoviesDetailsHeader extends StatelessWidget {
         ),
         Positioned(
           top: 29.h,
-          right: 16.w,
-          child: IconButton(
-            onPressed: () {
-              // add to fav list
+          right: 1.w,
+          child: BlocConsumer<FavMoviesCubit, FavMoviesStates>(
+            listener: (context, state) {
+              if (state is FavMoviesError) {
+                UIUtils.showMessage(state.message, context, AppColors.red);
+              }
             },
-            icon: const Icon(Icons.bookmark, color: Colors.white, size: 29),
+            builder: (context, state) {
+              if (state is IsFavMovieSuccess) {
+                return IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                      state.isFav ? Icons.bookmark : Icons.bookmark_border,
+                      color: Colors.white,
+                      size: 29),
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            },
           ),
         ),
         Positioned.fill(
@@ -83,7 +116,7 @@ class MoviesDetailsHeader extends StatelessWidget {
                 SvgPicture.asset(AppAssets.watchIcon),
                 Spacer(),
                 Text(
-                  movie.titleLong ?? movie.title,
+                  widget.movie.titleLong ?? widget.movie.title,
                   style:
                       AppStyles.bold24Roboto.copyWith(color: AppColors.white),
                   textAlign: TextAlign.center,
@@ -92,7 +125,7 @@ class MoviesDetailsHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  movie.year.toString(),
+                  widget.movie.year.toString(),
                   style:
                       AppStyles.bold20Roboto.copyWith(color: AppColors.white),
                 ),
