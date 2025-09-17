@@ -16,7 +16,7 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    return  Container(
+    return Container(
       color: AppColors.grey2,
       child: DefaultTabController(
         length: 2,
@@ -34,26 +34,38 @@ class _ProfileTabState extends State<ProfileTab> {
                         'assets/images/avatars/avatar 1.png',
                         height: screenSize.height * .126,
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Text('John Safwat', style: AppStyles.bold20white),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('12',
-                          style: AppStyles.bold20white.copyWith(fontSize: 32)),
+                      Text(
+                        '12',
+                        style:
+                            AppStyles.bold20white.copyWith(fontSize: 32),
+                      ),
                       SizedBox(height: screenSize.height * .02),
-                      Text('Wish List',
-                          style: AppStyles.bold20white.copyWith(fontSize: 22)),
+                      Text(
+                        'Wish List',
+                        style:
+                            AppStyles.bold20white.copyWith(fontSize: 22),
+                      ),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('10',
-                          style: AppStyles.bold20white.copyWith(fontSize: 32)),
+                      Text(
+                        '10',
+                        style:
+                            AppStyles.bold20white.copyWith(fontSize: 32),
+                      ),
                       SizedBox(height: screenSize.height * .02),
-                      Text('History',
-                          style: AppStyles.bold20white.copyWith(fontSize: 22)),
+                      Text(
+                        'History',
+                        style:
+                            AppStyles.bold20white.copyWith(fontSize: 22),
+                      ),
                     ],
                   ),
                 ],
@@ -72,7 +84,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     },
                     width: screenSize.width * .56,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -88,8 +100,9 @@ class _ProfileTabState extends State<ProfileTab> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('Exit', style: AppStyles.regular20white),
-                        SizedBox(width: 10),
-                        Icon(Icons.logout, color: AppColors.white, size: 20),
+                        const SizedBox(width: 10),
+                        Icon(Icons.logout,
+                            color: AppColors.white, size: 20),
                       ],
                     ),
                   )
@@ -109,7 +122,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       'assets/images/icons/watch list.svg',
                       fit: BoxFit.scaleDown,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 18.0),
                       child:
@@ -123,7 +136,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       'assets/images/icons/history.svg',
                       fit: BoxFit.scaleDown,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 18.0),
                       child: Text('History', style: AppStyles.regular20white),

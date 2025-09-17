@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
+import 'package:movies_app/view/screens/movie_details/widgets/screen_shot_item.dart';
 
 class ScreenshotsSection extends StatelessWidget {
   final MovieModel movie;
@@ -20,9 +22,8 @@ class ScreenshotsSection extends StatelessWidget {
     // أخذ أول 4 screenshots فقط
     final screenshotsToShow = movie.screenshots!.take(4).toList();
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      color: AppColors.grey,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,61 +31,17 @@ class ScreenshotsSection extends StatelessWidget {
             'Screen Shots',
             style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: screenshotsToShow.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      screenshotsToShow[index],
-                      width: 300,
-                      height: 200,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          width: 300,
-                          height: 200,
-                          color: AppColors.grey,
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.yellowPrimaryColor,
-                            ),
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: 300,
-                          height: 200,
-                          color: AppColors.grey,
-                          child: const Icon(
-                            Icons.broken_image,
-                            color: AppColors.white,
-                            size: 40,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
+          SizedBox(height: 9.h),
+          ListView.separated(
+            padding: EdgeInsets.zero,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: screenshotsToShow.length,
+            itemBuilder: (context, index) {
+              return ScreenShotItem(screenshot: screenshotsToShow[index]);
+            },
+            separatorBuilder: (context, index) => SizedBox(
+              height: 13.h,
             ),
           ),
         ],

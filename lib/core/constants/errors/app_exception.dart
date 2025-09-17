@@ -3,8 +3,8 @@ abstract class AppException {
   const AppException(this.message);
 }
 
-class ApiException extends AppException {
-  const ApiException(super.message);
+class APIException extends AppException {
+  const APIException(super.message);
 }
 
 class SharedPrefException extends AppException {

@@ -18,7 +18,6 @@ class UpdateProfileError extends ProfileStates {
   UpdateProfileError(this.message);
 }
 
-
 class DeleteProfileLoading extends ProfileStates {}
 
 class DeleteProfileSuccess extends ProfileStates {
@@ -33,7 +32,6 @@ class DeleteProfileError extends ProfileStates {
   DeleteProfileError(this.message);
 }
 
-
 class GetProfileLoading extends ProfileStates {}
 
 class GetProfileSuccess extends ProfileStates {
@@ -47,4 +45,3 @@ class GetProfileError extends ProfileStates {
 
   GetProfileError(this.message);
 }
-

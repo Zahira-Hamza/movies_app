@@ -32,25 +32,25 @@ class ProfileRemoteDataSource {
     } on DioException catch (exception) {
       switch (exception.type) {
         case DioExceptionType.connectionTimeout:
-          throw ApiException('Connection timeout');
+          throw APIException('Connection timeout');
         case DioExceptionType.receiveTimeout:
-          throw ApiException('Receive timeout');
+          throw APIException('Receive timeout');
         case DioExceptionType.badResponse:
-          throw ApiException(
+          throw APIException(
               'Bad response: ${exception.response?.statusCode}\n${exception.response?.data['message']}');
         case DioExceptionType.connectionError:
-          throw ApiException('Connection error: ${exception.message}');
+          throw APIException('Connection error: ${exception.message}');
         case DioExceptionType.cancel:
-          throw ApiException('Request was canceled');
+          throw APIException('Request was canceled');
         case DioExceptionType.unknown:
-          throw ApiException('Unexpected error: ${exception.message}');
+          throw APIException('Unexpected error: ${exception.message}');
         case DioExceptionType.sendTimeout:
-          throw ApiException('Send Timeout');
+          throw APIException('Send Timeout');
         case DioExceptionType.badCertificate:
-          throw ApiException('Bad Certificate');
+          throw APIException('Bad Certificate');
       }
     } catch (exception) {
-      throw ApiException('Failed to Update Profile');
+      throw APIException('Failed to Update Profile');
     }
   }
 
@@ -69,25 +69,25 @@ class ProfileRemoteDataSource {
     } on DioException catch (exception) {
       switch (exception.type) {
         case DioExceptionType.connectionTimeout:
-          throw ApiException('Connection timeout');
+          throw APIException('Connection timeout');
         case DioExceptionType.receiveTimeout:
-          throw ApiException('Receive timeout');
+          throw APIException('Receive timeout');
         case DioExceptionType.badResponse:
-          throw ApiException(
+          throw APIException(
               'Bad response: ${exception.response?.statusCode}\n${exception.response?.data['message']}');
         case DioExceptionType.connectionError:
-          throw ApiException('Connection error: ${exception.message}');
+          throw APIException('Connection error: ${exception.message}');
         case DioExceptionType.cancel:
-          throw ApiException('Request was canceled');
+          throw APIException('Request was canceled');
         case DioExceptionType.unknown:
-          throw ApiException('Unexpected error: ${exception.message}');
+          throw APIException('Unexpected error: ${exception.message}');
         case DioExceptionType.sendTimeout:
-          throw ApiException('Send Timeout');
+          throw APIException('Send Timeout');
         case DioExceptionType.badCertificate:
-          throw ApiException('Bad Certificate');
+          throw APIException('Bad Certificate');
       }
     } catch (exception) {
-      throw ApiException('Failed to Delete Account');
+      throw APIException('Failed to Delete Account');
     }
   }
 
@@ -106,25 +106,25 @@ class ProfileRemoteDataSource {
     } on DioException catch (exception) {
       switch (exception.type) {
         case DioExceptionType.connectionTimeout:
-          throw ApiException('Connection timeout');
+          throw APIException('Connection timeout');
         case DioExceptionType.receiveTimeout:
-          throw ApiException('Receive timeout');
+          throw APIException('Receive timeout');
         case DioExceptionType.badResponse:
-          throw ApiException(
+          throw APIException(
               'Bad response: ${exception.response?.statusCode}\n${exception.response?.data['message']}');
         case DioExceptionType.connectionError:
-          throw ApiException('Connection error: ${exception.message}');
+          throw APIException('Connection error: ${exception.message}');
         case DioExceptionType.cancel:
-          throw ApiException('Request was canceled');
+          throw APIException('Request was canceled');
         case DioExceptionType.unknown:
-          throw ApiException('Unexpected error: ${exception.message}');
+          throw APIException('Unexpected error: ${exception.message}');
         case DioExceptionType.sendTimeout:
-          throw ApiException('Send Timeout');
+          throw APIException('Send Timeout');
         case DioExceptionType.badCertificate:
-          throw ApiException('Bad Certificate');
+          throw APIException('Bad Certificate');
       }
     } catch (exception) {
-      throw ApiException('Failed to Get Account');
+      throw APIException('Failed to Get Account');
     }
   }
 }
