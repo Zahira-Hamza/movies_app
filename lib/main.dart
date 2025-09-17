@@ -8,19 +8,19 @@ import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_d
 import 'package:movies_app/data/repositories/movies_repository.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/auth/register_screen.dart';
- import 'package:movies_app/view/screens/home/home_screen.dart';
+import 'package:movies_app/view/screens/home/home_screen.dart';
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/view/screens/update_profile/update_profile_screen.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
- 
+import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
+
 import 'package:movies_app/view_model/movies/movie_details_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import 'package:movies_app/view_model/search/search_cubit.dart';
 
 import 'core/routes/app_routes.dart';
-import 'data/data_sources/movie_api_service.dart';
 
 import 'view/screens/auth/forget_password.dart';
 import 'view/screens/auth/login_screen.dart';
@@ -36,7 +36,6 @@ class MoviesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final dio = Dio();
 
-    final movieApiService = MovieApiService(dio);
     final movieRepository = MoviesRepository(dio);
 
     return ScreenUtilInit(
@@ -52,6 +51,7 @@ class MoviesApp extends StatelessWidget {
             BlocProvider<ProfileCubit>(
               create: (context) => ProfileCubit(),
             ),
+            BlocProvider(create: (context) => FavMoviesCubit()),
             BlocProvider<MoviesCubit>(
               create: (context) => MoviesCubit(MoviesRemoteDataSource()),
             ),
@@ -59,10 +59,9 @@ class MoviesApp extends StatelessWidget {
               create: (context) =>
                   MovieDetailsCubit(movieRepository: movieRepository),
             ),
-           BlocProvider<SearchCubit>(
-              create: (context) => 
-                  SearchCubit(MoviesRepository(Dio())),
-           ),
+            BlocProvider<SearchCubit>(
+              create: (context) => SearchCubit(MoviesRepository(Dio())),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -78,7 +77,7 @@ class MoviesApp extends StatelessWidget {
               AppRoutes.homeScreenRoute: (context) => HomeScreen(),
               AppRoutes.movieDetailsRoute: (context) => MovieDetailsPage(
                     movieId: ModalRoute.of(context)!.settings.arguments as int,
-                   ),
+                  ),
             },
             locale: const Locale('en'),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
