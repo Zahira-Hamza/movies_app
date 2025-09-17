@@ -56,7 +56,7 @@ class MovieGenres extends StatelessWidget {
               style: AppStyles.bold24Roboto.copyWith(fontSize: 24.sp)),
           SizedBox(height: 12),
           genres.isEmpty
-              ? Container(
+              ? SizedBox(
                   height: 56,
                   child: Center(
                     child: Text('No genres available',

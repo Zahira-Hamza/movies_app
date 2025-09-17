@@ -53,8 +53,10 @@ class MoviesCubit extends Cubit<MoviesState> {
       }
 
       // خطوة 2: تصفية الأفلام الجديدة لإزالة أي أفلام مكررة
-      final existingMoviesIds = Set<int>();
-      _moviesByGenre[_currentGenre]!.forEach((movie) => existingMoviesIds.add(movie.id));
+      final existingMoviesIds = <int>{};
+      for (var movie in _moviesByGenre[_currentGenre]!) {
+        existingMoviesIds.add(movie.id);
+      }
       final uniqueNewMovies = newMovies.where((movie) => !existingMoviesIds.contains(movie.id)).toList();
 
       // خطوة 3: إذا لم يتم العثور على أفلام فريدة، فهذا يعني أن القائمة تتكرر

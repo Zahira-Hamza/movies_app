@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
+import 'package:movies_app/data/models/movies/movie_basic_info.dart';
 import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/fav_movies_states.dart';
 
@@ -31,6 +34,8 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
 
     super.initState();
   }
+
+  bool? isFav;
 
   @override
   Widget build(BuildContext context) {
@@ -76,35 +81,77 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
           ),
         ),
         Positioned(
-          top: 29.h,
+          top: 35.h,
           left: 16.w,
           child: IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon:
-                const Icon(Icons.arrow_back_ios, color: Colors.white, size: 29),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+            iconSize: 35,
+            padding: EdgeInsets.zero,
           ),
         ),
         Positioned(
-          top: 29.h,
-          right: 1.w,
+          top: 33.h,
+          right: 8.w,
           child: BlocConsumer<FavMoviesCubit, FavMoviesStates>(
             listener: (context, state) {
               if (state is FavMoviesError) {
                 UIUtils.showMessage(state.message, context, AppColors.red);
               }
+              if (state is AddMovieToFavLoading ||
+                  state is RemoveFromFavLoading) {
+                UIUtils.showLoading(context);
+              } else if (state is AddMovieToFavError) {
+                UIUtils.hideLoading(context);
+                UIUtils.showMessage(state.errorMessage, context, AppColors.red);
+              } else if (state is RemoveFromFavError) {
+                UIUtils.hideLoading(context);
+                UIUtils.showMessage(state.errorMessage, context, AppColors.red);
+              } else if (state is AddMovieToFavSuccess) {
+                UIUtils.hideLoading(context);
+                UIUtils.showMessage(state.successMessage, context,
+                    AppColors.yellowPrimaryColor);
+              } else if (state is RemoveFromFavSuccess) {
+                UIUtils.hideLoading(context);
+                UIUtils.showMessage(state.successMessage, context,
+                    AppColors.yellowPrimaryColor);
+              }
             },
             builder: (context, state) {
               if (state is IsFavMovieSuccess) {
-                return IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                      state.isFav ? Icons.bookmark : Icons.bookmark_border,
-                      color: Colors.white,
-                      size: 29),
-                );
-              } else {
-                return SizedBox.shrink();
+                isFav = state.isFav;
+              } else if (state is AddMovieToFavSuccess) {
+                isFav = true;
+              } else if (state is RemoveFromFavSuccess) {
+                isFav = false;
               }
+              if (isFav == null) return const SizedBox.shrink();
+
+              return IconButton(
+                onPressed: () {
+                  if (isFav!) {
+                    context
+                        .read<FavMoviesCubit>()
+                        .removeFromFavMovies(widget.movie.id.toString());
+                  } else {
+                    context.read<FavMoviesCubit>().addToFavMovies(
+                        MovieBasicInfo(
+                            movieId: widget.movie.id.toString(),
+                            name: widget.movie.title,
+                            rating: widget.movie.rating,
+                            imageUrl: widget.movie.backgroundImage!,
+                            year: widget.movie.year.toString()));
+                  }
+                },
+                icon: Icon(
+                  isFav! ? Icons.bookmark : Icons.bookmark_border,
+                  color: Colors.white,
+                  size: 38,
+                ),
+              );
             },
           ),
         ),

@@ -92,7 +92,6 @@ import 'package:movies_app/core/network/api_exceptions.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
 import 'package:movies_app/data/repositories/movies_repository.dart';
 
-
 part 'movie_details_state.dart';
 
 class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
@@ -104,14 +103,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
   Future<void> getMovieDetails(int movieId) async {
     try {
       emit(MovieDetailsLoadingState());
-
-      if (movieId == null) {
-        throw ApiException(
-          message: 'Movie ID is required',
-          statusCode: 400,
-          errorCode: 'MISSING_MOVIE_ID',
-        );
-      }
 
       final movie = await movieRepository.getMovieDetails(movieId);
 
@@ -151,8 +142,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
 
   Future<void> retryLoadingSimilarMovies(int movieId) async {
     try {
-      if (movieId == null) return;
-
       final similarMovies = await movieRepository.getSimilarMovies(movieId);
 
       if (state is MovieDetailsPartialSuccessState) {
