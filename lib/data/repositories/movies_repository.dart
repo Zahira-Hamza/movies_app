@@ -10,14 +10,6 @@ class MoviesRepository {
 
   Future<MovieModel> getMovieDetails(int movieId) async {
     try {
-      if (movieId == null) {
-        throw ApiException(
-          message: 'Movie ID cannot be null',
-          statusCode: 400,
-          errorCode: 'NULL_MOVIE_ID',
-        );
-      }
-
       print('🔍 Getting movie details for ID: $movieId');
 
       final response = await movieApiService.getMovieDetails(
@@ -62,14 +54,6 @@ class MoviesRepository {
 
   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
     try {
-      if (movieId == null) {
-        throw ApiException(
-          message: 'Movie ID cannot be null for similar movies',
-          statusCode: 400,
-          errorCode: 'NULL_MOVIE_ID',
-        );
-      }
-
       print('🔍 Getting similar movies for ID: $movieId');
 
       final response = await movieApiService.getMovieSuggestions(movieId);

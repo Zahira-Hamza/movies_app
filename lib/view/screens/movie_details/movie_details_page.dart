@@ -35,10 +35,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   void _loadMovieDetails() {
-    if (widget.movieId == null) {
-      log('❌ ERROR: Movie ID is null!');
-      return;
-    }
     context.read<MovieDetailsCubit>().getMovieDetails(widget.movieId);
   }
 

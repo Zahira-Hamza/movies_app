@@ -105,14 +105,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
     try {
       emit(MovieDetailsLoadingState());
 
-      if (movieId == null) {
-        throw ApiException(
-          message: 'Movie ID is required',
-          statusCode: 400,
-          errorCode: 'MISSING_MOVIE_ID',
-        );
-      }
-
       final movie = await movieRepository.getMovieDetails(movieId);
 
       try {
@@ -151,8 +143,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
 
   Future<void> retryLoadingSimilarMovies(int movieId) async {
     try {
-      if (movieId == null) return;
-
       final similarMovies = await movieRepository.getSimilarMovies(movieId);
 
       if (state is MovieDetailsPartialSuccessState) {
