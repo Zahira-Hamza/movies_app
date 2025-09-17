@@ -13,4 +13,5 @@ class AppColors {
   static const Color transparent = Colors.transparent;
   static const Color offWhite = Color(0xFFADADAD);
 
+
 }

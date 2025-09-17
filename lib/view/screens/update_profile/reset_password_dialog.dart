@@ -6,6 +6,7 @@ import 'package:movies_app/core/utils/validators.dart';
 import 'package:movies_app/data/models/auth/reset_password_request.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
 import 'package:movies_app/view_model/auth/auth_states.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showResetPasswordDialog(BuildContext context) {
   final resetFormKey = GlobalKey<FormState>();
@@ -27,7 +28,7 @@ void showResetPasswordDialog(BuildContext context) {
                 style: TextStyle(
                   color: AppColors.yellowPrimaryColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                 ),
               ),
             ),
@@ -48,7 +49,7 @@ void showResetPasswordDialog(BuildContext context) {
                         filled: true,
                         fillColor: AppColors.semigrey,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         suffixIcon: GestureDetector(
                           onTap: () {
@@ -71,7 +72,7 @@ void showResetPasswordDialog(BuildContext context) {
                         return Validators.validatePassword(value);
                       },
                     ),
-                    SizedBox(height: 14),
+                    SizedBox(height: 14.h),
                     TextFormField(
                       controller: newPasswordController,
                       decoration: InputDecoration(
@@ -81,7 +82,7 @@ void showResetPasswordDialog(BuildContext context) {
                         filled: true,
                         fillColor: Color(0xFF252525),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                         suffixIcon: GestureDetector(
                           onTap: () {
@@ -93,7 +94,7 @@ void showResetPasswordDialog(BuildContext context) {
                             newObsecure
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: Colors.white70,
+                            color: AppColors.white,
                           ),
                         ),
                       ),
@@ -134,10 +135,11 @@ void showResetPasswordDialog(BuildContext context) {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.yellowPrimaryColor,
                     foregroundColor: AppColors.blackPrimaryColor,
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
                     textStyle: TextStyle(fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                   ),
                   onPressed: () {
