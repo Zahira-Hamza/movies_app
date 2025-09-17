@@ -6,6 +6,7 @@ class CustomFilmPoster extends StatelessWidget {
   final String rating;
   final double? height;
   final double? width;
+  final VoidCallback onTap; // إضافة الخاصية الجديدة
 
   const CustomFilmPoster({
     super.key,
@@ -13,55 +14,59 @@ class CustomFilmPoster extends StatelessWidget {
     required this.rating,
     this.height,
     this.width,
+    required this.onTap, // جعلها مطلوبة
   });
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: CachedNetworkImage(
-            imageUrl: imagePath,
-            fit: BoxFit.cover,
-            height: height ?? screenSize.height * 0.26,
-            width: width ?? screenSize.width * 0.33,
-            placeholder: (context, url) =>
-                const Center(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-          ),
-        ),
-        Positioned(
-          top: 5,
-          left: 5,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(10),
+    return InkWell( // استخدام InkWell لجعله قابلاً للضغط
+      onTap: onTap, // ربط onTap بالدالة التي سيتم تمريرها
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: CachedNetworkImage(
+              imageUrl: imagePath,
+              fit: BoxFit.cover,
+              height: height ?? screenSize.height * 0.26,
+              width: width ?? screenSize.width * 0.33,
+              placeholder: (context, url) =>
+              const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            child: Row(
-              children: [
-                Text(
-                  rating,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
-                ),
-                const SizedBox(width: 4),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'assets/images/star.png',
-                    height: 15,
-                    width: 15,
-                    fit: BoxFit.contain,
+          ),
+          Positioned(
+            top: 5,
+            left: 5,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    rating,
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 4),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset(
+                      'assets/images/star.png',
+                      height: 15,
+                      width: 15,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

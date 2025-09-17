@@ -56,7 +56,6 @@ dependencies:
   logger: ^2.6.0
   retrofit: ^4.6.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
