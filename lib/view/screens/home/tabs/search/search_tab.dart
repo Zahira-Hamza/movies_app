@@ -76,22 +76,14 @@ class _SearchTabState extends State<SearchTab> {
                     itemCount: state.movies.length,
                     itemBuilder: (context, index) {
                       final movie = state.movies[index];
-                      return InkWell(
+                      return CustomFilmPoster(
+                        imagePath: movie.poster ?? '',
+                        rating: (movie.rating ?? 0).toString(),
+                        height: 0.3.sh,
+                        width: 0.4.sw,
                         onTap: () {
-                          Navigator.push(
-                            context,
-                           MaterialPageRoute(
-                               builder: (context) => MovieDetailsPage(
-                                  movieId: movie.id ?? 0,),
-                                  ),
-                          );
+                          Navigator.push(context, MaterialPageRoute( builder: (_) => MovieDetailsPage(movieId: movie.id),));
                         },
-                        child: CustomFilmPoster(
-                          imagePath: movie.poster ?? '',
-                          rating: (movie.rating ?? 0).toString(),
-                          height: 0.3.sh,
-                          width: 0.4.sw,
-                        ),
                       );
                     },
                   );

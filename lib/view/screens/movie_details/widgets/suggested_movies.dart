@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/routes/app_routes.dart';
 import '../../../../core/constants/styles/app_styles.dart';
 import '../../../../data/models/movies/movie_model.dart';
 import 'custom_film_poster.dart';
@@ -16,12 +17,12 @@ class SuggestedMovies extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 16),
           Text('Similar', style: AppStyles.bold24Roboto),
-          const SizedBox(height: 2),
+          SizedBox(height: 10.h),
           similarMovies.isEmpty
-              ? Container(
+              ? SizedBox(
                   height: 200,
+                  width: double.infinity,
                   child: Center(
                     child: Text('No similar movies found',
                         style: AppStyles.regular16Roboto),
@@ -29,6 +30,7 @@ class SuggestedMovies extends StatelessWidget {
                 )
               : GridView.builder(
                   shrinkWrap: true,
+                  padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -42,7 +44,9 @@ class SuggestedMovies extends StatelessWidget {
                     width: double.infinity,
                     imagePath: similarMovies[index].mediumCoverImage ??
                         '', // استخدام سلسلة فارغة إذا كانت null
-                    rating: similarMovies[index].rating.toStringAsFixed(1),
+                    rating: similarMovies[index].rating.toStringAsFixed(1), onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute);
+                  },
                   ),
                 )
         ],

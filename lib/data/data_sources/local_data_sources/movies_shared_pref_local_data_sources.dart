@@ -13,7 +13,7 @@ class MoviesSharedPrefLocalDataSources {
       final jsonMovies = movies.map((m) => m.toJson()).toList();
       await prefs.setString(_cacheKey, jsonEncode(jsonMovies));
     } catch (e) {
-      throw ApiException("Failed to cache movies: $e");
+      throw APIException("Failed to cache movies: $e");
     }
   }
 
@@ -29,7 +29,7 @@ class MoviesSharedPrefLocalDataSources {
           .map((m) => MoviesModel.fromJson(m as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      throw ApiException("Failed to load cached movies: $e");
+      throw APIException("Failed to load cached movies: $e");
     }
   }
 }

@@ -8,29 +8,28 @@ class SearchCubit extends Cubit<SearchStates> {
   SearchCubit(this.repository) : super(SearchInitial()) {
     loadDefaultMovies();
   }
-
   Future<void> loadDefaultMovies() async {
     emit(SearchLoading());
     try {
       final movies = await repository.getMovies();
       emit(SearchLoaded(movies));
     } catch (e) {
-      emit(SearchError("Failed to load movies: $e"));
+      emit(SearchError(e.toString()));
     }
   }
-
   Future<void> searchMovies(String query) async {
-    if (query.isEmpty) {
-      await loadDefaultMovies();
-      return;
-    }
+  if (query.isEmpty) {
+    loadDefaultMovies();
+    return;
+  }
 
-    emit(SearchLoading());
-    try {
-      final movies = await repository.searchMovies(query);
-      emit(SearchLoaded(movies));
-    } catch (e) {
-      emit(SearchError("Search failed: $e"));
-    }
+  emit(SearchLoading());
+  try {
+    final movies = await repository.getMoviesNew(query: query);
+    emit(SearchLoaded(movies));
+  } catch (e) {
+    emit(SearchError(e.toString()));
   }
 }
+}
+
