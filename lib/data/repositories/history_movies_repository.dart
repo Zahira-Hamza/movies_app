@@ -17,4 +17,14 @@ class HistoryMoviesRepository {
       return Left(Failure(exception.message));
     }
   }
+
+   Future<Either<Failure, void>> addToRecentMovies(MovieBasicInfo movie) async {
+    try {
+          await moviesSharedPrefLocalDataSources.addToRecentMovies(movie);
+
+      return Right(null);
+    } on AppException catch (exception) {
+      return Left(Failure(exception.message));
+    }
+  }
 }

@@ -21,8 +21,6 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-
-
   final List<String> avatars = const [
     AppAssets.avatar1,
     AppAssets.avatar2,
@@ -35,9 +33,10 @@ class _ProfileTabState extends State<ProfileTab> {
     AppAssets.avatar9,
   ];
 
-  List<MovieBasicInfo> favMovies=[]; 
-  int avatarId=0;
-  String name ='';
+  List<MovieBasicInfo> favMovies = [];
+  List<MovieBasicInfo> recentMovies = [];
+  int avatarId = 0;
+  String name = '';
 
   @override
   Widget build(BuildContext context) {
@@ -57,88 +56,87 @@ class _ProfileTabState extends State<ProfileTab> {
             }
           },
           builder: (context, state) {
-            
-            
-            if (state is GetProfileSuccess || state is GetFavMoviesSuccess || state is GetProfileSuccess) {
+            if (state is GetFavMoviesSuccess || state is GetProfileSuccess) {
               avatarId = context.read<ProfileCubit>().user!.avaterId;
               name = context.read<ProfileCubit>().user!.name;
-              favMovies =
-                  context.read<ProfileCubit>().favMovies;
+              favMovies = context.read<ProfileCubit>().favMovies;
+              recentMovies = context.read<ProfileCubit>().historyMovies;
             }
             final safeIndex = (avatarId).clamp(0, avatars.length - 1);
             return Column(
-                children: [
-                  SizedBox(height: 52.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(children: [
-                          Column(
-                            children: [
-                              Image.asset(
-                                avatars[safeIndex],
-                                height: 118.h,
-                                fit: BoxFit.fill,
-                              ),
-                              SizedBox(height: 15.h),
-                              Text(
-                                name,
-                                style: AppStyles.bold20white,
-                              ),
-                            ],
-                          )
-                        ]),
+              children: [
+                SizedBox(height: 52.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(children: [
                         Column(
                           children: [
+                            Image.asset(
+                              avatars[safeIndex],
+                              height: 118.h,
+                              fit: BoxFit.fill,
+                            ),
+                            SizedBox(height: 15.h),
                             Text(
-                                '${context.read<ProfileCubit>().favMovies.length}',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 32.sp)),
-                            SizedBox(height: 20.h),
-                            Text('Wish List',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 22.sp)),
+                              name,
+                              style: AppStyles.bold20white,
+                            ),
                           ],
-                        ),
-                        Column(
-                          children: [
-                            Text('10',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 32.sp)),
-                            SizedBox(height: 20.h),
-                            Text('History',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 22.sp)),
-                          ],
-                        ),
-                      ],
-                    ),
+                        )
+                      ]),
+                      Column(
+                        children: [
+                          Text(
+                              '${context.read<ProfileCubit>().favMovies.length}',
+                              style: AppStyles.bold20white
+                                  .copyWith(fontSize: 32.sp)),
+                          SizedBox(height: 20.h),
+                          Text('Wish List',
+                              style: AppStyles.bold20white
+                                  .copyWith(fontSize: 22.sp)),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('${recentMovies.length}',
+                              style: AppStyles.bold20white
+                                  .copyWith(fontSize: 32.sp)),
+                          SizedBox(height: 20.h),
+                          Text('History',
+                              style: AppStyles.bold20white
+                                  .copyWith(fontSize: 22.sp)),
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 23.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                    child: Row(
-                      children: [
-                        CustomeElevatedButton(
-                          label: 'Edit Profile',
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(AppRoutes.updateProfileScreenRoute);
-                          },
-                          width: 253.w,
-                        ),
-                        SizedBox(width: 10.w),
-                        ElevatedButton(
+                ),
+                SizedBox(height: 23.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                  child: Row(
+                    children: [
+                      CustomeElevatedButton(
+                        label: 'Edit Profile',
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(AppRoutes.updateProfileScreenRoute);
+                        },
+                        width: 253.w,
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 8.w, vertical: 8.h),
+                                horizontal: 8, vertical: 8),
                             backgroundColor: AppColors.red,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            fixedSize: Size(135.w, 56.h),
+                            fixedSize: Size(double.infinity, 56),
                           ),
                           onPressed: () {},
                           child: Row(
@@ -150,73 +148,76 @@ class _ProfileTabState extends State<ProfileTab> {
                                   color: AppColors.white, size: 20.sp),
                             ],
                           ),
-                        )
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 33.h),
+                TabBar(
+                  dividerColor: AppColors.transparent,
+                  indicatorColor: AppColors.yellowPrimaryColor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  isScrollable: false,
+                  tabs: [
+                    Column(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.whishIcon,
+                          fit: BoxFit.scaleDown,
+                        ),
+                        SizedBox(height: 10.h),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 18.0.h),
+                          child: Text('Wish List',
+                              style: AppStyles.regular20white),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.historyIcon,
+                          fit: BoxFit.scaleDown,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 18.0.h),
+                          child:
+                              Text('History', style: AppStyles.regular20white),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    color: AppColors.blackPrimaryColor,
+                    child: TabBarView(
+                      children: [
+                        favMovies.isEmpty
+                            ? Center(
+                                child: Image.asset(
+                                  AppAssets.emptyMovies,
+                                  height: 124.h,
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                            : FavOrHistoryMovies(movies: favMovies),
+                        recentMovies.isEmpty
+                            ? Center(
+                                child: Image.asset(
+                                  AppAssets.emptyMovies,
+                                  height: 124.h,
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                            : FavOrHistoryMovies(movies: recentMovies),
                       ],
                     ),
                   ),
-                  SizedBox(height: 33.h),
-                  TabBar(
-                    dividerColor: AppColors.transparent,
-                    indicatorColor: AppColors.yellowPrimaryColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    isScrollable: false,
-                    tabs: [
-                      Column(
-                        children: [
-                          SvgPicture.asset(
-                            AppAssets.whishIcon,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          SizedBox(height: 10.h),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 18.0.h),
-                            child: Text('Wish List',
-                                style: AppStyles.regular20white),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          SvgPicture.asset(
-                            AppAssets.historyIcon,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 18.0.h),
-                            child: Text('History',
-                                style: AppStyles.regular20white),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: AppColors.blackPrimaryColor,
-                      child: TabBarView(
-                        children: [
-                          favMovies.isEmpty
-                              ? Center(
-                                  child: Image.asset(
-                                    AppAssets.emptyMovies,
-                                    height: 124.h,
-                                    fit: BoxFit.fill,
-                                  ),
-                                )
-                              : FavOrHistoryMovies(movies: favMovies),
-                          Center(
-                            child: Image.asset(
-                              AppAssets.emptyMovies,
-                              height: 124.h,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
+                ),
+              ],
+            );
           },
         ),
       ),

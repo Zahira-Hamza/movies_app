@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-
 class CustomFilmPoster extends StatelessWidget {
   final String imagePath;
   final String rating;
   final double? height;
   final double? width;
-  final VoidCallback onTap; 
+  final VoidCallback onTap;
 
   const CustomFilmPoster({
     super.key,
@@ -21,8 +20,8 @@ class CustomFilmPoster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
-    return InkWell( 
-      onTap: onTap, 
+    return InkWell(
+      onTap: onTap,
       child: Stack(
         children: [
           ClipRRect(
@@ -33,7 +32,7 @@ class CustomFilmPoster extends StatelessWidget {
               height: height ?? screenSize.height * 0.26,
               width: width ?? screenSize.width * 0.33,
               placeholder: (context, url) =>
-              const Center(child: CircularProgressIndicator()),
+                  const Center(child: CircularProgressIndicator()),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),

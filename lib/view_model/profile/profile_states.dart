@@ -52,3 +52,15 @@ class GetFavMoviesError extends ProfileStates {
 }
 
 
+class GetRecentMoviesLoading extends ProfileStates {}
+
+class GetRecentMoviesSuccess extends ProfileStates {}
+
+class GetRecentMoviesError extends ProfileStates {
+  final String message;
+
+  GetRecentMoviesError(this.message);
+}
+
+
+

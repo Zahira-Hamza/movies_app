@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<ProfileCubit>(context).getProfileWithFavMovies();
+      BlocProvider.of<ProfileCubit>(context).getProfileWithMovies();
     });
     super.initState();
   }
