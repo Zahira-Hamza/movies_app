@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
@@ -39,6 +41,13 @@ class _ProfileTabState extends State<ProfileTab> {
   String name = '';
 
   @override
+  void initState() {
+    log('i am in init');
+    favMovies=context.read<ProfileCubit>().favMovies;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.grey2,
@@ -62,6 +71,7 @@ class _ProfileTabState extends State<ProfileTab> {
               favMovies = context.read<ProfileCubit>().favMovies;
               recentMovies = context.read<ProfileCubit>().historyMovies;
             }
+            log('${favMovies.length}');
             final safeIndex = (avatarId).clamp(0, avatars.length - 1);
             return Column(
               children: [
