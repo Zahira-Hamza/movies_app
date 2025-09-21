@@ -2,9 +2,6 @@ abstract class FavMoviesStates {}
 
 class FavMoviesInitial extends FavMoviesStates {}
 
-class GetFavMoviesLoading extends FavMoviesStates {}
-
-class GetFavMoviesSuccess extends FavMoviesStates {}
 
 class FavMoviesError extends FavMoviesStates {
   final String message;

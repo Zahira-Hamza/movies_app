@@ -10,7 +10,7 @@ import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_states.dart';
 
 import '../../../../../core/routes/app_routes.dart';
-import '../../../movie_details/widgets/custom_film_poster.dart';
+import '../../../../widgets/movies/custom_film_poster.dart';
 
 class HomeTab extends StatefulWidget {
   final int selectedCategoryIndex;
