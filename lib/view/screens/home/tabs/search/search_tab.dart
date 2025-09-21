@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/custom_film_poster.dart';
+import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 import 'package:movies_app/view_model/search/search_cubit.dart';
 import 'package:movies_app/view_model/search/search_states.dart';
 

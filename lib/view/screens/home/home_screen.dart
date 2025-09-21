@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/view/screens/home/tabs/browse/browse_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/home/home_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/profile/profile_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/search/search_tab.dart';
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
 
 import '../../../core/constants/styles/app_assets.dart';
 import '../../../core/constants/styles/app_colors.dart';
@@ -19,6 +21,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   int selectedCategoryIndex = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<ProfileCubit>(context).getProfileWithFavMovies();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

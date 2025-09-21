@@ -7,6 +7,7 @@ import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
 import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/fav_movies_states.dart';
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
 
 import '../../../../core/constants/styles/app_assets.dart';
 import '../../../../core/constants/styles/app_colors.dart';
@@ -140,9 +141,10 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                             movieId: widget.movie.id.toString(),
                             name: widget.movie.title,
                             rating: widget.movie.rating,
-                            imageUrl: widget.movie.backgroundImage!,
+                            imageUrl: widget.movie.largeCoverImage!,
                             year: widget.movie.year.toString()));
                   }
+                  context.read<ProfileCubit>().getFavMovies();
                 },
                 icon: Icon(
                   isFav! ? Icons.bookmark : Icons.bookmark_border,
