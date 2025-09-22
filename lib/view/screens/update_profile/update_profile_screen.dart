@@ -85,13 +85,17 @@ class _UpdateProfileState extends State<UpdateProfile> {
             SizedBox(
               height: 37.h,
             ),
-            BlocBuilder<ProfileCubit, ProfileStates>(
-              builder: (context, state) {
-              if (state is GetProfileSuccess) {
-                currentAvatar = context.read<ProfileCubit>().user!.avaterId;
-              }
+            BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
               return GestureDetector(
-                onTap: () => bottomSheet(context),
+                onTap: () async {
+                  final selected = await bottomSheet(context);
+
+                  if (selected != null) {
+                    setState(() {
+                      currentAvatar = selected;
+                    });
+                  }
+                },
                 child: Center(
                   child: Image.asset(
                     avatars[currentAvatar],
@@ -186,6 +190,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               UIUtils.hideLoading(context);
                               UIUtils.showMessage(state.message, context,
                                   AppColors.yellowPrimaryColor);
+                              Navigator.of(context).pop(true);
                             }
                           },
                           child: CustomeElevatedButton(
@@ -217,59 +222,46 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
-  void bottomSheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<int?> bottomSheet(BuildContext context) {
+    return showModalBottomSheet<int>(
       backgroundColor: Colors.transparent,
       context: context,
-      builder: (context) {
+      builder: (ctx) {
         return Padding(
           padding: EdgeInsets.all(14.0.w),
           child: Container(
             padding: EdgeInsets.all(16.w),
-            height: MediaQuery.sizeOf(context).height * .42,
+            height: MediaQuery.of(context).size.height * .42,
             decoration: BoxDecoration(
-                color: AppColors.grey,
-                borderRadius: BorderRadius.circular(24.r)),
-            child: Column(
-              children: [
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: avatars.length,
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 19,
-                      crossAxisSpacing: 18,
+              color: AppColors.grey,
+              borderRadius: BorderRadius.circular(24.r),
+            ),
+            child: GridView.builder(
+              itemCount: avatars.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 19,
+                crossAxisSpacing: 18,
+              ),
+              itemBuilder: (context, index) {
+                final isSelected = index == currentAvatar;
+                return InkWell(
+                  onTap: () => Navigator.of(ctx).pop(index),
+                  child: Container(
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: isSelected
+                          ? AppColors.yellowPrimaryColor
+                          : Colors.transparent,
+                      border: Border.all(color: AppColors.yellowPrimaryColor),
                     ),
-                    itemBuilder: (context, index) {
-                      bool isSeleected = index == currentAvatar;
-
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            currentAvatar = index;
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: isSeleected
-                                ? AppColors.yellowPrimaryColor
-                                : Colors.transparent,
-                            border:
-                                Border.all(color: AppColors.yellowPrimaryColor),
-                          ),
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage(avatars[index]),
-                          ),
-                        ),
-                      );
-                    },
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(avatars[index]),
+                    ),
                   ),
-                )
-              ],
+                );
+              },
             ),
           ),
         );

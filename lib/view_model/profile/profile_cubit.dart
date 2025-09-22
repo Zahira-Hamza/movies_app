@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/data/models/auth/user_model.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
@@ -44,7 +46,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
         user = data;
       },
     );
-    
+
     final recentMoviesResult = await _historyRepository.getRecentMovies();
     recentMoviesResult.fold(
         (faliure) => emit(GetProfileError(faliure.errorMessage)), (result) {
@@ -82,11 +84,48 @@ class ProfileCubit extends Cubit<ProfileStates> {
   }
 
   Future<void> addToRecentMovies(MovieBasicInfo movie) async {
+    log('🎬 Adding movie to recent: ${movie.name}');
     emit(GetRecentMoviesLoading());
-    final recentMoviesResult = await _historyRepository.addToRecentMovies(movie);
+
+    final recentMoviesResult =
+        await _historyRepository.addToRecentMovies(movie);
+
     recentMoviesResult.fold(
-        (faliure) => emit(GetRecentMoviesError(faliure.errorMessage)), (result) {
+      (failure) => {
+        emit(GetRecentMoviesError(failure.errorMessage))
+      },
+      (result) async {
+        log('✅ Movie added successfully, fetching updated list...');
+        final recentListResult = await _historyRepository.getRecentMovies();
+        recentListResult.fold(
+            (failure) => {
+                  emit(GetRecentMoviesError(failure.errorMessage))
+                }, (recentList) {
+          log('📝 Recent movies count: ${recentList.length}');
+          historyMovies = recentList;
+          emit(GetRecentMoviesSuccess());
+        });
+      },
+    );
+  }
+
+  Future<void> getRecentMovies() async {
+    emit(GetRecentMoviesLoading());
+    final recentListResult = await _historyRepository.getRecentMovies();
+    recentListResult
+        .fold((failure) => emit(GetRecentMoviesError(failure.errorMessage)),
+            (recentList) {
+      historyMovies = recentList;
       emit(GetRecentMoviesSuccess());
     });
   }
+
+  // Future<void> addToRecentMovies(MovieBasicInfo movie) async {
+  //   emit(GetRecentMoviesLoading());
+  //   final recentMoviesResult = await _historyRepository.addToRecentMovies(movie);
+  //   recentMoviesResult.fold(
+  //       (faliure) => emit(GetRecentMoviesError(faliure.errorMessage)), (result) {
+  //     emit(GetRecentMoviesSuccess());
+  //   });
+  // }
 }

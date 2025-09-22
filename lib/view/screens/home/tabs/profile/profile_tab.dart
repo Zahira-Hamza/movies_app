@@ -43,8 +43,10 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     log('i am in init');
-    favMovies=context.read<ProfileCubit>().favMovies;
+    favMovies = context.read<ProfileCubit>().favMovies;
     super.initState();
+    context.read<ProfileCubit>().getRecentMovies();
+    context.read<ProfileCubit>().getFavMovies();
   }
 
   @override
@@ -62,14 +64,20 @@ class _ProfileTabState extends State<ProfileTab> {
               UIUtils.showMessage(state.message, context, AppColors.red);
             } else if (state is GetProfileSuccess) {
               UIUtils.hideLoading(context);
+            } else if (state is GetRecentMoviesSuccess) {
+              log('Recent movies updated successfully');
             }
           },
           builder: (context, state) {
-            if (state is GetFavMoviesSuccess || state is GetProfileSuccess) {
+            if (state is GetFavMoviesSuccess ||
+                state is GetProfileSuccess ||
+                state is UpdateProfileSuccess ||
+                state is GetRecentMoviesSuccess) {
               avatarId = context.read<ProfileCubit>().user!.avaterId;
               name = context.read<ProfileCubit>().user!.name;
               favMovies = context.read<ProfileCubit>().favMovies;
               recentMovies = context.read<ProfileCubit>().historyMovies;
+              log('📱 UI Updated - Recent movies: ${recentMovies.length}, Fav movies: ${favMovies.length}');
             }
             log('${favMovies.length}');
             final safeIndex = (avatarId).clamp(0, avatars.length - 1);

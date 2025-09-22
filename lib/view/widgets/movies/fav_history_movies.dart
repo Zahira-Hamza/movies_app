@@ -18,20 +18,22 @@ class FavOrHistoryMovies extends StatelessWidget {
         mainAxisSpacing: 10.h,
         childAspectRatio: 122 / 180,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      padding:
+          EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 80.h),
       itemCount: movies.length,
       itemBuilder: (context, index) => CustomFilmPoster(
-          imagePath: movies[index].imageUrl,
-          rating: movies[index].rating.toString(),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => MovieDetailsPage(
-                      movieId: int.parse(movies[index].movieId)),
-                ),);
-
-          }),
+        imagePath: movies[index].imageUrl,
+        rating: movies[index].rating.toString(),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  MovieDetailsPage(movieId: int.parse(movies[index].movieId)),
+            ),
+          );
+        },
+      ),
     );
   }
 }

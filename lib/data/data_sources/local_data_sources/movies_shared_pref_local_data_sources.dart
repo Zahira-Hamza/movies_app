@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
@@ -54,24 +55,46 @@ class MoviesSharedPrefLocalDataSources {
     }
   }
 
+  // Future<List<MovieBasicInfo>> getRecentMovies() async {
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     final cachedRecentMovies = prefs.getString(_recentKey);
+
+  //     if (cachedRecentMovies == null) return [];
+
+  //     final recentMoviesList = jsonDecode(cachedRecentMovies);
+
+  //     List<MovieBasicInfo> movies = recentMoviesList
+  //         .map((m) => MovieBasicInfo.fromJson(m as Map<String, dynamic>))
+  //         .toList();
+
+  //     return movies;
+
+  //   } catch (e) {
+  //     throw SharedPrefException("Failed to load recent movies: $e");
+  //   }
+  // }
+
   Future<List<MovieBasicInfo>> getRecentMovies() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final cachedRecentMovies = prefs.getString(_recentKey);
 
-      if (cachedRecentMovies == null) return [];
+      if (cachedRecentMovies == null) return <MovieBasicInfo>[];
+      final recentMoviesList = jsonDecode(cachedRecentMovies) as List;
 
-      final recentMoviesList = jsonDecode(cachedRecentMovies);
-
-      List<MovieBasicInfo> movies = recentMoviesList
-          .map((m) => MovieBasicInfo.fromJson(m as Map<String, dynamic>))
-          .toList();
-
+      List<MovieBasicInfo> movies = [];
+      for (var item in recentMoviesList) {
+        try {
+          final movie = MovieBasicInfo.fromJson(item as Map<String, dynamic>);
+          movies.add(movie);
+        } catch (e) {
+          log(' Failed to parse movie: $e');
+        }
+      }
       return movies;
-      
     } catch (e) {
       throw SharedPrefException("Failed to load recent movies: $e");
     }
   }
 }
-
