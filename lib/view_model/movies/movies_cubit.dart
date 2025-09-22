@@ -1,28 +1,46 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/data/data_sources/local_data_sources/movies_shared_pref_local_data_sources.dart';
 import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
 import 'package:movies_app/data/models/movies/movies_model.dart';
 import 'movies_states.dart';
 
 class MoviesCubit extends Cubit<MoviesState> {
   final MoviesRemoteDataSource dataSource;
+  final MoviesSharedPrefLocalDataSources localDataSource;
   List<MoviesModel> _allMovies = [];
   final Map<String, List<MoviesModel>> _moviesByGenre = {};
   int _currentPage = 1;
   String _currentGenre = '';
   bool _hasMore = true;
 
-  MoviesCubit(this.dataSource) : super(MoviesInitial());
+  MoviesCubit(this.dataSource,this.localDataSource) : super(MoviesInitial());
 
-  Future<void> fetchMovies() async {
+ Future<void> fetchMovies({bool forceRefresh = false}) async {
     emit(MoviesLoading());
     try {
-      _allMovies = await dataSource.fetchMovies();
+      if (!forceRefresh) {
+        final cached = await localDataSource.getCachedMovies();
+        if (cached.isNotEmpty) {
+          _allMovies = cached;
+          emit(MoviesLoaded(
+            movies: List.from(_allMovies),
+            moviesByGenre: _moviesByGenre[_currentGenre]?.toList() ?? [],
+            hasMore: _hasMore,
+          ));
+          return;
+        }
+      }
+      _allMovies = await dataSource.fetchMovies(forceRefresh: true);
+      _allMovies.shuffle();
+      await localDataSource.cacheMovies(_allMovies); 
+
       emit(MoviesLoaded(
-        movies: _allMovies,
-        moviesByGenre: _moviesByGenre.values.expand((x) => x).toList(),
+        movies: List.from(_allMovies),
+        moviesByGenre: _moviesByGenre[_currentGenre]?.toList() ?? [],
+        hasMore: _hasMore,
       ));
     } catch (e) {
-      emit(MoviesError(e.toString()));
+      emit(MoviesError("Failed to fetch movies: $e"));
     }
   }
   // دالة جديدة لبدء التصفح أو تغيير النوع
@@ -34,12 +52,33 @@ class MoviesCubit extends Cubit<MoviesState> {
     emit(MoviesLoading());
     await _fetchNextPage();
   }
-
+  Future<void> refreshMovies() async {
+    try {
+      emit(MoviesLoading());
+      _allMovies = await dataSource.fetchMovies(forceRefresh: true);
+      _allMovies.shuffle();
+      await localDataSource.cacheMovies(_allMovies);
+      if (_currentGenre.isNotEmpty) {
+        _moviesByGenre[_currentGenre] = [];
+        _currentPage = 1;
+        _hasMore = true;
+        await _fetchNextPage();
+      } else {
+        emit(MoviesLoaded(
+          movies: List.from(_allMovies),
+          moviesByGenre: _moviesByGenre[_currentGenre]?.toList() ?? [],
+        ));
+      }
+    } catch (e) {
+      emit(MoviesError("Failed to refresh movies: $e"));
+    }
+    print('MoviesCubit: Movies refreshed successfully');
+  }
   // دالة لتحميل الصفحة التالية من الأفلام
   Future<void> _fetchNextPage() async {
     if (!_hasMore) return;
     try {
-      final newMovies = await dataSource.fetchMovies(genre: _currentGenre, page: _currentPage);
+      final newMovies = await dataSource.fetchMovies(genre: _currentGenre, page: _currentPage, forceRefresh: true);
 
       // خطوة 1: التحقق من أن القائمة الجديدة ليست فارغة
       if (newMovies.isEmpty) {

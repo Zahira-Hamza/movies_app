@@ -11,18 +11,27 @@ class MoviesRemoteDataSource {
     int? limit,
     String? genre,
     String sortBy = "year",
-    String orderBy = "desc",
+    String orderBy = "desc", 
+    required bool forceRefresh,
   }) async {
     try {
+      final Map<String, dynamic> queryParams = {
+        "page": page,
+        "limit": limit,
+        "genre": genre,
+        "sort_by": sortBy,
+        "order_by": orderBy,
+      };
+
+      if (forceRefresh) {
+        queryParams["t"] = DateTime.now().millisecondsSinceEpoch;
+      }
+      
+      queryParams.removeWhere((key, value) => value == null);
+      
       final response = await _dio.get(
         ApiEndpoints.baseUrl + ApiEndpoints.listMovies,
-        queryParameters: {
-          "page": page,
-          "limit": limit,
-          "genre": genre,
-          "sort_by": sortBy,
-          "order_by": orderBy,
-        }..removeWhere((key, value) => value == null),
+        queryParameters: queryParams,
       );
 
       if (response.data["status"] != "ok") {

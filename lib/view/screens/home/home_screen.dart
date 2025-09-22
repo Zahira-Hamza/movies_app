@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/view/screens/home/tabs/browse/browse_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/home/home_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/profile/profile_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/search/search_tab.dart';
+import 'package:movies_app/view_model/movies/movies_cubit.dart';
 
 import '../../../core/constants/styles/app_assets.dart';
 import '../../../core/constants/styles/app_colors.dart';
@@ -19,6 +21,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   int selectedCategoryIndex = 0;
+
+    int? _lastTappedIndex;
+  DateTime? _lastTapTime;
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +63,39 @@ class _HomeScreenState extends State<HomeScreen> {
           child: BottomNavigationBar(
             currentIndex: selectedIndex,
             onTap: (index) {
-              if (index == 0 && selectedIndex != 0) {
-                setState(() {
-                  selectedCategoryIndex = (selectedCategoryIndex + 1) %
-                      CategoryModel.categories.length;
-                });
-              }
-              setState(() {
-                selectedIndex = index;
-              });
-            },
+  final now = DateTime.now();
+  
+  if (index == selectedIndex) {
+    // If tapping the same tab that's already selected
+    if (index == 0) {
+      // Check if this is a double tap (within 500ms)
+      if (_lastTappedIndex == 0 && 
+          _lastTapTime != null && 
+          now.difference(_lastTapTime!) < const Duration(milliseconds: 500)) {
+        // This is a double tap on home tab - refresh movies
+        context.read<MoviesCubit>().refreshMovies();
+        _lastTapTime = null; // Reset to prevent multiple triggers
+      } else {
+        // First tap or tap after delay - just record the time
+        _lastTappedIndex = 0;
+        _lastTapTime = now;
+      }
+    }
+  } else {
+    // Tapping a different tab
+    setState(() {
+      selectedIndex = index;
+    });
+
+    if (index == 0) {
+      setState(() {
+        selectedCategoryIndex = 
+            (selectedCategoryIndex + 1) % CategoryModel.categories.length;
+      });
+    }
+  }
+},
+
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
             elevation: 0,

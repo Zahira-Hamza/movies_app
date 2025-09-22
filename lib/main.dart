@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_theme.dart';
+import 'package:movies_app/data/data_sources/local_data_sources/movies_shared_pref_local_data_sources.dart';
 import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
 
 import 'package:movies_app/data/repositories/movies_repository.dart';
@@ -35,8 +36,8 @@ class MoviesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-
-    final movieRepository = MoviesRepository(dio);
+    final localDataSource = MoviesSharedPrefLocalDataSources();
+    final movieRepository = MoviesRepository(dio, localDataSource);
 
     return ScreenUtilInit(
       designSize: const Size(430, 932),
@@ -53,14 +54,14 @@ class MoviesApp extends StatelessWidget {
             ),
             BlocProvider(create: (context) => FavMoviesCubit()),
             BlocProvider<MoviesCubit>(
-              create: (context) => MoviesCubit(MoviesRemoteDataSource()),
+              create: (context) => MoviesCubit(MoviesRemoteDataSource(),MoviesSharedPrefLocalDataSources()),
             ),
             BlocProvider<MovieDetailsCubit>(
               create: (context) =>
                   MovieDetailsCubit(movieRepository: movieRepository),
             ),
             BlocProvider<SearchCubit>(
-              create: (context) => SearchCubit(MoviesRepository(Dio())),
+              create: (context) => SearchCubit(movieRepository),
             ),
           ],
           child: MaterialApp(

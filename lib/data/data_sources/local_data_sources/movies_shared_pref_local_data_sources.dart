@@ -32,6 +32,10 @@ class MoviesSharedPrefLocalDataSources {
       throw APIException("Failed to load cached movies: $e");
     }
   }
+  Future<void> clearMoviesCache() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('cached_movies');
+}
 }
 // import 'dart:convert';
 //
