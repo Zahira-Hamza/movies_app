@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
@@ -40,22 +41,25 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   void initState() {
-    favMovies = context.read<ProfileCubit>().favMovies;
     super.initState();
+    final cubit = context.read<ProfileCubit>();
+    if (cubit.user == null) {
+      cubit.getProfileWithMovies();
+    }
+    favMovies = cubit.favMovies;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.grey2,
-      padding: EdgeInsets.only(top: 52.h),
+      padding: EdgeInsets.only(top: 52.h, bottom: 0),
       child: DefaultTabController(
         length: 2,
         child: BlocConsumer<ProfileCubit, ProfileStates>(
+          listenWhen: (previous, current) => true,
           listener: (context, state) {
-            if (state is GetProfileLoading ||
-                state is GetFavMoviesLoading ||
-                state is RecentMoviesLoading) {
+            if (state is GetProfileLoading) {
               UIUtils.showLoading(context);
             } else if (state is GetProfileError) {
               UIUtils.hideLoading(context);
@@ -77,166 +81,238 @@ class _ProfileTabState extends State<ProfileTab> {
               recentMovies = context.read<ProfileCubit>().historyMovies;
             }
             final safeIndex = (avatarId).clamp(0, avatars.length - 1);
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(children: [
+            return NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (OverscrollIndicatorNotification overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(children: [
+                            SizedBox(
+                              width: .4.sw,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  BlocBuilder<ProfileCubit, ProfileStates>(
+                                    builder: (context, state) {
+                                      if (state is GetProfileLoading) {
+                                        return SizedBox.shrink();
+                                      } else {
+                                        return Visibility(
+                                          visible: context
+                                                  .read<ProfileCubit>()
+                                                  .user !=
+                                              null,
+                                          child: Image.asset(
+                                            avatars[safeIndex],
+                                            height: 118.h,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(height: 15.h),
+                                  Text(
+                                    name,
+                                    style: AppStyles.bold20white,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ]),
                           Column(
                             children: [
-                              Image.asset(
-                                avatars[safeIndex],
-                                height: 118.h,
-                                fit: BoxFit.fill,
-                              ),
-                              SizedBox(height: 15.h),
                               Text(
-                                name,
-                                style: AppStyles.bold20white,
+                                  '${context.read<ProfileCubit>().favMovies.length}',
+                                  style: AppStyles.bold20white
+                                      .copyWith(fontSize: 32.sp)),
+                              SizedBox(height: 20.h),
+                              Text('Wish List',
+                                  style: AppStyles.bold20white
+                                      .copyWith(fontSize: 22.sp)),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text('${recentMovies.length}',
+                                  style: AppStyles.bold20white
+                                      .copyWith(fontSize: 32.sp)),
+                              SizedBox(height: 20.h),
+                              Text('History',
+                                  style: AppStyles.bold20white
+                                      .copyWith(fontSize: 22.sp)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 23.h),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                      child: Row(
+                        children: [
+                          CustomeElevatedButton(
+                            label: 'Edit Profile',
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                  AppRoutes.updateProfileScreenRoute);
+                            },
+                            width: 253.w,
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 8),
+                                backgroundColor: AppColors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                fixedSize: Size(double.infinity, 56),
+                              ),
+                              onPressed: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AlertDialog(
+                                        backgroundColor: AppColors.boldgrey,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                        ),
+                                        content: Text(
+                                          'Are you sure you want to exit the app ?',
+                                          style: AppStyles.bold20white,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                SystemNavigator.pop();
+                                              },
+                                              style: ButtonStyle(
+                                                  shape: WidgetStatePropertyAll(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadiusGeometry
+                                                                  .circular(
+                                                                      12.r))),
+                                                  backgroundColor:
+                                                      WidgetStatePropertyAll(
+                                                          AppColors.red)),
+                                              child: Text(
+                                                'Exit',
+                                                style: AppStyles.bold24Roboto,
+                                              )),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text(
+                                                'Cancel',
+                                                style:
+                                                    AppStyles.regular16Roboto,
+                                              )),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Exit', style: AppStyles.regular20white),
+                                  SizedBox(width: 10.w),
+                                  Icon(Icons.logout,
+                                      color: AppColors.white, size: 20.sp),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 33.h),
+                  ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _SliverTabBarDelegate(
+                      height: 90.h,
+                      TabBar(
+                        dividerColor: AppColors.transparent,
+                        indicatorColor: AppColors.yellowPrimaryColor,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: [
+                          Column(
+                            children: [
+                              SvgPicture.asset(AppAssets.whishIcon,
+                                  fit: BoxFit.scaleDown),
+                              SizedBox(height: 10.h),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 18.0.h),
+                                child: Text('Wish List',
+                                    style: AppStyles.regular20white),
                               ),
                             ],
-                          )
-                        ]),
-                        Column(
-                          children: [
-                            Text(
-                                '${context.read<ProfileCubit>().favMovies.length}',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 32.sp)),
-                            SizedBox(height: 20.h),
-                            Text('Wish List',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 22.sp)),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text('${recentMovies.length}',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 32.sp)),
-                            SizedBox(height: 20.h),
-                            Text('History',
-                                style: AppStyles.bold20white
-                                    .copyWith(fontSize: 22.sp)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: 23.h),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                    child: Row(
-                      children: [
-                        CustomeElevatedButton(
-                          label: 'Edit Profile',
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(AppRoutes.updateProfileScreenRoute);
-                          },
-                          width: 253.w,
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 8),
-                              backgroundColor: AppColors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              fixedSize: Size(double.infinity, 56),
-                            ),
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Exit', style: AppStyles.regular20white),
-                                SizedBox(width: 10.w),
-                                Icon(Icons.logout,
-                                    color: AppColors.white, size: 20.sp),
-                              ],
-                            ),
                           ),
-                        )
-                      ],
+                          Column(
+                            children: [
+                              SvgPicture.asset(AppAssets.historyIcon,
+                                  fit: BoxFit.scaleDown),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 18.0.h),
+                                child: Text('History',
+                                    style: AppStyles.regular20white),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(height: 33.h),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _SliverTabBarDelegate(
-                    height: 90.h,
-                    TabBar(
-                      dividerColor: AppColors.transparent,
-                      indicatorColor: AppColors.yellowPrimaryColor,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      tabs: [
-                        Column(
-                          children: [
-                            SvgPicture.asset(AppAssets.whishIcon,
-                                fit: BoxFit.scaleDown),
-                            SizedBox(height: 10.h),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 18.0.h),
-                              child: Text('Wish List',
-                                  style: AppStyles.regular20white),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            SvgPicture.asset(AppAssets.historyIcon,
-                                fit: BoxFit.scaleDown),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 18.0.h),
-                              child: Text('History',
-                                  style: AppStyles.regular20white),
-                            ),
-                          ],
-                        ),
-                      ],
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 800.h,
+                      child: TabBarView(
+                        children: [
+                          favMovies.isEmpty
+                              ? Center(
+                                  child: Image.asset(
+                                    AppAssets.emptyMovies,
+                                    height: 124.h,
+                                    fit: BoxFit.fill,
+                                  ),
+                                )
+                              : FavOrHistoryMovies(
+                                  movies: favMovies.reversed.toList()),
+                          recentMovies.isEmpty
+                              ? Center(
+                                  child: Image.asset(
+                                    AppAssets.emptyMovies,
+                                    height: 124.h,
+                                    fit: BoxFit.fill,
+                                  ),
+                                )
+                              : FavOrHistoryMovies(movies: recentMovies),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverFillRemaining(
-                  child: TabBarView(
-                    children: [
-                      favMovies.isEmpty
-                          ? Center(
-                              child: Image.asset(
-                                AppAssets.emptyMovies,
-                                height: 124.h,
-                                fit: BoxFit.fill,
-                              ),
-                            )
-                          : FavOrHistoryMovies(
-                              movies: favMovies.reversed.toList()),
-                      recentMovies.isEmpty
-                          ? Center(
-                              child: Image.asset(
-                                AppAssets.emptyMovies,
-                                height: 124.h,
-                                fit: BoxFit.fill,
-                              ),
-                            )
-                          : FavOrHistoryMovies(movies: recentMovies),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),

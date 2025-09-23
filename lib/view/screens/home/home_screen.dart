@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/view/screens/home/tabs/browse/browse_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/home/home_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/profile/profile_tab.dart';
 import 'package:movies_app/view/screens/home/tabs/search/search_tab.dart';
-import 'package:movies_app/view_model/profile/profile_cubit.dart';
 
 import '../../../core/constants/styles/app_assets.dart';
 import '../../../core/constants/styles/app_colors.dart';
@@ -23,12 +21,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedCategoryIndex = 0;
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<ProfileCubit>(context).getProfileWithMovies();
-    });
-    super.initState();
-  }
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     BlocProvider.of<ProfileCubit>(context).getProfileWithMovies();
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(15.r), // responsive radius
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha:  0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 10.r,
                 offset: const Offset(0, -2),
               ),

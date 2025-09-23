@@ -11,28 +11,34 @@ class FavOrHistoryMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10.w,
-        mainAxisSpacing: 10.h,
-        childAspectRatio: 122 / 180,
-      ),
-      padding:
-          EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 80.h),
-      itemCount: movies.length,
-      itemBuilder: (context, index) => CustomFilmPoster(
-        imagePath: movies[index].imageUrl,
-        rating: movies[index].rating.toString(),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) =>
-                  MovieDetailsPage(movieId: int.parse(movies[index].movieId)),
-            ),
-          );
-        },
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (OverscrollIndicatorNotification overscroll) {
+        overscroll.disallowIndicator();
+        return true;
+      },
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10.w,
+          mainAxisSpacing: 10.h,
+          childAspectRatio: 122 / 180,
+        ),
+        padding:
+            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 80.h),
+        itemCount: movies.length,
+        itemBuilder: (context, index) => CustomFilmPoster(
+          imagePath: movies[index].imageUrl,
+          rating: movies[index].rating.toString(),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    MovieDetailsPage(movieId: int.parse(movies[index].movieId)),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
