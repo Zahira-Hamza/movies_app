@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -144,6 +145,7 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                             imageUrl: widget.movie.largeCoverImage!,
                             year: widget.movie.year.toString()));
                   }
+                  
                   context.read<ProfileCubit>().getFavMovies();
                 },
                 icon: Icon(

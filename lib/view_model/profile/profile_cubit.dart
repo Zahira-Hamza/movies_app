@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/data/models/auth/user_model.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
@@ -44,7 +46,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
         user = data;
       },
     );
-    
+
     final recentMoviesResult = await _historyRepository.getRecentMovies();
     recentMoviesResult.fold(
         (faliure) => emit(GetProfileError(faliure.errorMessage)), (result) {
@@ -77,15 +79,18 @@ class ProfileCubit extends Cubit<ProfileStates> {
     favMoviesResult.fold(
         (faliure) => emit(GetFavMoviesError(faliure.errorMessage)), (result) {
       emit(GetFavMoviesSuccess());
+      log('${result.length}');
       favMovies = result;
     });
   }
 
   Future<void> addToRecentMovies(MovieBasicInfo movie) async {
     emit(GetRecentMoviesLoading());
-    final recentMoviesResult = await _historyRepository.addToRecentMovies(movie);
-    recentMoviesResult.fold(
-        (faliure) => emit(GetRecentMoviesError(faliure.errorMessage)), (result) {
+    final recentMoviesResult =
+        await _historyRepository.addToRecentMovies(movie);
+    recentMoviesResult
+        .fold((faliure) => emit(GetRecentMoviesError(faliure.errorMessage)),
+            (result) {
       emit(GetRecentMoviesSuccess());
     });
   }

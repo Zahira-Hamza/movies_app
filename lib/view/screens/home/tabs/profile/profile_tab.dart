@@ -55,12 +55,12 @@ class _ProfileTabState extends State<ProfileTab> {
         length: 2,
         child: BlocConsumer<ProfileCubit, ProfileStates>(
           listener: (context, state) {
-            if (state is GetProfileLoading) {
+            if (state is GetProfileLoading || state is GetFavMoviesLoading ) {
               UIUtils.showLoading(context);
             } else if (state is GetProfileError) {
               UIUtils.hideLoading(context);
               UIUtils.showMessage(state.message, context, AppColors.red);
-            } else if (state is GetProfileSuccess) {
+            } else if (state is GetProfileSuccess ||state is GetFavMoviesSuccess) {
               UIUtils.hideLoading(context);
             }
           },
