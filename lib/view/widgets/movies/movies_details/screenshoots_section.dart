@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/screen_shot_item.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/screen_shot_item.dart';
 
 class ScreenshotsSection extends StatelessWidget {
   final MovieModel movie;

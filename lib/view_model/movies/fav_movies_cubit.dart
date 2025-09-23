@@ -7,22 +7,11 @@ class FavMoviesCubit extends Cubit<FavMoviesStates> {
   FavMoviesCubit() : super(FavMoviesInitial());
 
   final FavMoviesRepository _favMoviesRepository = FavMoviesRepository();
-  List<MovieBasicInfo> favMoviesIds = [];
 
   Future<void> isFavMovie(String movieId) async {
     final result = await _favMoviesRepository.isFavMovie(movieId);
     result.fold((faliure) => emit(FavMoviesError(faliure.errorMessage)),
         (result) => emit(IsFavMovieSuccess(result)));
-  }
-
-  Future<void> getAllFavMovies() async {
-    emit(GetFavMoviesLoading());
-    final result = await _favMoviesRepository.getAllFavMovies();
-    result.fold((faliure) => emit(FavMoviesError(faliure.errorMessage)),
-        (result) {
-      emit(GetFavMoviesSuccess());
-      favMoviesIds = result;
-    });
   }
 
   Future<void> addToFavMovies(MovieBasicInfo movie) async {

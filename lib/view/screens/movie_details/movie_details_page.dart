@@ -1,19 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/movie_cast.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/movie_description.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/movie_genres.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/movie_info.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/movies_details_header.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/screenshoots_section.dart';
-import 'package:movies_app/view/screens/movie_details/widgets/suggested_movies.dart';
+import 'package:movies_app/data/models/movies/movie_basic_info.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/movie_cast.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/movie_description.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/movie_genres.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/movie_info.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/movies_details_header.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/screenshoots_section.dart';
+import 'package:movies_app/view/widgets/movies/movies_details/suggested_movies.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
-
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import '../../../data/models/movies/movie_model.dart';
 import '../../../view_model/movies/movie_details_cubit.dart';
 
@@ -30,7 +29,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-    log(' Loading movie details for ID: ${widget.movieId}');
     _loadMovieDetails();
   }
 
@@ -100,6 +98,13 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     List<MovieModel> similarMovies,
     MovieDetailsStates state,
   ) {
+    BlocProvider.of<ProfileCubit>(context).addToRecentMovies(MovieBasicInfo(
+        movieId: movie.id.toString(),
+        name: movie.title,
+        rating: movie.rating,
+        imageUrl: movie.largeCoverImage!,
+        year: movie.year.toString()));
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

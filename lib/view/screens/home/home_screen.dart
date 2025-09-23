@@ -26,6 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime? _lastTapTime;
 
   @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     BlocProvider.of<ProfileCubit>(context).getProfileWithMovies();
+  //   });
+  //   super.initState();
+  // }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
       HomeTab(
@@ -54,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(15.r), // responsive radius
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 10.r,
                 offset: const Offset(0, -2),
               ),

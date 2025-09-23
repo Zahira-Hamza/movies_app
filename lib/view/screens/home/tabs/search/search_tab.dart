@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
-import 'package:movies_app/core/routes/app_routes.dart'; // Import AppRoutes
-import 'package:movies_app/view/screens/movie_details/widgets/custom_film_poster.dart';
+import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
+import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 import 'package:movies_app/view_model/search/search_cubit.dart';
 import 'package:movies_app/view_model/search/search_states.dart';
 
@@ -77,17 +77,12 @@ class _SearchTabState extends State<SearchTab> {
                     itemBuilder: (context, index) {
                       final movie = state.movies[index];
                       return CustomFilmPoster(
-                        imagePath: movie.poster ?? '',
-                        rating: (movie.rating ?? 0).toString(),
+                        imagePath: movie.poster ,
+                        rating: (movie.rating).toString(),
                         height: 0.3.sh,
                         width: 0.4.sw,
                         onTap: () {
-                          // Use the helper function instead of direct navigation
-                          AppRoutes.navigateToMovieDetails(
-                            context,
-                            movieId: movie
-                                .id, // Make sure your movie model has an id field
-                          );
+                          Navigator.push(context, MaterialPageRoute( builder: (_) => MovieDetailsPage(movieId: movie.id),));
                         },
                       );
                     },

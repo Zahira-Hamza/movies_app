@@ -257,6 +257,7 @@ class MovieModel {
     if (value == null) return null;
 
     if (value is List) {
+      // معالجة قائمة من URLs
       final screenshots = value
           .map((e) => _parseString(e))
           .where((e) => e.isNotEmpty && e.startsWith('http'))
@@ -266,10 +267,12 @@ class MovieModel {
     }
 
     if (value is String && value.isNotEmpty) {
+      // إذا كان trailer code، إنشاء URL للصورة
       return ['https://img.youtube.com/vi/$value/maxresdefault.jpg'];
     }
 
     if (value is Map<String, dynamic>) {
+      // معالجة هيكل nested للصور
       if (value.containsKey('screenshots') && value['screenshots'] is List) {
         return (value['screenshots'] as List)
             .map((e) => _parseString(e))
@@ -277,6 +280,7 @@ class MovieModel {
             .toList();
       }
 
+      // البحث عن أي قائمة تحتوي على URLs للصور
       for (var key in value.keys) {
         if (value[key] is List) {
           final potentialScreenshots = (value[key] as List)
