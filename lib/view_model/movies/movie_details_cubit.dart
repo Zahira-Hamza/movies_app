@@ -103,9 +103,7 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
   Future<void> getMovieDetails(int movieId) async {
     try {
       emit(MovieDetailsLoadingState());
-
       final movie = await movieRepository.getMovieDetails(movieId);
-
       try {
         final similarMovies = await movieRepository.getSimilarMovies(movieId);
         emit(MovieDetailsSuccessState(
@@ -113,8 +111,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
           similarMovies: similarMovies,
         ));
       } on ApiException catch (e) {
-        print(
-            '⚠️ Partial success: Failed to load similar movies: ${e.message}');
         emit(MovieDetailsPartialSuccessState(
           movie: movie,
           errorMessage: e.message,
@@ -124,8 +120,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
       final isNetworkError =
           e.statusCode == 503 || e.errorCode == 'NETWORK_ERROR';
 
-      print('❌ Movie details error: ${e.message}');
-
       emit(MovieDetailsErrorState(
         errorMessage: e.message,
         statusCode: e.statusCode,
@@ -133,7 +127,6 @@ class MovieDetailsCubit extends Cubit<MovieDetailsStates> {
         isNetworkError: isNetworkError,
       ));
     } catch (e) {
-      print('❌ Unexpected error: $e');
       emit(MovieDetailsErrorState(
         errorMessage: 'An unexpected error occurred: $e',
       ));

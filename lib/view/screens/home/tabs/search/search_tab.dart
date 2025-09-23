@@ -77,8 +77,8 @@ class _SearchTabState extends State<SearchTab> {
                     itemBuilder: (context, index) {
                       final movie = state.movies[index];
                       return CustomFilmPoster(
-                        imagePath: movie.poster ?? '',
-                        rating: (movie.rating ?? 0).toString(),
+                        imagePath: movie.poster ,
+                        rating: (movie.rating).toString(),
                         height: 0.3.sh,
                         width: 0.4.sw,
                         onTap: () {

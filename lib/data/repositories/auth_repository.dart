@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:movies_app/core/constants/errors/faliure.dart';
@@ -27,7 +25,6 @@ class AuthRepository {
   Future<Either<Failure, void>> login(LoginRequest request) async {
     try {
       final response = await _authRemoteDataSource.login(request);
-      log('i am in repo');
       _authSharedPrefLocalDataSources.saveToken(response.token);
       return Right(null);
     } on AppException catch (exception) {

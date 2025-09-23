@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:movies_app/data/models/movies/movie_basic_info.dart';
 import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/fav_movies_states.dart';
 import 'package:movies_app/view_model/profile/profile_cubit.dart';
-
 import '../../../../core/constants/styles/app_assets.dart';
 import '../../../../core/constants/styles/app_colors.dart';
 import '../../../../core/constants/styles/app_styles.dart';
@@ -114,10 +112,12 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.successMessage, context,
                     AppColors.yellowPrimaryColor);
+                context.read<ProfileCubit>().getFavMovies();
               } else if (state is RemoveFromFavSuccess) {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.successMessage, context,
                     AppColors.yellowPrimaryColor);
+                context.read<ProfileCubit>().getFavMovies();
               }
             },
             builder: (context, state) {
@@ -145,8 +145,6 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                             imageUrl: widget.movie.largeCoverImage!,
                             year: widget.movie.year.toString()));
                   }
-                  
-                  context.read<ProfileCubit>().getFavMovies();
                 },
                 icon: Icon(
                   isFav! ? Icons.bookmark : Icons.bookmark_border,

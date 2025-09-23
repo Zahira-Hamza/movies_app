@@ -1,4 +1,3 @@
-
 abstract class ProfileStates {}
 
 class ProfileInitial extends ProfileStates {}
@@ -51,16 +50,12 @@ class GetFavMoviesError extends ProfileStates {
   GetFavMoviesError(this.message);
 }
 
+class RecentMoviesLoading extends ProfileStates {}
 
-class GetRecentMoviesLoading extends ProfileStates {}
+class RecentMoviesSuccess extends ProfileStates {}
 
-class GetRecentMoviesSuccess extends ProfileStates {}
-
-class GetRecentMoviesError extends ProfileStates {
+class RecentMoviesError extends ProfileStates {
   final String message;
 
-  GetRecentMoviesError(this.message);
+  RecentMoviesError(this.message);
 }
-
-
-
