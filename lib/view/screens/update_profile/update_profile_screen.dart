@@ -6,6 +6,7 @@ import 'package:movies_app/core/routes/app_routes.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/validators.dart';
 import 'package:movies_app/data/models/user_profile/update_user_profile_request.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/update_profile/reset_password_dialog.dart';
 import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
@@ -61,7 +62,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         backgroundColor: AppColors.blackPrimaryColor,
         centerTitle: true,
         title: Text(
-          'Pick Avatar',
+          AppLocalizations.of(context)!.pick_avatar,
           style: AppStyles.regular16white
               .copyWith(color: AppColors.yellowPrimaryColor, fontSize: 18),
         ),
@@ -116,7 +117,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       CustomTextFormField(
                         controller: nameController,
                         image: AppAssets.nameIcon,
-                        hint: 'name',
+                        hint: AppLocalizations.of(context)!.name,
                         validator: (value) {
                           return Validators.validateName(value);
                         },
@@ -127,7 +128,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       CustomTextFormField(
                         controller: phoneController,
                         image: AppAssets.phoneIcon,
-                        hint: 'phone',
+                        hint: AppLocalizations.of(context)!.phone_number,
                         validator: (value) {
                           return Validators.validatePhone(value);
                         },
@@ -140,7 +141,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           context,
                         ),
                         child: Text(
-                          'Reset Password',
+                         AppLocalizations.of(context)!.reset_password,
                           style: AppStyles.regular16white.copyWith(
                             color: AppColors.white,
                           ),
@@ -162,7 +163,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           }
                         },
                         child: CustomeElevatedButton(
-                          label: 'Delete Account',
+                          label: AppLocalizations.of(context)!.delete_account,
                           backGrounColor: AppColors.red,
                           labelColor: AppColors.white,
                           onPressed: () {
@@ -188,7 +189,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           }
                         },
                         child: CustomeElevatedButton(
-                          label: 'Update Data',
+                          label: AppLocalizations.of(context)!.update_data,
                           onPressed: () async {
                             if (_updateFormKey.currentState!.validate()) {
                               BlocProvider.of<ProfileCubit>(context)
@@ -287,7 +288,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               ),
               title: Center(
                 child: Text(
-                  'Delete Account',
+                  AppLocalizations.of(context)!.delete_account,
                   style: TextStyle(
                     color: AppColors.red,
                     fontWeight: FontWeight.bold,
@@ -302,7 +303,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       size: 50.sp, color: AppColors.yellowPrimaryColor),
                   SizedBox(height: 16.h),
                   Text(
-                    'Are you sure you want to delete your account ?\n\nThis action cannot be undone.',
+                 AppLocalizations.of(context)!.delete_account_confirmation,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppColors.white, fontSize: 16.sp),
                   ),
@@ -316,7 +317,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
                   ),
                   onPressed: () => Navigator.of(ctx).pop(false),
-                  child: Text('Cancel'),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -331,7 +332,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   onPressed: () {
                     BlocProvider.of<ProfileCubit>(context).deleteProfile();
                   },
-                  child: Text('Delete'),
+                  child: Text(AppLocalizations.of(context)!.delete),
                 ),
               ],
             ),

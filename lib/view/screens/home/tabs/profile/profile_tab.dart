@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +45,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           style:
                               AppStyles.bold20white.copyWith(fontSize: 32.sp)),
                       SizedBox(height: 20.h),
-                      Text('Wish List',
+                      Text(AppLocalizations.of(context)!.wish_list,
                           style:
                               AppStyles.bold20white.copyWith(fontSize: 22.sp)),
                     ],
@@ -55,7 +56,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           style:
                               AppStyles.bold20white.copyWith(fontSize: 32.sp)),
                       SizedBox(height: 20.h),
-                      Text('History',
+                      Text(AppLocalizations.of(context)!.history,
                           style:
                               AppStyles.bold20white.copyWith(fontSize: 22.sp)),
                     ],
@@ -69,7 +70,7 @@ class _ProfileTabState extends State<ProfileTab> {
               child: Row(
                 children: [
                   CustomeElevatedButton(
-                    label: 'Edit Profile',
+                    label: AppLocalizations.of(context)!.delete,
                     onPressed: () {
                       Navigator.of(context)
                           .pushNamed(AppRoutes.updateProfileScreenRoute);
@@ -91,7 +92,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Exit', style: AppStyles.regular20white),
+                        Text(AppLocalizations.of(context)!.delete, style: AppStyles.regular20white),
 
                         SizedBox(width: 10.w),
                         Icon(Icons.logout, color: AppColors.white, size: 20.sp),
@@ -118,7 +119,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 18.0.h),
                       child:
-                          Text('Watch List', style: AppStyles.regular20white),
+                          Text('Wish List', style: AppStyles.regular20white),
                     ),
                   ],
                 ),

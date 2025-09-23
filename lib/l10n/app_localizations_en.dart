@@ -49,4 +49,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login_with_google => 'Login With Google';
+
+  @override
+  String get pick_avatar => 'Pick Avatar';
+
+  @override
+  String get reset_password => 'Reset Password';
+
+  @override
+  String get delete_account => 'Delete Account';
+
+  @override
+  String get update_data => 'Update Data';
+
+  @override
+  String get wish_list => 'Wish List';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get delete_account_confirmation =>
+      'Are you sure you want to delete your account?\n\nThis action cannot be undone';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get old_password => 'Old Password';
+
+  @override
+  String get new_password => 'new Password';
+
+  @override
+  String get reset => 'Reset';
 }

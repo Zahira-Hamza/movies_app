@@ -181,6 +181,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login With Google'**
   String get login_with_google;
+
+  /// No description provided for @pick_avatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Avatar'**
+  String get pick_avatar;
+
+  /// No description provided for @reset_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get reset_password;
+
+  /// No description provided for @delete_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get delete_account;
+
+  /// No description provided for @update_data.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Data'**
+  String get update_data;
+
+  /// No description provided for @wish_list.
+  ///
+  /// In en, this message translates to:
+  /// **'Wish List'**
+  String get wish_list;
+
+  /// No description provided for @history.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
+
+  /// No description provided for @delete_account_confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account?\n\nThis action cannot be undone'**
+  String get delete_account_confirmation;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @old_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Old Password'**
+  String get old_password;
+
+  /// No description provided for @new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'new Password'**
+  String get new_password;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
 }
 
 class _AppLocalizationsDelegate

@@ -4,6 +4,7 @@ import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/core/utils/validators.dart';
 import 'package:movies_app/data/models/auth/reset_password_request.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
 import 'package:movies_app/view_model/auth/auth_states.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +25,7 @@ void showResetPasswordDialog(BuildContext context) {
             backgroundColor: Color(0xFF1C1C1C),
             title: Center(
               child: Text(
-                'Reset Password',
+                AppLocalizations.of(context)!.reset_password,
                 style: TextStyle(
                   color: AppColors.yellowPrimaryColor,
                   fontWeight: FontWeight.bold,
@@ -42,7 +43,7 @@ void showResetPasswordDialog(BuildContext context) {
                     TextFormField(
                       controller: oldPasswordController,
                       decoration: InputDecoration(
-                        labelText: 'Old Password',
+                        labelText: AppLocalizations.of(context)!.old_password,
                         labelStyle: TextStyle(color: AppColors.white),
                         prefixIcon:
                             Icon(Icons.lock_outline, color: AppColors.white),
@@ -76,7 +77,7 @@ void showResetPasswordDialog(BuildContext context) {
                     TextFormField(
                       controller: newPasswordController,
                       decoration: InputDecoration(
-                        labelText: 'New Password',
+                        labelText: AppLocalizations.of(context)!.new_password,
                         labelStyle: TextStyle(color: AppColors.white),
                         prefixIcon: Icon(Icons.vpn_key, color: AppColors.white),
                         filled: true,
@@ -115,7 +116,7 @@ void showResetPasswordDialog(BuildContext context) {
                   foregroundColor: Colors.white70,
                 ),
                 onPressed: () => Navigator.of(ctx).pop(),
-                child: Text('Cancel'),
+                child: Text(AppLocalizations.of(context)!.cancel),
               ),
               BlocListener<AuthCubit, AuthState>(
                 listener: (context, state) {
@@ -150,7 +151,7 @@ void showResetPasswordDialog(BuildContext context) {
                               oldPassword: oldPasswordController.text));
                     }
                   },
-                  child: Text('Reset'),
+                  child: Text(AppLocalizations.of(context)!.reset),
                 ),
               ),
             ],

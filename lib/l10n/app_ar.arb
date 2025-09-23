@@ -56,6 +56,57 @@
 
     "login_with_google": "تسجيل الدخول عبر جوجل",
 
-    "@login_with_google":{}
+    "@login_with_google":{},
 
+    "pick_avatar": "التقط افاتار" ,
+
+    "@pick_avatar": {},
+
+    "reset_password": "اعادة تعيين الباسورد" ,
+
+    "@reset_password": {},
+
+    "delete_account": "حذف الحساب",
+
+    "@delete_account": {},
+
+    "update_data": "تحديث البيانات",
+
+    "@update_data": {},
+
+    "wish_list": "القائمة المفضلة",
+
+    "@history": {},
+
+    "history": "الاحدث",
+
+    "@wish_list": {} ,
+
+  "delete_account_confirmation": "هل أنت متأكد أنك تريد حذف حسابك؟\n\nهذا الإجراء لا يمكن التراجع عنه.",
+
+  "@delete_account_confirmation": {}   , 
+
+    "cancel": "الغاء",
+
+    "@cancel": {}  ,
+
+    "delete": "حذف",
+
+    "@delete": {} ,
+    
+    "old_password": "كلمة السر القديمة",
+
+    "@old_password": {}    ,
+    
+    "new_password": "كلمة السر الجديدة",
+
+    "@new_password": {}  ,
+    
+    "reset": " اعادة تعيين ",
+
+    "@reset": {} ,
+
+    "Edid_profile": "تعديل الملف الشخصى",
+
+    "@Edid_profile": {}   
 }

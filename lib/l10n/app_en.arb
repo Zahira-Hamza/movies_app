@@ -56,6 +56,57 @@
 
     "login_with_google": "Login With Google",
 
-    "@login_with_google": {}
+    "@login_with_google": {},
 
+    "pick_avatar": "Pick Avatar" ,
+
+    "@pick_avatar": {},
+
+    "reset_password": "Reset Password" ,
+
+    "@reset_password": {},
+    
+    "delete_account": "Delete Account" ,
+
+    "@delete_account": {},
+
+    "update_data": "Update Data",
+
+    "@update_data": {},
+
+    "wish_list": "Wish List",
+
+    "@wish_list": {}  , 
+    
+    "history": "History",
+
+    "@history": {} ,
+
+  "delete_account_confirmation": "Are you sure you want to delete your account?\n\nThis action cannot be undone",
+  
+  "@delete_account_confirmation": {},   
+
+    "cancel": "Cancel",
+
+    "@cancel": {}  ,
+
+    "delete": "Delete",
+
+    "@delete": {} ,
+
+    "old_password": "Old Password",
+
+    "@old_password": {}    ,
+    
+    "new_password": "new Password",
+
+    "@new_password": {}  ,
+    
+    "reset": "Reset",
+
+    "@reset": {} ,
+
+    "Edid_profile": "Edit Profile",
+
+    "@Edid_profile": {}   
 }

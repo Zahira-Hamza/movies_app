@@ -49,4 +49,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get login_with_google => 'تسجيل الدخول عبر جوجل';
+
+  @override
+  String get pick_avatar => 'التقط افاتار';
+
+  @override
+  String get reset_password => 'اعادة تعيين الباسورد';
+
+  @override
+  String get delete_account => 'حذف الحساب';
+
+  @override
+  String get update_data => 'تحديث البيانات';
+
+  @override
+  String get wish_list => 'القائمة المفضلة';
+
+  @override
+  String get history => 'الاحدث';
+
+  @override
+  String get delete_account_confirmation =>
+      'هل أنت متأكد أنك تريد حذف حسابك؟\n\nهذا الإجراء لا يمكن التراجع عنه.';
+
+  @override
+  String get cancel => 'الغاء';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String get old_password => 'كلمة السر القديمة';
+
+  @override
+  String get new_password => 'كلمة السر الجديدة';
+
+  @override
+  String get reset => ' اعادة تعيين ';
 }
