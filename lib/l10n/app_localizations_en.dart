@@ -92,4 +92,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exit => 'Exit';
+
 }

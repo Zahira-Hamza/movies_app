@@ -94,6 +94,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       children: [
                         Text(AppLocalizations.of(context)!.exit,
                             style: AppStyles.regular20white),
+                       
                         SizedBox(width: 10.w),
                         Icon(Icons.logout, color: AppColors.white, size: 20.sp),
                       ],

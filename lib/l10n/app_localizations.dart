@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -246,6 +245,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'New Password'**
+  /// **'new Password'**
   String get new_password;
 
   /// No description provided for @reset.
