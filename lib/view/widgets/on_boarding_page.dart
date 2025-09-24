@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 
 import '../../core/constants/styles/app_colors.dart';
 
@@ -79,7 +80,8 @@ class OnboardingPage extends StatelessWidget {
                           ),
                           textStyle: AppStyles.semiBold20black,
                         ),
-                        child: Text("Next", style: AppStyles.semiBold20black),
+                        child: Text(AppLocalizations.of(context)!.next,
+                            style: AppStyles.semiBold20black),
                       ),
                     ],
                   ),
@@ -118,7 +120,7 @@ class OnboardingPage extends StatelessWidget {
                               },
                             ),
                           ),
-                          child: const Text("Back"),
+                          child: Text(AppLocalizations.of(context)!.back),
                         ),
                       ElevatedButton(
                         onPressed: onNext,
@@ -132,7 +134,10 @@ class OnboardingPage extends StatelessWidget {
                           ),
                           textStyle: AppStyles.semiBold20black,
                         ),
-                        child: Text(isLast ? "Finish" : "Next",
+                        child: Text(
+                            isLast
+                                ? AppLocalizations.of(context)!.finish
+                                : AppLocalizations.of(context)!.next,
                             style: AppStyles.semiBold20black),
                       ),
                     ],

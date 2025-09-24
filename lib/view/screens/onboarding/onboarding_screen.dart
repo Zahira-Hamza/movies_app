@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/view_model/user_existance/user_existance_cubit.dart';
 
 import '../../../core/routes/app_routes.dart';
 import '../../widgets/on_boarding_page.dart';
@@ -16,36 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int currentPage = 0;
 
-  final List<Map<String, String>> onboardingData = [
-    {
-      "image": AppAssets.onBoardingPage2,
-      "title": "Discover Movies",
-      "desc":
-          "Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease."
-    },
-    {
-      "image": AppAssets.onBoardingPage3,
-      "title": "Explore All Genres",
-      "desc":
-          "Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day."
-    },
-    {
-      "image": AppAssets.onBoardingPage4,
-      "title": "Create Watchlists",
-      "desc":
-          "Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres."
-    },
-    {
-      "image": AppAssets.onBoardingPage5,
-      "title": "Rate, Review, and Learn",
-      "desc":
-          "Share your thoughts on the movies you've watched. Dive deep into film details and help others discover great movies with your reviews."
-    },
-    {
-      "image": AppAssets.onBoardingPage6,
-      "title": "Start Watching Now",
-    },
-  ];
+  late List<Map<String, String>> onboardingData;
 
   void _goToNextPage() {
     _pageController.nextPage(
@@ -63,7 +37,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _finishOnboarding() {
     //todo: navigate to auth screen
-
+    context.read<UserExistanceCubit>().finishOnboarding();
     Navigator.pushNamed(context, AppRoutes.loginScreenRoute);
   }
 
@@ -73,6 +47,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    onboardingData = [
+      {
+        "image": AppAssets.onBoardingPage2,
+        "title": AppLocalizations.of(context)!.discover_movies,
+        "desc": AppLocalizations.of(context)!.explore_all_genres_desc
+      },
+      {
+        "image": AppAssets.onBoardingPage3,
+        "title": AppLocalizations.of(context)!.explore_all_genres,
+        "desc": AppLocalizations.of(context)!.create_watchlists_desc
+      },
+      {
+        "image": AppAssets.onBoardingPage4,
+        "title": AppLocalizations.of(context)!.create_watchlists,
+        "desc": AppLocalizations.of(context)!.create_watchlists_desc
+      },
+      {
+        "image": AppAssets.onBoardingPage5,
+        "title": AppLocalizations.of(context)!.rate_review_learn,
+        "desc": AppLocalizations.of(context)!.rate_review_learn_desc
+      },
+      {
+        "image": AppAssets.onBoardingPage6,
+        "title": AppLocalizations.of(context)!.start_watching_now
+      },
+    ];
     return Scaffold(
       body: PageView(
         controller: _pageController,

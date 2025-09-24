@@ -16,9 +16,8 @@ import 'package:movies_app/view_model/auth/auth_cubit.dart';
 import 'package:movies_app/view_model/auth/auth_states.dart';
 
 class RegisterScreen extends StatefulWidget {
-  final Function(Locale) onLocaleChange;
 
-  const RegisterScreen({super.key, required this.onLocaleChange});
+  const RegisterScreen({super.key,});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -35,8 +34,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentLocale = Localizations.localeOf(context);
-    final initialIndex = currentLocale.languageCode == 'ar' ? 0 : 1;
     Size screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
@@ -166,8 +163,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
               ToggleSwitchLanguage(
-                onLocaleChange: widget.onLocaleChange,
-                initialIndex: initialIndex,
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/constants/styles/app_assets.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 
 import '../../../core/constants/styles/app_colors.dart';
 import '../../../core/constants/styles/app_styles.dart';
@@ -21,8 +22,6 @@ class FirstOnboardingPage extends StatelessWidget {
           AppAssets.onBoardingPage1,
           fit: BoxFit.cover,
         ),
-
-        /////////////////////text,button////////////////////////////////
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: screenWidth * 0.07,
@@ -35,14 +34,14 @@ class FirstOnboardingPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Find Your Next Favorite Movie Here",
+                  AppLocalizations.of(context)!.find_next_favorite_movie,
                   style: AppStyles.medium28white,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: screenHeight * 0.015),
                 Text(
                   maxLines: 2,
-                  "Get access to a huge library of movies to suit all tastes. You will surely like it.",
+                  AppLocalizations.of(context)!.find_next_favorite_movie_desc,
                   style: AppStyles.regular16gray,
                   textAlign: TextAlign.center,
                 ),
@@ -62,7 +61,7 @@ class FirstOnboardingPage extends StatelessWidget {
                         backgroundColor: AppColors.yellowPrimaryColor,
                       ),
                       child:
-                          Text("Explore Now", style: AppStyles.semiBold20black),
+                          Text(AppLocalizations.of(context)!.explore_now, style: AppStyles.semiBold20black),
                     ),
                   ],
                 ),

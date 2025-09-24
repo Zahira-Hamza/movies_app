@@ -11,13 +11,17 @@ import 'package:movies_app/view/screens/auth/register_screen.dart';
 import 'package:movies_app/view/screens/home/home_screen.dart';
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
 import 'package:movies_app/view/screens/onboarding/onboarding_screen.dart';
+import 'package:movies_app/view/screens/splash_screen.dart';
 import 'package:movies_app/view/screens/update_profile/update_profile_screen.dart';
 import 'package:movies_app/view_model/auth/auth_cubit.dart';
+import 'package:movies_app/view_model/localization/localization_cubit.dart';
+import 'package:movies_app/view_model/localization/localization_states.dart';
 import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movie_details_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import 'package:movies_app/view_model/search/search_cubit.dart';
+import 'package:movies_app/view_model/user_existance/user_existance_cubit.dart';
 import 'core/routes/app_routes.dart';
 import 'view/screens/auth/forget_password.dart';
 import 'view/screens/auth/login_screen.dart';
@@ -26,21 +30,8 @@ void main() {
   runApp(const MoviesApp());
 }
 
-class MoviesApp extends StatefulWidget {
+class MoviesApp extends StatelessWidget {
   const MoviesApp({super.key});
-  @override
-  State<MoviesApp> createState() => _MoviesAppState();
-}
-
-class _MoviesAppState extends State<MoviesApp> {
-  Locale _locale = const Locale('en');
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
@@ -53,6 +44,12 @@ class _MoviesAppState extends State<MoviesApp> {
       builder: (_, child) {
         return MultiBlocProvider(
           providers: [
+            BlocProvider<UserExistanceCubit>(
+              create: (context) => UserExistanceCubit()..checkAlreadySeenOnboarding(),
+            ),
+            BlocProvider<LocalizationCubit>(
+              create: (context) => LocalizationCubit()..getLocale(),
+            ),
             BlocProvider<AuthCubit>(
               create: (context) => AuthCubit(),
             ),
@@ -61,7 +58,8 @@ class _MoviesAppState extends State<MoviesApp> {
             ),
             BlocProvider(create: (context) => FavMoviesCubit()),
             BlocProvider<MoviesCubit>(
-              create: (context) => MoviesCubit(MoviesRemoteDataSource(),MoviesSharedPrefLocalDataSources()),
+              create: (context) => MoviesCubit(
+                  MoviesRemoteDataSource(), MoviesSharedPrefLocalDataSources()),
             ),
             BlocProvider<MovieDetailsCubit>(
               create: (context) =>
@@ -71,27 +69,34 @@ class _MoviesAppState extends State<MoviesApp> {
               create: (context) => SearchCubit(movieRepository),
             ),
           ],
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.loginScreenRoute,
-            theme: AppTheme.appTheme,
-            routes: {
-              AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),
-              AppRoutes.registerScreenRoute: (context) =>
-                  RegisterScreen(onLocaleChange: setLocale),
-              AppRoutes.loginScreenRoute: (context) =>
-                  LoginScreen(onLocaleChange: setLocale),
-              AppRoutes.forgetPasswordScreenRoute: (context) =>
-                  ForgetPassword(),
-              AppRoutes.updateProfileScreenRoute: (context) => UpdateProfile(),
-              AppRoutes.homeScreenRoute: (context) => HomeScreen(),
-              AppRoutes.movieDetailsRoute: (context) => MovieDetailsPage(
-                    movieId: ModalRoute.of(context)!.settings.arguments as int,
-                  ),
+          child: BlocBuilder<LocalizationCubit, LocalizationStates>(
+            builder: (context, state) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                initialRoute: AppRoutes.splashScreenRoute,
+                theme: AppTheme.appTheme,
+                routes: {
+                  AppRoutes.splashScreenRoute: (context) =>
+                      SplashScreen(),
+                  AppRoutes.onBoardingScreenRoute: (context) =>
+                      OnboardingScreen(),
+                  AppRoutes.registerScreenRoute: (context) => RegisterScreen(),
+                  AppRoutes.loginScreenRoute: (context) => LoginScreen(),
+                  AppRoutes.forgetPasswordScreenRoute: (context) =>
+                      ForgetPassword(),
+                  AppRoutes.updateProfileScreenRoute: (context) =>
+                      UpdateProfile(),
+                  AppRoutes.homeScreenRoute: (context) => HomeScreen(),
+                  AppRoutes.movieDetailsRoute: (context) => MovieDetailsPage(
+                        movieId:
+                            ModalRoute.of(context)!.settings.arguments as int,
+                      ),
+                },
+                locale:Locale( context.read<LocalizationCubit>().language),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+              );
             },
-            locale: _locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
           ),
         );
       },
