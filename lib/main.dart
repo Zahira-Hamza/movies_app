@@ -73,7 +73,7 @@ class _MoviesAppState extends State<MoviesApp> {
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.homeScreenRoute,
+            initialRoute: AppRoutes.loginScreenRoute,
             theme: AppTheme.appTheme,
             routes: {
               AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),

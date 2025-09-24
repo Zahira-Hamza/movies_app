@@ -279,8 +279,8 @@ class _ProfileTabState extends State<ProfileTab> {
                             children: [
                               SvgPicture.asset(AppAssets.historyIcon,
                                   fit: BoxFit.scaleDown),
-                              Text(
-                                  AppLocalizations.of(context)!.history,
+                              SizedBox(height: 10.h),
+                              Text(AppLocalizations.of(context)!.history,
                                   style: AppStyles.regular20white),
                             ],
                           ),

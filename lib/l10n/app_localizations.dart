@@ -361,6 +361,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start your journey of discovery and entertainment now.'**
   String get start_watching_now_desc;
+
   /// No description provided for @sure_exit.
   ///
   /// In en, this message translates to:

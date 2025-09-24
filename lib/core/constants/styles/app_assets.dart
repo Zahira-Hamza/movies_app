@@ -13,6 +13,8 @@ class AppAssets {
   static const String rateIcon = 'assets/images/icons/star_icon.svg';
   static const String whishIcon = 'assets/images/icons/wishlist.svg';
   static const String historyIcon = 'assets/images/icons/history.svg';
+  static const String searchIcon = 'assets/images/icons/search_tab.png';
+
   static const String avatar1 = 'assets/images/avatars/avatar1.png';
   static const String avatar2 = 'assets/images/avatars/avatar2.png';
   static const String avatar3 = 'assets/images/avatars/avatar3.png';

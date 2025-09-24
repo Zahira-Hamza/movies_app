@@ -146,6 +146,8 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get start_watching_now_desc =>
       'ابدأ رحلة الاستكشاف والاستمتاع الخاصة بك الآن.';
+
+  @override
   String get sure_exit => 'هل انت متاكد من انك تريد الخروج ؟';
 
   @override

@@ -7,10 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // استيراد �
 import 'package:movies_app/core/routes/app_routes.dart';
 import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 
-
 import '../../../../../view_model/movies/movies_cubit.dart';
 import '../../../../../view_model/movies/movies_states.dart';
-
 
 class BrowseTab extends StatefulWidget {
   const BrowseTab({super.key});
@@ -29,10 +27,13 @@ class _BrowseTabState extends State<BrowseTab> {
     super.initState();
     _selectedCategory = categories.first;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MoviesCubit>().fetchMoviesByGenre(_selectedCategory!.apiValue);
+      context
+          .read<MoviesCubit>()
+          .fetchMoviesByGenre(_selectedCategory!.apiValue);
     });
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200.h) {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200.h) {
         context.read<MoviesCubit>().loadMoreMovies();
       }
     });
@@ -70,18 +71,24 @@ class _BrowseTabState extends State<BrowseTab> {
             padding: EdgeInsets.symmetric(horizontal: 5.w), // استخدام w
             child: Container(
               decoration: BoxDecoration(
-                border: isSelected ? null : Border.all(color: AppColors.yellowPrimaryColor),
+                border: isSelected
+                    ? null
+                    : Border.all(color: AppColors.yellowPrimaryColor),
                 borderRadius: BorderRadius.circular(16.r), // استخدام r
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  context.read<MoviesCubit>().fetchMoviesByGenre(category.apiValue);
+                  context
+                      .read<MoviesCubit>()
+                      .fetchMoviesByGenre(category.apiValue);
                   setState(() {
                     _selectedCategory = category;
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isSelected ? AppColors.yellowPrimaryColor : AppColors.blackPrimaryColor,
+                  backgroundColor: isSelected
+                      ? AppColors.yellowPrimaryColor
+                      : AppColors.blackPrimaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.r), // استخدام r
                   ),
@@ -89,7 +96,9 @@ class _BrowseTabState extends State<BrowseTab> {
                 child: Text(
                   category.name,
                   style: TextStyle(
-                    color: isSelected ? AppColors.blackPrimaryColor : AppColors.yellowPrimaryColor,
+                    color: isSelected
+                        ? AppColors.blackPrimaryColor
+                        : AppColors.yellowPrimaryColor,
                   ),
                 ),
               ),
@@ -115,7 +124,8 @@ class _BrowseTabState extends State<BrowseTab> {
           return const Expanded(
             child: Center(child: CircularProgressIndicator()),
           );
-        } else if (moviesList.isNotEmpty || (state is MoviesLoading && moviesList.isNotEmpty)) {
+        } else if (moviesList.isNotEmpty ||
+            (state is MoviesLoading && moviesList.isNotEmpty)) {
           return Expanded(
             child: GridView.builder(
               controller: _scrollController,
@@ -124,7 +134,7 @@ class _BrowseTabState extends State<BrowseTab> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10.w, // استخدام w
                 mainAxisSpacing: 10.h, // استخدام h
-                childAspectRatio:189 / 279,
+                childAspectRatio: 189 / 279,
               ),
               itemCount: moviesList.length + (hasMore ? 1 : 0),
               itemBuilder: (context, index) {
@@ -135,10 +145,11 @@ class _BrowseTabState extends State<BrowseTab> {
                 return CustomFilmPoster(
                   imagePath: movie.poster,
                   rating: movie.rating.toStringAsFixed(1),
-                  width:double.infinity ,// استخدام w
+                  width: double.infinity, // استخدام w
                   height: double.infinity, // استخدام h
                   onTap: () {
-                    Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute);
+                    Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute,
+                        arguments: movie.id);
                   },
                 );
               },

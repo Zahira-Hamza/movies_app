@@ -191,6 +191,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           UIUtils.hideLoading(context);
                           UIUtils.showMessage(state.message, context,
                               AppColors.yellowPrimaryColor);
+                          Navigator.of(context).pop();
                         }
                       },
                       child: CustomeElevatedButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies_app/core/constants/styles/app_assets.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
@@ -33,7 +34,7 @@ class _SearchTabState extends State<SearchTab> {
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(16.w),
                   child: Image.asset(
-                    'assets/images/icons/search_tab.png',
+                    AppAssets.searchIcon,
                     width: 20.w,
                     height: 20.h,
                   ),
@@ -59,7 +60,7 @@ class _SearchTabState extends State<SearchTab> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is SearchLoaded) {
                   if (state.movies.isEmpty) {
-                    return  Center(
+                    return Center(
                       child: Text(
                         AppLocalizations.of(context)!.no_movies_found,
                         style: TextStyle(color: Colors.white70),
@@ -70,20 +71,25 @@ class _SearchTabState extends State<SearchTab> {
                     padding: EdgeInsets.all(8.w),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 8.w,
-                      mainAxisSpacing: 8.h,
-                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 10.w,
+                      mainAxisSpacing: 10.h,
+                      childAspectRatio: 191 / 279,
                     ),
                     itemCount: state.movies.length,
                     itemBuilder: (context, index) {
                       final movie = state.movies[index];
                       return CustomFilmPoster(
-                        imagePath: movie.poster ,
+                        imagePath: movie.poster,
                         rating: (movie.rating).toString(),
-                        height: 0.3.sh,
-                        width: 0.4.sw,
+                        height: double.infinity,
+                        width: double.infinity,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute( builder: (_) => MovieDetailsPage(movieId: movie.id),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    MovieDetailsPage(movieId: movie.id),
+                              ));
                         },
                       );
                     },

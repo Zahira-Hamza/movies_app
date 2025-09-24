@@ -146,6 +146,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get start_watching_now_desc =>
       'Start your journey of discovery and entertainment now.';
+
+  @override
   String get sure_exit => 'Are you sure you want to exit the app ?';
 
   @override
