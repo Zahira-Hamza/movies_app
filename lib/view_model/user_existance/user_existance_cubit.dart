@@ -9,21 +9,27 @@ class UserExistanceCubit extends Cubit<UserExistanceStates> {
       UserExistanceRepository();
 
   late bool seen;
+  late bool userLogged;
 
-  Future<void> checkAlreadySeenOnboarding() async {
-    emit(UserSeenOnboardingLoading());
+  Future<void> loadUserLoogedAndOnboardState() async {
+    emit(UserLoogedAndOnboardStateLoading());
     final result = await _existanceRepository.checkAlreadySeenOnboarding();
-    result.fold((failure) => emit(UserSeenOnboardingError()), (result) {
+    result.fold((failure) => emit(UserLoogedAndOnboardStateError()),
+        (result) async {
       seen = result;
-      emit(UserSeenOnboardingSuccess());
+      final userState = await _existanceRepository.alreadyLogged();
+      userState.fold((failure) => emit(UserLoogedAndOnboardStateError()),
+          (result) {
+        userLogged = result;
+        emit(UserLoogedAndOnboardStateSuccess());
+      });
     });
   }
 
   Future<void> finishOnboarding() async {
     final result = await _existanceRepository.finishOnboarding();
-    result.fold((failure) => emit(UserSeenOnboardingError()), (result) {
+    result.fold((failure) => emit(UserLoogedAndOnboardStateError()), (result) {
       seen = true;
-      emit(UserSeenOnboardingSuccess());
     });
   }
 }

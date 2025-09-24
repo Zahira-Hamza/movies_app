@@ -2,6 +2,6 @@ abstract class UserExistanceStates {}
 
 class UserExistanceInitial extends UserExistanceStates{}
 
-class UserSeenOnboardingLoading extends UserExistanceStates{}
-class UserSeenOnboardingSuccess extends UserExistanceStates{}
-class UserSeenOnboardingError extends UserExistanceStates{}
+class UserLoogedAndOnboardStateLoading extends UserExistanceStates{}
+class UserLoogedAndOnboardStateSuccess extends UserExistanceStates{}
+class UserLoogedAndOnboardStateError extends UserExistanceStates{}

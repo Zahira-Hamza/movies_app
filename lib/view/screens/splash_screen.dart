@@ -19,14 +19,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: BlocListener<UserExistanceCubit, UserExistanceStates>(
         listener: (context, state) {
-          if (state is UserSeenOnboardingError) {
+          if (state is UserLoogedAndOnboardStateError) {
             UIUtils.showMessage('Error', context, AppColors.red);
           } else {
             final seen = context.read<UserExistanceCubit>().seen;
+            final userLogged = context.read<UserExistanceCubit>().userLogged;
             Navigator.pushReplacementNamed(
                 context,
                 seen
-                    ? AppRoutes.loginScreenRoute
+                    ? userLogged
+                        ? AppRoutes.homeScreenRoute
+                        : AppRoutes.loginScreenRoute
                     : AppRoutes.onBoardingScreenRoute);
           }
         },

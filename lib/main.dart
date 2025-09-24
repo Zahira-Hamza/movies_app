@@ -45,7 +45,8 @@ class MoviesApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<UserExistanceCubit>(
-              create: (context) => UserExistanceCubit()..checkAlreadySeenOnboarding(),
+              create: (context) =>
+                  UserExistanceCubit()..loadUserLoogedAndOnboardState(),
             ),
             BlocProvider<LocalizationCubit>(
               create: (context) => LocalizationCubit()..getLocale(),
@@ -76,8 +77,7 @@ class MoviesApp extends StatelessWidget {
                 initialRoute: AppRoutes.splashScreenRoute,
                 theme: AppTheme.appTheme,
                 routes: {
-                  AppRoutes.splashScreenRoute: (context) =>
-                      SplashScreen(),
+                  AppRoutes.splashScreenRoute: (context) => SplashScreen(),
                   AppRoutes.onBoardingScreenRoute: (context) =>
                       OnboardingScreen(),
                   AppRoutes.registerScreenRoute: (context) => RegisterScreen(),
@@ -92,7 +92,7 @@ class MoviesApp extends StatelessWidget {
                             ModalRoute.of(context)!.settings.arguments as int,
                       ),
                 },
-                locale:Locale( context.read<LocalizationCubit>().language),
+                locale: Locale(context.read<LocalizationCubit>().language),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
               );

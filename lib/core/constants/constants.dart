@@ -12,6 +12,7 @@ class ApiConstants {
 
 class Constants {
   static const String tokenKey = 'token';
+  static const String loggedKey = 'logged';
   static const String languageKey = 'language';
   static const String sennOnboardingKey = 'senn_onBoarding';
 }

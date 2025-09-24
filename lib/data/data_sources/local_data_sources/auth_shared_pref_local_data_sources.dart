@@ -8,6 +8,7 @@ class AuthSharedPrefLocalDataSources {
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       await sharedPreferences.setString(Constants.tokenKey, token);
+      await sharedPreferences.setBool(Constants.loggedKey, true);
     } catch (exception) {
       throw const SharedPrefException('Failed to save token');
     }
@@ -20,6 +21,16 @@ class AuthSharedPrefLocalDataSources {
       return sharedPreferences.getString(Constants.tokenKey)!;
     } catch (exception) {
       throw const SharedPrefException('Failed to get token');
+    }
+  }
+
+  Future<bool> alreadyLogged() async {
+    try {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      return sharedPreferences.getBool(Constants.loggedKey)??false;
+    } catch (exception) {
+      throw const SharedPrefException('Failed to get logged user ?');
     }
   }
 }
