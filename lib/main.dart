@@ -87,9 +87,12 @@ class MoviesApp extends StatelessWidget {
                   AppRoutes.updateProfileScreenRoute: (context) =>
                       UpdateProfile(),
                   AppRoutes.homeScreenRoute: (context) => HomeScreen(),
-                  AppRoutes.movieDetailsRoute: (context) => MovieDetailsPage(
-                        movieId:
-                            ModalRoute.of(context)!.settings.arguments as int,
+                  AppRoutes.movieDetailsRoute: (context) => BlocProvider(
+                        create: (context) => FavMoviesCubit(),
+                        child: MovieDetailsPage(
+                          movieId:
+                              ModalRoute.of(context)!.settings.arguments as int,
+                        ),
                       ),
                 },
                 locale: Locale(context.read<LocalizationCubit>().language),

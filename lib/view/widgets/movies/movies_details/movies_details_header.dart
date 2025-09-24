@@ -114,7 +114,6 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.errorMessage, context, AppColors.red);
               } else if (state is AddMovieToFavSuccess) {
-                log('in add fav success');
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.successMessage, context,
                     AppColors.yellowPrimaryColor);
@@ -130,6 +129,7 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
               if (state is IsFavMovieSuccess) {
                 isFav = state.isFav;
               } else if (state is AddMovieToFavSuccess) {
+                log('message');
                 isFav = true;
               } else if (state is RemoveFromFavSuccess) {
                 isFav = false;

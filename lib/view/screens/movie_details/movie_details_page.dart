@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
+import 'package:movies_app/core/routes/app_routes.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/movies/movies_details/movie_cast.dart';
@@ -137,7 +138,17 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           ScreenshotsSection(movie: movie),
           SizedBox(height: 32.h),
           // 4. Suggested Movies
-          SuggestedMovies(similarMovies: similarMovies),
+          SuggestedMovies(
+            similarMovies: similarMovies,
+            onTap: (index) async {
+              await Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute,
+                  arguments: similarMovies[index].id);
+              if (!mounted) return;
+              context
+                  .read<MovieDetailsCubit>()
+                  .getMovieDetails(movie.id);
+            },
+          ),
           SizedBox(height: 22.h),
           // 5. DESCRIPTION
           MovieDescription(movie: movie),

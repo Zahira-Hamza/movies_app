@@ -47,7 +47,9 @@ class _ProfileTabState extends State<ProfileTab> {
     if (cubit.user == null) {
       cubit.getProfileWithMovies();
     }
-    favMovies = cubit.favMovies;
+    if (cubit.user != null) {
+      favMovies = cubit.favMovies;
+    }
   }
 
   @override
@@ -58,7 +60,6 @@ class _ProfileTabState extends State<ProfileTab> {
       child: DefaultTabController(
         length: 2,
         child: BlocConsumer<ProfileCubit, ProfileStates>(
-          listenWhen: (previous, current) => true,
           listener: (context, state) {
             if (state is GetProfileLoading ||
                 state is RecentMoviesLoading ||
@@ -80,10 +81,11 @@ class _ProfileTabState extends State<ProfileTab> {
             }
           },
           builder: (context, state) {
-            if (state is GetFavMoviesSuccess ||
-                state is GetProfileSuccess ||
-                state is UpdateProfileSuccess ||
-                state is RecentMoviesSuccess) {
+            if (context.read<ProfileCubit>().user != null &&
+                (state is GetFavMoviesSuccess ||
+                    state is GetProfileSuccess ||
+                    state is UpdateProfileSuccess ||
+                    state is RecentMoviesSuccess)) {
               avatarId = context.read<ProfileCubit>().user!.avaterId;
               name = context.read<ProfileCubit>().user!.name;
               favMovies = context.read<ProfileCubit>().favMovies;
@@ -140,7 +142,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           Column(
                             children: [
                               Text(
-                                '${context.read<ProfileCubit>().favMovies.length}',
+                                '${favMovies.length}',
                                 style: AppStyles.bold20white
                                     .copyWith(fontSize: 32.sp),
                               ),
