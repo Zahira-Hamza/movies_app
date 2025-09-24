@@ -38,12 +38,12 @@ class ProfileCubit extends Cubit<ProfileStates> {
     final result = await _repository.deleteAccount();
     result.fold((faliure) => emit(DeleteProfileError(faliure.errorMessage)),
         (data) {
+      user = null;
       emit(DeleteProfileSuccess(data));
     });
   }
 
   Future<void> getProfileWithMovies() async {
-    emit(GetProfileLoading());
 
     final userResult = await _repository.getProfile();
     userResult.fold(
