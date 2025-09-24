@@ -102,7 +102,6 @@ class MovieApiService {
     bool withCast,
   ) async {
     try {
-      print('🌐 Making API call for movie ID: $movieId');
 
       final response = await dio.get(
         '${ApiEndpoints.baseUrl}${ApiEndpoints.movieDetails}',
@@ -113,36 +112,22 @@ class MovieApiService {
         },
       );
 
-      print('📦 API Response keys: ${response.data.keys}');
 
-      // Debug cast and description data
-      if (response.data.containsKey('data')) {
-        final data = response.data['data'];
-        if (data is Map && data.containsKey('movie')) {
-          final movie = data['movie'];
-          print('🎭 Cast data available: ${movie.containsKey('cast')}');
-          print(
-              '📝 Description data available: ${movie.containsKey('description_full')}');
-        }
-      }
 
       return MovieDetailsResponse.fromJson(response.data);
     } catch (e) {
-      print('❌ API Error: $e');
       throw Exception('Failed to load movie details: $e');
     }
   }
 
   Future<List<MovieModel>> getMovieSuggestions(int movieId) async {
     try {
-      print('🌐 Making similar movies API call for movie ID: $movieId');
 
       final response = await dio.get(
         '${ApiEndpoints.baseUrl}${ApiEndpoints.movieSuggestions}',
         queryParameters: {'movie_id': movieId.toString()},
       );
 
-      print('📦 Similar Movies API Response: ${response.data}');
 
       // Handle different response structures
       if (response.data is Map<String, dynamic>) {
@@ -176,7 +161,6 @@ class MovieApiService {
 
       throw Exception('Unexpected API response format');
     } catch (e) {
-      print('❌ Similar Movies API Error: $e');
       throw Exception('Failed to load similar movies: $e');
     }
   }

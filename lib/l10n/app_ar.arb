@@ -160,6 +160,59 @@
   "@rate_review_learn_desc": {},
 
   "start_watching_now_desc": "ابدأ رحلة الاستكشاف والاستمتاع الخاصة بك الآن.",
-  "@start_watching_now_desc": {}
+  "@start_watching_now_desc": {},
 
+    "sure_exit":"هل انت متاكد من انك تريد الخروج ؟",
+    "@sure_exit": {},
+
+    "search":"البحث",
+    "@search": {},
+
+    "no_movies_found":"لا توجد افلام",
+    "@no_movies_found": {},
+
+    "watch":"شاهد",
+    "@watch": {},
+
+    "screen_shots":"لقطات من الفيلم",
+    "@screen_shots": {},
+
+    "screen_shot_not_found":" غير متوفرة للفيلم 😥",
+    "@screen_shot_not_found": {},
+
+  "similar":"افلام مشابهة",
+  "@similar": {},
+
+  "similar_not_found":" مشابهة غير متوفرة 😥",
+  "@similar_not_found": {},
+
+  "description": "الوصف",
+  "@description": {},
+
+  "description_not_found": " الوصف غير متوفر 😥",
+  "@description_not_found": {},
+
+  "cast": "طاقم العمل",
+  "@cast": {},
+
+  "unknown_character": "شخصية غير معروفة",
+  "@unknown_character": {},
+
+  "unknown": "غير معروف",
+  "@unknown": {},
+
+  "no_cast_info": "لا توجد معلومات عن طاقم التمثيل 😥",
+  "@no_cast_info": {},
+
+  "character":"الشخصية",
+  "@character": {},
+
+  "genres": "الأنواع",
+  "@genres": {},
+
+  "no_genres_available": "لا توجد أنواع متاحة 😥",
+  "@no_genres_available": {},
+
+  "see_more":"عرض المزيد",
+  "@see_more": {}
 }

@@ -1,5 +1,3 @@
-import 'package:movies_app/data/models/auth/user_model.dart';
-
 abstract class ProfileStates {}
 
 class ProfileInitial extends ProfileStates {}
@@ -34,14 +32,30 @@ class DeleteProfileError extends ProfileStates {
 
 class GetProfileLoading extends ProfileStates {}
 
-class GetProfileSuccess extends ProfileStates {
-  final UserModel user;
-
-  GetProfileSuccess(this.user);
-}
+class GetProfileSuccess extends ProfileStates {}
 
 class GetProfileError extends ProfileStates {
   final String message;
 
   GetProfileError(this.message);
+}
+
+class GetFavMoviesLoading extends ProfileStates {}
+
+class GetFavMoviesSuccess extends ProfileStates {}
+
+class GetFavMoviesError extends ProfileStates {
+  final String message;
+
+  GetFavMoviesError(this.message);
+}
+
+class RecentMoviesLoading extends ProfileStates {}
+
+class RecentMoviesSuccess extends ProfileStates {}
+
+class RecentMoviesError extends ProfileStates {
+  final String message;
+
+  RecentMoviesError(this.message);
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +7,7 @@ import 'package:movies_app/core/utils/ui_utils.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
 import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/fav_movies_states.dart';
-
+import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import '../../../../core/constants/styles/app_assets.dart';
 import '../../../../core/constants/styles/app_colors.dart';
 import '../../../../core/constants/styles/app_styles.dart';
@@ -85,9 +83,12 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
           left: 16.w,
           child: IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
+            icon: Directionality(
+              textDirection: TextDirection.ltr, 
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              ),
             ),
             iconSize: 35,
             padding: EdgeInsets.zero,
@@ -114,10 +115,12 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.successMessage, context,
                     AppColors.yellowPrimaryColor);
+                context.read<ProfileCubit>().getFavMovies();
               } else if (state is RemoveFromFavSuccess) {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.successMessage, context,
                     AppColors.yellowPrimaryColor);
+                context.read<ProfileCubit>().getFavMovies();
               }
             },
             builder: (context, state) {
@@ -142,7 +145,7 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                             movieId: widget.movie.id.toString(),
                             name: widget.movie.title,
                             rating: widget.movie.rating,
-                            imageUrl: widget.movie.backgroundImage!,
+                            imageUrl: widget.movie.largeCoverImage!,
                             year: widget.movie.year.toString()));
                   }
                 },

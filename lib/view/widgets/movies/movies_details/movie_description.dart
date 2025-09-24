@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 
 class MovieDescription extends StatelessWidget {
   final MovieModel movie;
@@ -19,7 +20,7 @@ class MovieDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Description',
+            AppLocalizations.of(context)!.description,
             style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
           ),
           SizedBox(height: 10.h),
@@ -31,7 +32,7 @@ class MovieDescription extends StatelessWidget {
             )
           else
             Text(
-              'No description available for this movie.',
+              AppLocalizations.of(context)!.description_not_found,
               style: AppStyles.regular16Roboto.copyWith(color: AppColors.white),
             ),
         ],

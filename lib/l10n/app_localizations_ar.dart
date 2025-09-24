@@ -146,4 +146,56 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get start_watching_now_desc =>
       'ابدأ رحلة الاستكشاف والاستمتاع الخاصة بك الآن.';
+  String get sure_exit => 'هل انت متاكد من انك تريد الخروج ؟';
+
+  @override
+  String get search => 'البحث';
+
+  @override
+  String get no_movies_found => 'لا توجد افلام';
+
+  @override
+  String get watch => 'شاهد';
+
+  @override
+  String get screen_shots => 'لقطات من الفيلم';
+
+  @override
+  String get screen_shot_not_found => ' غير متوفرة للفيلم 😥';
+
+  @override
+  String get similar => 'افلام مشابهة';
+
+  @override
+  String get similar_not_found => ' مشابهة غير متوفرة 😥';
+
+  @override
+  String get description => 'الوصف';
+
+  @override
+  String get description_not_found => ' الوصف غير متوفر 😥';
+
+  @override
+  String get cast => 'طاقم العمل';
+
+  @override
+  String get unknown_character => 'شخصية غير معروفة';
+
+  @override
+  String get unknown => 'غير معروف';
+
+  @override
+  String get no_cast_info => 'لا توجد معلومات عن طاقم التمثيل 😥';
+
+  @override
+  String get character => 'الشخصية';
+
+  @override
+  String get genres => 'الأنواع';
+
+  @override
+  String get no_genres_available => 'لا توجد أنواع متاحة 😥';
+
+  @override
+  String get see_more => 'عرض المزيد';
 }

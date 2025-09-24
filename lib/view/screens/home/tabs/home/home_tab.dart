@@ -6,11 +6,12 @@ import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
 import 'package:movies_app/data/models/movies/movies_model.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_states.dart';
 
 import '../../../../../core/routes/app_routes.dart';
-import '../../../movie_details/widgets/custom_film_poster..dart';
+import '../../../../widgets/movies/custom_film_poster.dart';
 
 class HomeTab extends StatefulWidget {
   final int selectedCategoryIndex;
@@ -93,10 +94,10 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                 Positioned.fill(
                   child: movies.isNotEmpty
                       ? Image.network(
-                    movies[currentIndex].poster ?? '',
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                  )
+                          movies[currentIndex].poster,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                        )
                       : const SizedBox.shrink(),
                 ),
                 Positioned.fill(
@@ -104,7 +105,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Colors.black.withOpacity(0.6),
+                          Colors.black.withValues(alpha: .6),
                           Colors.black,
                         ],
                         begin: Alignment.topCenter,
@@ -117,24 +118,24 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(height: 50.h), // استخدام h
+                        SizedBox(height: 50.h),
                         Center(
                           child: Image.asset("assets/images/available_now.png"),
                         ),
-                        SizedBox(height: 20.h), // استخدام h
+                        SizedBox(height: 20.h),
                         if (movies.isNotEmpty)
                           CarouselSlider(
                             items: movies.map((movie) {
                               return CustomFilmPoster(
-                                imagePath: movie.poster ?? '',
-                                rating: (movie.rating ?? 0).toString(),
-                                height: 350.h, // استخدام h
-                                width: 250.w, // استخدام w
+                                imagePath: movie.poster,
+                                rating: (movie.rating).toString(),
+                                height: 350.h,
+                                width: 250.w,
                                 onTap: () => _navigateToMovieDetails(movie),
                               );
                             }).toList(),
                             options: CarouselOptions(
-                              height: 350.h, // استخدام h
+                              height: 350.h,
                               enlargeCenterPage: true,
                               viewportFraction: 0.5,
                               enableInfiniteScroll: true,
@@ -147,10 +148,10 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                               },
                             ),
                           ),
-                        SizedBox(height: 30.h), // استخدام h
+                        SizedBox(height: 30.h),
                         Image.asset("assets/images/watch_now.png"),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w), // استخدام w
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -165,16 +166,15 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "see more",
+                                      AppLocalizations.of(context)!.see_more,
                                       style: AppStyles.regular16white.copyWith(
                                         color: AppColors.yellowPrimaryColor,
                                       ),
                                     ),
-                                    SizedBox(width: 4.w), // استخدام w
+                                    SizedBox(width: 4.w),
                                     Icon(Icons.arrow_forward,
                                         color: AppColors.yellowPrimaryColor,
-                                        size: 20.sp // استخدام sp
-                                    ),
+                                        size: 20.sp),
                                   ],
                                 ),
                               ),
@@ -182,33 +182,33 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                           ),
                         ),
                         SizedBox(
-                          height: 280.h, // استخدام h
+                          height: 280.h,
                           child: genreMovies.isNotEmpty
                               ? ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 8.w), // استخدام w
-                            itemCount: genreMovies.length,
-                            itemBuilder: (context, index) {
-                              final genreMovie = genreMovies[index];
-                              return CustomFilmPoster(
-                                imagePath: genreMovie.poster ?? '',
-                                rating:
-                                (genreMovie.rating ?? 0).toString(),
-                                height: 220.h, // استخدام h
-                                width: 150.w, // استخدام w
-                                onTap: () => _navigateToMovieDetails(genreMovie),
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                SizedBox(width: 10.w), // استخدام w
-                          )
+                                  scrollDirection: Axis.horizontal,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.w),
+                                  itemCount: genreMovies.length,
+                                  itemBuilder: (context, index) {
+                                    final genreMovie = genreMovies[index];
+                                    return CustomFilmPoster(
+                                      imagePath: genreMovie.poster,
+                                      rating: (genreMovie.rating).toString(),
+                                      height: 220.h,
+                                      width: 150.w,
+                                      onTap: () =>
+                                          _navigateToMovieDetails(genreMovie),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(width: 10.w),
+                                )
                               : Center(
-                            child: Text(
-                              "No movies found for this category",
-                              style: AppStyles.regular16white,
-                            ),
-                          ),
+                                  child: Text(
+                                    "No movies found for this category",
+                                    style: AppStyles.regular16white,
+                                  ),
+                                ),
                         ),
                       ],
                     ),
