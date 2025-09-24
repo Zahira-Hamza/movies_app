@@ -1,4 +1,5 @@
-import 'dart:core';
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -245,7 +246,6 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'New Password'**
-  /// **'new Password'**
   String get new_password;
 
   /// No description provided for @reset.
@@ -265,6 +265,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exit'**
   String get exit;
+
+  /// No description provided for @sure_exit.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to exit the app ?'**
+  String get sure_exit;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @no_movies_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No movies found'**
+  String get no_movies_found;
+
+  /// No description provided for @watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch'**
+  String get watch;
+
+  /// No description provided for @screen_shots.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen Shots'**
+  String get screen_shots;
+
+  /// No description provided for @screen_shot_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'ScreenShots are not available 😥'**
+  String get screen_shot_not_found;
+
+  /// No description provided for @similar.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar'**
+  String get similar;
+
+  /// No description provided for @similar_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar movies are not available 😥'**
+  String get similar_not_found;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @description_not_found.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is not available 😥'**
+  String get description_not_found;
+
+  /// No description provided for @cast.
+  ///
+  /// In en, this message translates to:
+  /// **'Cast'**
+  String get cast;
+
+  /// No description provided for @unknown_character.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Character'**
+  String get unknown_character;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @no_cast_info.
+  ///
+  /// In en, this message translates to:
+  /// **'No cast information available 😥'**
+  String get no_cast_info;
+
+  /// No description provided for @character.
+  ///
+  /// In en, this message translates to:
+  /// **'Character'**
+  String get character;
+
+  /// No description provided for @genres.
+  ///
+  /// In en, this message translates to:
+  /// **'Genres'**
+  String get genres;
+
+  /// No description provided for @no_genres_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No genres available 😥'**
+  String get no_genres_available;
+
+  /// No description provided for @see_more.
+  ///
+  /// In en, this message translates to:
+  /// **'See more'**
+  String get see_more;
 }
 
 class _AppLocalizationsDelegate

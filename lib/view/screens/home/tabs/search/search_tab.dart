@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/screens/movie_details/movie_details_page.dart';
 import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 import 'package:movies_app/view_model/search/search_cubit.dart';
@@ -37,7 +38,7 @@ class _SearchTabState extends State<SearchTab> {
                     height: 20.h,
                   ),
                 ),
-                hintText: 'Search',
+                hintText: AppLocalizations.of(context)!.search,
                 hintStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
@@ -58,9 +59,9 @@ class _SearchTabState extends State<SearchTab> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is SearchLoaded) {
                   if (state.movies.isEmpty) {
-                    return const Center(
+                    return  Center(
                       child: Text(
-                        "No movies found",
+                        AppLocalizations.of(context)!.no_movies_found,
                         style: TextStyle(color: Colors.white70),
                       ),
                     );

@@ -42,37 +42,36 @@ class ProfileCubit extends Cubit<ProfileStates> {
     });
   }
 
-Future<void> getProfileWithMovies() async {
-  emit(GetProfileLoading());
+  Future<void> getProfileWithMovies() async {
+    emit(GetProfileLoading());
 
-  final userResult = await _repository.getProfile();
-  userResult.fold(
-    (faliure) => emit(GetProfileError(faliure.errorMessage)),
-    (data) {
-      user = data;
-      emit(GetProfileLoading());
-    },
-  );
+    final userResult = await _repository.getProfile();
+    userResult.fold(
+      (faliure) => emit(GetProfileError(faliure.errorMessage)),
+      (data) {
+        user = data;
+        emit(GetProfileLoading());
+      },
+    );
 
-  final recentMoviesResult = await _historyRepository.getRecentMovies();
-  recentMoviesResult.fold(
-    (faliure) => emit(GetProfileError(faliure.errorMessage)),
-    (result) {
-      historyMovies = result;
-    },
-  );
+    final recentMoviesResult = await _historyRepository.getRecentMovies();
+    recentMoviesResult.fold(
+      (faliure) => emit(GetProfileError(faliure.errorMessage)),
+      (result) {
+        historyMovies = result;
+      },
+    );
 
-  final favMoviesResult = await _favMoviesRepository.getAllFavMovies();
-  favMoviesResult.fold(
-    (faliure) => emit(GetProfileError(faliure.errorMessage)),
-    (result) {
-      favMovies = result;
-    },
-  );
+    final favMoviesResult = await _favMoviesRepository.getAllFavMovies();
+    favMoviesResult.fold(
+      (faliure) => emit(GetProfileError(faliure.errorMessage)),
+      (result) {
+        favMovies = result;
+      },
+    );
 
-  emit(GetProfileSuccess());
-}
-
+    emit(GetProfileSuccess());
+  }
 
   Future<void> getProfile() async {
     emit(GetProfileLoading());

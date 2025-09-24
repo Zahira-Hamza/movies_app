@@ -60,9 +60,17 @@ class _ProfileTabState extends State<ProfileTab> {
         child: BlocConsumer<ProfileCubit, ProfileStates>(
           listenWhen: (previous, current) => true,
           listener: (context, state) {
-            if (state is GetProfileLoading) {
+            if (state is GetProfileLoading ||
+                state is RecentMoviesLoading ||
+                state is GetFavMoviesLoading) {
               UIUtils.showLoading(context);
             } else if (state is GetProfileError) {
+              UIUtils.hideLoading(context);
+              UIUtils.showMessage(state.message, context, AppColors.red);
+            } else if (state is RecentMoviesError) {
+              UIUtils.hideLoading(context);
+              UIUtils.showMessage(state.message, context, AppColors.red);
+            } else if (state is GetFavMoviesError) {
               UIUtils.hideLoading(context);
               UIUtils.showMessage(state.message, context, AppColors.red);
             } else if (state is GetProfileSuccess ||
@@ -137,7 +145,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                     .copyWith(fontSize: 32.sp),
                               ),
                               SizedBox(height: 20.h),
-                              Text('Wish List',
+                              Text(AppLocalizations.of(context)!.wish_list,
                                   style: AppStyles.bold20white
                                       .copyWith(fontSize: 22.sp)),
                             ],
@@ -150,7 +158,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                     .copyWith(fontSize: 32.sp),
                               ),
                               SizedBox(height: 20.h),
-                              Text('History',
+                              Text(AppLocalizations.of(context)!.history,
                                   style: AppStyles.bold20white
                                       .copyWith(fontSize: 22.sp)),
                             ],
@@ -178,12 +186,12 @@ class _ProfileTabState extends State<ProfileTab> {
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w, vertical: 8.h),
+                                    horizontal: 8, vertical: 8),
                                 backgroundColor: AppColors.red,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                fixedSize: Size(double.infinity, 56.h),
+                                fixedSize: Size(double.infinity, 56),
                               ),
                               onPressed: () async {
                                 await showDialog(
@@ -196,7 +204,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                             BorderRadius.circular(16.r),
                                       ),
                                       content: Text(
-                                        'Are you sure you want to exit the app ?',
+                                        AppLocalizations.of(context)!.sure_exit,
                                         style: AppStyles.bold20white,
                                       ),
                                       actions: [
@@ -210,7 +218,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                                     AppColors.red),
                                           ),
                                           child: Text(
-                                            'Exit',
+                                            AppLocalizations.of(context)!.exit,
                                             style: AppStyles.bold24Roboto,
                                           ),
                                         ),
@@ -219,7 +227,8 @@ class _ProfileTabState extends State<ProfileTab> {
                                             Navigator.of(context).pop();
                                           },
                                           child: Text(
-                                            'Cancel',
+                                            AppLocalizations.of(context)!
+                                                .cancel,
                                             style: AppStyles.regular16Roboto,
                                           ),
                                         ),
@@ -248,8 +257,11 @@ class _ProfileTabState extends State<ProfileTab> {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverTabBarDelegate(
-                      height: 90.h,
+                      height: 91.h,
                       TabBar(
+                        padding: EdgeInsets.zero,
+                        indicatorPadding: EdgeInsets.zero,
+                        labelPadding: EdgeInsets.zero,
                         dividerColor: AppColors.transparent,
                         indicatorColor: AppColors.yellowPrimaryColor,
                         indicatorSize: TabBarIndicatorSize.tab,
@@ -259,22 +271,17 @@ class _ProfileTabState extends State<ProfileTab> {
                               SvgPicture.asset(AppAssets.whishIcon,
                                   fit: BoxFit.scaleDown),
                               SizedBox(height: 10.h),
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 18.0.h),
-                                child: Text('Wish List',
-                                    style: AppStyles.regular20white),
-                              ),
+                              Text(AppLocalizations.of(context)!.wish_list,
+                                  style: AppStyles.regular20white),
                             ],
                           ),
                           Column(
                             children: [
                               SvgPicture.asset(AppAssets.historyIcon,
                                   fit: BoxFit.scaleDown),
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 18.0.h),
-                                child: Text('History',
-                                    style: AppStyles.regular20white),
-                              ),
+                              Text(
+                                  AppLocalizations.of(context)!.history,
+                                  style: AppStyles.regular20white),
                             ],
                           ),
                         ],

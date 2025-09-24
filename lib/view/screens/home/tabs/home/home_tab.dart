@@ -6,6 +6,7 @@ import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
 import 'package:movies_app/data/models/movies/movies_model.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_states.dart';
 
@@ -165,7 +166,7 @@ class _HomeTabState extends State<HomeTab> with AutomaticKeepAliveClientMixin {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "see more",
+                                      AppLocalizations.of(context)!.see_more,
                                       style: AppStyles.regular16white.copyWith(
                                         color: AppColors.yellowPrimaryColor,
                                       ),

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/movies/movies_details/movie_cast.dart';
 import 'package:movies_app/view/widgets/movies/movies_details/movie_description.dart';
 import 'package:movies_app/view/widgets/movies/movies_details/movie_genres.dart';
@@ -119,7 +120,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               horizontal: 16,
             ),
             child: CustomeElevatedButton(
-              label: 'Watch',
+              label: AppLocalizations.of(context)!.watch,
               labelStyle:
                   AppStyles.bold20Roboto.copyWith(color: AppColors.white),
               backGrounColor: AppColors.red,

@@ -93,4 +93,57 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get exit => 'Exit';
 
+  @override
+  String get sure_exit => 'Are you sure you want to exit the app ?';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get no_movies_found => 'No movies found';
+
+  @override
+  String get watch => 'Watch';
+
+  @override
+  String get screen_shots => 'Screen Shots';
+
+  @override
+  String get screen_shot_not_found => 'ScreenShots are not available 😥';
+
+  @override
+  String get similar => 'Similar';
+
+  @override
+  String get similar_not_found => 'Similar movies are not available 😥';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get description_not_found => 'Description is not available 😥';
+
+  @override
+  String get cast => 'Cast';
+
+  @override
+  String get unknown_character => 'Unknown Character';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get no_cast_info => 'No cast information available 😥';
+
+  @override
+  String get character => 'Character';
+
+  @override
+  String get genres => 'Genres';
+
+  @override
+  String get no_genres_available => 'No genres available 😥';
+
+  @override
+  String get see_more => 'See more';
 }

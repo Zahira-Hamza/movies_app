@@ -112,6 +112,60 @@
 
     "exit": "Exit",
 
-    "@exit": {} 
+    "@exit": {} ,
+
+    "sure_exit":"Are you sure you want to exit the app ?",
+    "@sure_exit": {},
+
+    "search":"Search",
+    "@search": {},
+
+    "no_movies_found":"No movies found",
+    "@no_movies_found": {},
+
+    "watch":"Watch",
+    "@watch": {},
+
+    "screen_shots":"Screen Shots",
+    "@screen_shots": {},
+
+    "screen_shot_not_found":"ScreenShots are not available 😥",
+    "@screen_shot_not_found": {},
+
+  "similar":"Similar",
+  "@similar": {},
+
+  "similar_not_found":"Similar movies are not available 😥",
+  "@similar_not_found": {},
+
+  "description": "Description",
+  "@description": {},
+
+  "description_not_found": "Description is not available 😥",
+  "@description_not_found": {},
+
+  "cast": "Cast",
+  "@cast": {},
+
+  "unknown_character": "Unknown Character",
+  "@unknown_character": {},
+
+  "unknown": "Unknown",
+  "@unknown": {},
+
+  "no_cast_info": "No cast information available 😥",
+  "@no_cast_info": {},
+
+  "character":"Character",
+  "@character": {},
+
+  "genres": "Genres",
+  "@genres": {},
+
+  "no_genres_available": "No genres available 😥",
+  "@no_genres_available": {},
+
+  "see_more":"See more",
+  "@see_more": {}
 
 }

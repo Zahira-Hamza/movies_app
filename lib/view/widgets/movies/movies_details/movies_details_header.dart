@@ -83,9 +83,12 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
           left: 16.w,
           child: IconButton(
             onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
+            icon: Directionality(
+              textDirection: TextDirection.ltr, 
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+              ),
             ),
             iconSize: 35,
             padding: EdgeInsets.zero,

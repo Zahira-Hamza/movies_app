@@ -25,13 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     int? _lastTappedIndex;
   DateTime? _lastTapTime;
 
-  @override
-  // void initState() {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     BlocProvider.of<ProfileCubit>(context).getProfileWithMovies();
-  //   });
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 
 import '../../../../data/models/movies/movie_model.dart';
 
@@ -41,7 +42,7 @@ class MovieCast extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Name : ',
+                        text: '${AppLocalizations.of(context)!.name} : ',
                         style: AppStyles.regular16Roboto.copyWith(
                           color: AppColors.yellowPrimaryColor,
                           fontWeight: FontWeight.bold,
@@ -61,7 +62,7 @@ class MovieCast extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Character : ',
+                        text: '${AppLocalizations.of(context)!.character} : ',
                         style: AppStyles.regular16Roboto.copyWith(
                           color: AppColors.yellowPrimaryColor,
                           fontWeight: FontWeight.bold,
@@ -164,7 +165,7 @@ class MovieCastHandling extends StatelessWidget {
         children: [
           // Cast Section
           Text(
-            'Cast',
+            AppLocalizations.of(context)!.cast,
             style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
           ),
           if (hasCast) ...[
@@ -177,10 +178,10 @@ class MovieCastHandling extends StatelessWidget {
               itemBuilder: (context, index) {
                 final castMember = movie.cast![index];
                 final characterName =
-                    castMember['character'] ?? 'Unknown Character';
+                    castMember['character'] ??AppLocalizations.of(context)!.unknown_character;
 
                 return MovieCast(
-                  name: castMember['name'] ?? 'Unknown',
+                  name: castMember['name'] ?? AppLocalizations.of(context)!.unknown,
                   character: characterName,
                   image: castMember['image'] ??
                       'assets/images/placeholder_cast.png',
@@ -191,7 +192,7 @@ class MovieCastHandling extends StatelessWidget {
           ] else ...[
             const SizedBox(height: 16),
             Text(
-              'No cast information available',
+              AppLocalizations.of(context)!.no_cast_info,
               style: AppStyles.regular16Roboto.copyWith(color: AppColors.grey),
             ),
           ],

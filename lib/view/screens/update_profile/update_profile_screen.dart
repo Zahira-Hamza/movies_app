@@ -146,7 +146,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         context,
                       ),
                       child: Text(
-                        'Reset Password',
+                        AppLocalizations.of(context)!.reset_password,
                         style: AppStyles.regular16white.copyWith(
                           color: AppColors.white,
                         ),
@@ -168,7 +168,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         }
                       },
                       child: CustomeElevatedButton(
-                        label: 'Delete Account',
+                        label: AppLocalizations.of(context)!.delete_account,
                         backGrounColor: AppColors.red,
                         labelColor: AppColors.white,
                         onPressed: () {
@@ -194,7 +194,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         }
                       },
                       child: CustomeElevatedButton(
-                        label: 'Update Data',
+                        label: AppLocalizations.of(context)!.update_data,
                         onPressed: () async {
                           if (_updateFormKey.currentState!.validate()) {
                             BlocProvider.of<ProfileCubit>(context)
@@ -294,7 +294,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       size: 50.sp, color: AppColors.yellowPrimaryColor),
                   SizedBox(height: 16.h),
                   Text(
-                 AppLocalizations.of(context)!.delete_account_confirmation,
+                    AppLocalizations.of(context)!.delete_account_confirmation,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppColors.white, fontSize: 16.sp),
                   ),

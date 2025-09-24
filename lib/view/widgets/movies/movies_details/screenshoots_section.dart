@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:movies_app/core/constants/styles/app_styles.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/view/widgets/movies/movies_details/screen_shot_item.dart';
 
 class ScreenshotsSection extends StatelessWidget {
@@ -14,18 +15,6 @@ class ScreenshotsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasScreenshots =
         movie.screenshots != null && movie.screenshots!.isNotEmpty;
-
-    // if (!hasScreenshots) {
-    //   return Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Text(
-    //         'Screen Shots',
-    //         style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
-    //       ),
-    //     ],
-    //   );
-    // }
 
     List<String> screenshotsToShow = [];
 
@@ -39,7 +28,7 @@ class ScreenshotsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Screen Shots',
+            AppLocalizations.of(context)!.screen_shots,
             style: AppStyles.bold24Roboto.copyWith(color: AppColors.white),
           ),
           SizedBox(height: 11.h),

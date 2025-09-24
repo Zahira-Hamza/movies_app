@@ -60,7 +60,7 @@ class MoviesApp extends StatelessWidget {
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.loginScreenRoute,
+            initialRoute: AppRoutes.homeScreenRoute,
             theme: AppTheme.appTheme,
             routes: {
               AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),
@@ -74,7 +74,7 @@ class MoviesApp extends StatelessWidget {
                     movieId: ModalRoute.of(context)!.settings.arguments as int,
                   ),
             },
-            locale: const Locale('en'),
+            locale: const Locale('ar'),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
           ),
