@@ -44,9 +44,9 @@ class SuggestedMovies extends StatelessWidget {
                     height: double.infinity,
                     width: double.infinity,
                     imagePath: similarMovies[index].mediumCoverImage ??
-                        '', // استخدام سلسلة فارغة إذا كانت null
+                        '', 
                     rating: similarMovies[index].rating.toStringAsFixed(1), onTap: () {
-                      Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute);
+                      Navigator.of(context).pushNamed(AppRoutes.movieDetailsRoute,arguments:similarMovies[index].id );
                   },
                   ),
                 )

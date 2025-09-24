@@ -28,9 +28,21 @@ class AuthSharedPrefLocalDataSources {
     try {
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
-      return sharedPreferences.getBool(Constants.loggedKey)??false;
+      return sharedPreferences.getBool(Constants.loggedKey) ?? false;
     } catch (exception) {
       throw const SharedPrefException('Failed to get logged user ?');
+    }
+  }
+
+  Future<void> deleteUserLoggedState() async {
+    try {
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+
+      await sharedPreferences.setBool(Constants.loggedKey, false);
+      await sharedPreferences.setBool(Constants.loggedKey, false);
+    } catch (exception) {
+      throw const SharedPrefException('Failed to delete logged user state?');
     }
   }
 }

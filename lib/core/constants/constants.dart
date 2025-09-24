@@ -15,4 +15,6 @@ class Constants {
   static const String loggedKey = 'logged';
   static const String languageKey = 'language';
   static const String sennOnboardingKey = 'senn_onBoarding';
+  static const String cacheKey = "cached_movies";
+  static const String recentKey = "recent_movies";
 }

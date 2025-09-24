@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,7 +86,7 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
           child: IconButton(
             onPressed: () => Navigator.of(context).pop(),
             icon: Directionality(
-              textDirection: TextDirection.ltr, 
+              textDirection: TextDirection.ltr,
               child: const Icon(
                 Icons.arrow_back_ios_new,
                 color: Colors.white,
@@ -112,6 +114,7 @@ class _MoviesDetailsHeaderState extends State<MoviesDetailsHeader> {
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.errorMessage, context, AppColors.red);
               } else if (state is AddMovieToFavSuccess) {
+                log('in add fav success');
                 UIUtils.hideLoading(context);
                 UIUtils.showMessage(state.successMessage, context,
                     AppColors.yellowPrimaryColor);

@@ -1,18 +1,17 @@
 import 'dart:convert';
+import 'package:movies_app/core/constants/constants.dart';
 import 'package:movies_app/core/constants/errors/app_exception.dart';
 import 'package:movies_app/data/models/movies/movie_basic_info.dart';
 import 'package:movies_app/data/models/movies/movies_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MoviesSharedPrefLocalDataSources {
-  static const String _cacheKey = "cached_movies";
-  static const String _recentKey = "recent_movies";
 
   Future<void> cacheMovies(List<MoviesModel> movies) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonMovies = movies.map((m) => m.toJson()).toList();
-      await prefs.setString(_cacheKey, jsonEncode(jsonMovies));
+      await prefs.setString(Constants.cacheKey, jsonEncode(jsonMovies));
     } catch (e) {
       throw APIException("Failed to cache movies: $e");
     }
@@ -21,7 +20,7 @@ class MoviesSharedPrefLocalDataSources {
   Future<List<MoviesModel>> getCachedMovies() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString(_cacheKey);
+      final jsonString = prefs.getString(Constants.cacheKey);
 
       if (jsonString == null) return [];
 
@@ -34,15 +33,11 @@ class MoviesSharedPrefLocalDataSources {
     }
   }
 
-  Future<void> clearMoviesCache() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('cached_movies');
-  }
 
   Future<void> addToRecentMovies(MovieBasicInfo movie) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final cachedRecentMovies = prefs.getString(_recentKey);
+      final cachedRecentMovies = prefs.getString(Constants.recentKey);
       List movies =
           cachedRecentMovies != null ? jsonDecode(cachedRecentMovies) : [];
       movies.removeWhere(
@@ -52,7 +47,7 @@ class MoviesSharedPrefLocalDataSources {
 
       if (movies.length > 21) movies = movies.sublist(0, 21);
 
-      await prefs.setString(_recentKey, jsonEncode(movies));
+      await prefs.setString(Constants.recentKey, jsonEncode(movies));
     } catch (e) {
       throw SharedPrefException("Failed to cache recent movie: $e");
     }
@@ -61,7 +56,7 @@ class MoviesSharedPrefLocalDataSources {
   Future<List<MovieBasicInfo>> getRecentMovies() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final cachedRecentMovies = prefs.getString(_recentKey);
+      final cachedRecentMovies = prefs.getString(Constants.recentKey);
 
       if (cachedRecentMovies == null) return <MovieBasicInfo>[];
       final recentMoviesList = jsonDecode(cachedRecentMovies) as List;
@@ -80,4 +75,14 @@ class MoviesSharedPrefLocalDataSources {
       throw SharedPrefException("Failed to load recent movies: $e");
     }
   }
+
+  Future<void> clearRecentMovies() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(Constants.recentKey);
+  } catch (e) {
+    throw SharedPrefException("Failed to clear recent movies: $e");
+  }
+}
+
 }
