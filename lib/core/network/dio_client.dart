@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../constants/api_endpoints.dart';
-import 'api_exceptions.dart';
+import '../constants/errors/api_exceptions.dart';
 
 class DioClient {
   final Dio dio;

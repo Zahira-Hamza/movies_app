@@ -88,7 +88,7 @@
 //   }
 // }
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/network/api_exceptions.dart';
+import 'package:movies_app/core/constants/errors/api_exceptions.dart';
 import 'package:movies_app/data/models/movies/movie_model.dart';
 import 'package:movies_app/data/repositories/movies_repository.dart';
 
