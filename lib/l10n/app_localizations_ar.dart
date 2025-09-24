@@ -51,7 +51,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get login_with_google => 'تسجيل الدخول عبر جوجل';
 
   @override
-  String get pick_avatar => 'التقط افاتار';
+  String get pick_avatar => 'اختر افاتار';
 
   @override
   String get reset_password => 'اعادة تعيين الباسورد';
@@ -93,4 +93,57 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get exit => 'الخروج';
 
+  @override
+  String get find_next_favorite_movie => 'ابحث عن فيلمك المفضل القادم هنا';
+
+  @override
+  String get explore_now => 'استكشف الآن';
+
+  @override
+  String get discover_movies => 'اكتشف الأفلام';
+
+  @override
+  String get explore_all_genres => 'استكشف كل الأنواع';
+
+  @override
+  String get create_watchlists => 'أنشئ قوائم متابعة';
+
+  @override
+  String get rate_review_learn => 'قيم وراجع وتعلم';
+
+  @override
+  String get start_watching_now => 'ابدأ المشاهدة الآن';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get back => 'السابق';
+
+  @override
+  String get finish => 'إنهاء';
+
+  @override
+  String get find_next_favorite_movie_desc =>
+      'تمتع بالوصول إلى مكتبة أفلام ضخمة تناسب جميع الأذواق. ستعجبك بالتأكيد.';
+
+  @override
+  String get discover_movies_desc =>
+      'استكشف مجموعة ضخمة من الأفلام بجميع الجودات والأنواع. ابحث عن فيلمك المفضل القادم بسهولة.';
+
+  @override
+  String get explore_all_genres_desc =>
+      'اكتشف أفلاماً من جميع الأنواع وبكل الجودات المتاحة. اكتشف شيئًا جديدًا ومثيرًا لتشاهده كل يوم.';
+
+  @override
+  String get create_watchlists_desc =>
+      'احفظ الأفلام في قائمة المشاهدة لديك لتتابع ما ترغب في مشاهدته لاحقاً. استمتع بأفلام بجودات وأنواع متعددة.';
+
+  @override
+  String get rate_review_learn_desc =>
+      'شارك أفكارك حول الأفلام التي شاهدتها. تعمق في تفاصيل الأفلام وساعد الآخرين في اكتشاف أفلام رائعة من خلال تقييماتك.';
+
+  @override
+  String get start_watching_now_desc =>
+      'ابدأ رحلة الاستكشاف والاستمتاع الخاصة بك الآن.';
 }

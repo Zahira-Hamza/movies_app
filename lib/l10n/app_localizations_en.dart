@@ -93,4 +93,57 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get exit => 'Exit';
 
+  @override
+  String get find_next_favorite_movie => 'Find Your Next Favorite Movie Here';
+
+  @override
+  String get explore_now => 'Explore Now';
+
+  @override
+  String get discover_movies => 'Discover Movies';
+
+  @override
+  String get explore_all_genres => 'Explore All Genres';
+
+  @override
+  String get create_watchlists => 'Create Watchlists';
+
+  @override
+  String get rate_review_learn => 'Rate, Review, and Learn';
+
+  @override
+  String get start_watching_now => 'Start Watching Now';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get find_next_favorite_movie_desc =>
+      'Get access to a huge library of movies to suit all tastes. You will surely like it.';
+
+  @override
+  String get discover_movies_desc =>
+      'Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.';
+
+  @override
+  String get explore_all_genres_desc =>
+      'Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.';
+
+  @override
+  String get create_watchlists_desc =>
+      'Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.';
+
+  @override
+  String get rate_review_learn_desc =>
+      'Share your thoughts on the movies you\'ve watched. Dive deep into film details and help others discover great movies with your reviews.';
+
+  @override
+  String get start_watching_now_desc =>
+      'Start your journey of discovery and entertainment now.';
 }

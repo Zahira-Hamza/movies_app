@@ -5,7 +5,14 @@ import 'package:movies_app/core/constants/styles/app_colors.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class ToggleSwitchLanguage extends StatelessWidget {
-  const ToggleSwitchLanguage({super.key});
+  final Function(Locale) onLocaleChange;
+  final int initialIndex;
+
+  const ToggleSwitchLanguage({
+    super.key,
+    required this.onLocaleChange,
+    this.initialIndex = 1, 
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +26,19 @@ class ToggleSwitchLanguage extends StatelessWidget {
         minHeight: 30,
         activeBgColor: const [AppColors.yellowPrimaryColor],
         inactiveBgColor: Colors.transparent,
-        initialLabelIndex: 0,
+        initialLabelIndex: initialIndex,
         totalSwitches: 2,
         customWidgets: [
           SvgPicture.asset(AppAssets.arabicIcon),
           SvgPicture.asset(AppAssets.englishIcon),
         ],
-        onToggle: (index) {},
+        onToggle: (index) {
+          if (index == 0) {
+            onLocaleChange(const Locale('ar'));
+          } else {
+            onLocaleChange(const Locale('en'));
+          }
+        },
       ),
     );
   }

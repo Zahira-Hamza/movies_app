@@ -25,13 +25,25 @@ void main() {
   runApp(const MoviesApp());
 }
 
-class MoviesApp extends StatelessWidget {
+class MoviesApp extends StatefulWidget {
   const MoviesApp({super.key});
+
+  @override
+  State<MoviesApp> createState() => _MoviesAppState();
+}
+
+class _MoviesAppState extends State<MoviesApp> {
+  Locale _locale = const Locale('en');
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-
     final movieApiService = MovieApiService(dio);
     final movieRepository = MoviesRepository(movieApiService: movieApiService);
 
@@ -63,8 +75,10 @@ class MoviesApp extends StatelessWidget {
             theme: AppTheme.appTheme,
             routes: {
               AppRoutes.onBoardingScreenRoute: (context) => OnboardingScreen(),
-              AppRoutes.registerScreenRoute: (context) => RegisterScreen(),
-              AppRoutes.loginScreenRoute: (context) => LoginScreen(),
+              AppRoutes.registerScreenRoute: (context) =>
+                  RegisterScreen(onLocaleChange: setLocale),
+              AppRoutes.loginScreenRoute: (context) =>
+                  LoginScreen(onLocaleChange: setLocale),
               AppRoutes.forgetPasswordScreenRoute: (context) =>
                   ForgetPassword(),
               AppRoutes.updateProfileScreenRoute: (context) => UpdateProfile(),
@@ -73,7 +87,7 @@ class MoviesApp extends StatelessWidget {
                     movieId: ModalRoute.of(context)!.settings.arguments as int,
                   ),
             },
-            locale: const Locale('en'),
+            locale: _locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
           ),

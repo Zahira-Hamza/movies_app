@@ -16,7 +16,9 @@ import 'package:movies_app/view_model/auth/auth_cubit.dart';
 import 'package:movies_app/view_model/auth/auth_states.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final Function(Locale) onLocaleChange;
+
+  const LoginScreen({super.key, required this.onLocaleChange});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -29,6 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentLocale = Localizations.localeOf(context);
+    final initialIndex = currentLocale.languageCode == 'ar' ? 0 : 1;
+
     return SafeArea(
       child: Scaffold(
         body: Form(
@@ -199,7 +204,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                ToggleSwitchLanguage(),
+                ToggleSwitchLanguage(
+                  onLocaleChange: widget.onLocaleChange,
+                  initialIndex: initialIndex,
+                ),
               ],
             ),
           ),

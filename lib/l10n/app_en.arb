@@ -112,6 +112,58 @@
 
     "exit": "Exit",
 
-    "@exit": {} 
+    "@exit": {} ,
+
+    "find_next_favorite_movie": "Find Your Next Favorite Movie Here",
+
+    "@find_next_favorite_movie": {},
+
+    "explore_now": "Explore Now",
+
+    "@explore_now": {},
+
+    "discover_movies": "Discover Movies",
+
+    "@discover_movies": {},
+
+   "explore_all_genres": "Explore All Genres",
+
+   "@explore_all_genres": {},
+
+ "create_watchlists": "Create Watchlists",
+  "@create_watchlists": {},
+
+  "rate_review_learn": "Rate, Review, and Learn",
+  "@rate_review_learn": {},
+
+   "start_watching_now": "Start Watching Now",
+  "@start_watching_now": {},
+
+  "next": "Next",
+  "@next": {},
+
+    "back": "Back",
+  "@back": {},
+
+    "finish": "Finish",
+  "@finish": {},
+
+    "find_next_favorite_movie_desc": "Get access to a huge library of movies to suit all tastes. You will surely like it.",
+  "@find_next_favorite_movie_desc": {},
+
+  "discover_movies_desc": "Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.",
+  "@discover_movies_desc": {},
+
+  "explore_all_genres_desc": "Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.",
+  "@explore_all_genres_desc": {},
+
+  "create_watchlists_desc": "Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.",
+  "@create_watchlists_desc": {},
+
+  "rate_review_learn_desc": "Share your thoughts on the movies you've watched. Dive deep into film details and help others discover great movies with your reviews.",
+  "@rate_review_learn_desc": {},
+
+  "start_watching_now_desc": "Start your journey of discovery and entertainment now.",
+  "@start_watching_now_desc": {}
 
 }

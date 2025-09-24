@@ -58,7 +58,7 @@
 
     "@login_with_google":{},
 
-    "pick_avatar": "التقط افاتار" ,
+    "pick_avatar": "اختر افاتار" ,
 
     "@pick_avatar": {},
 
@@ -112,6 +112,54 @@
 
     "exit": "الخروج",
 
-    "@exit": {}       
+    "@exit": {} ,
+
+      "find_next_favorite_movie": "ابحث عن فيلمك المفضل القادم هنا",
+  "@find_next_favorite_movie": {},
+
+    "explore_now": "استكشف الآن",
+  "@explore_now": {},
+
+    "discover_movies": "اكتشف الأفلام",
+  "@discover_movies": {},
+
+    "explore_all_genres": "استكشف كل الأنواع",
+  "@explore_all_genres": {},
+
+    "create_watchlists": "أنشئ قوائم متابعة",
+  "@create_watchlists": {},
+
+    "rate_review_learn": "قيم وراجع وتعلم",
+  "@rate_review_learn": {},
+
+    "start_watching_now": "ابدأ المشاهدة الآن",
+  "@start_watching_now": {},
+
+    "next": "التالي",
+  "@next": {},
+
+    "back": "السابق",
+  "@back": {},
+
+    "finish": "إنهاء",
+  "@finish": {},
+
+    "find_next_favorite_movie_desc": "تمتع بالوصول إلى مكتبة أفلام ضخمة تناسب جميع الأذواق. ستعجبك بالتأكيد.",
+  "@find_next_favorite_movie_desc": {},
+
+  "discover_movies_desc": "استكشف مجموعة ضخمة من الأفلام بجميع الجودات والأنواع. ابحث عن فيلمك المفضل القادم بسهولة.",
+  "@discover_movies_desc": {},
+
+  "explore_all_genres_desc": "اكتشف أفلاماً من جميع الأنواع وبكل الجودات المتاحة. اكتشف شيئًا جديدًا ومثيرًا لتشاهده كل يوم.",
+  "@explore_all_genres_desc": {},
+
+  "create_watchlists_desc": "احفظ الأفلام في قائمة المشاهدة لديك لتتابع ما ترغب في مشاهدته لاحقاً. استمتع بأفلام بجودات وأنواع متعددة.",
+  "@create_watchlists_desc": {},
+
+  "rate_review_learn_desc": "شارك أفكارك حول الأفلام التي شاهدتها. تعمق في تفاصيل الأفلام وساعد الآخرين في اكتشاف أفلام رائعة من خلال تقييماتك.",
+  "@rate_review_learn_desc": {},
+
+  "start_watching_now_desc": "ابدأ رحلة الاستكشاف والاستمتاع الخاصة بك الآن.",
+  "@start_watching_now_desc": {}
 
 }

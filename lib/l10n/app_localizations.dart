@@ -1,4 +1,5 @@
-import 'dart:core';
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -245,7 +246,6 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'New Password'**
-  /// **'new Password'**
   String get new_password;
 
   /// No description provided for @reset.
@@ -265,6 +265,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exit'**
   String get exit;
+
+  /// No description provided for @find_next_favorite_movie.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Your Next Favorite Movie Here'**
+  String get find_next_favorite_movie;
+
+  /// No description provided for @explore_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Now'**
+  String get explore_now;
+
+  /// No description provided for @discover_movies.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Movies'**
+  String get discover_movies;
+
+  /// No description provided for @explore_all_genres.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore All Genres'**
+  String get explore_all_genres;
+
+  /// No description provided for @create_watchlists.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Watchlists'**
+  String get create_watchlists;
+
+  /// No description provided for @rate_review_learn.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate, Review, and Learn'**
+  String get rate_review_learn;
+
+  /// No description provided for @start_watching_now.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Watching Now'**
+  String get start_watching_now;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// No description provided for @find_next_favorite_movie_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get access to a huge library of movies to suit all tastes. You will surely like it.'**
+  String get find_next_favorite_movie_desc;
+
+  /// No description provided for @discover_movies_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.'**
+  String get discover_movies_desc;
+
+  /// No description provided for @explore_all_genres_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.'**
+  String get explore_all_genres_desc;
+
+  /// No description provided for @create_watchlists_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.'**
+  String get create_watchlists_desc;
+
+  /// No description provided for @rate_review_learn_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts on the movies you\'ve watched. Dive deep into film details and help others discover great movies with your reviews.'**
+  String get rate_review_learn_desc;
+
+  /// No description provided for @start_watching_now_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your journey of discovery and entertainment now.'**
+  String get start_watching_now_desc;
 }
 
 class _AppLocalizationsDelegate
