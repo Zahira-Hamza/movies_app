@@ -1,93 +1,116 @@
 import 'package:dio/dio.dart';
-import 'package:movies_app/core/network/api_exceptions.dart';
-import 'package:movies_app/data/models/movies/movie_model.dart';
-import '../data_sources/movie_api_service.dart';
+import 'package:movies_app/data/data_sources/local_data_sources/movies_shared_pref_local_data_sources.dart';
+import 'package:movies_app/data/models/movies/movies_model.dart'; // list/search
+import 'package:movies_app/data/models/movies/movie_model.dart'; // details
 
 class MoviesRepository {
-  final MovieApiService movieApiService;
+  final Dio dio;
+  final MoviesSharedPrefLocalDataSources localDataSource;
 
-  MoviesRepository({required this.movieApiService});
+  MoviesRepository(this.dio,this.localDataSource);
 
-  Future<MovieModel> getMovieDetails(int movieId) async {
+  Future<List<MoviesModel>> getMoviesCashed({bool forceRefresh = false}) async {
     try {
-      if (movieId == null) {
-        throw ApiException(
-          message: 'Movie ID cannot be null',
-          statusCode: 400,
-          errorCode: 'NULL_MOVIE_ID',
-        );
+      if (!forceRefresh) {
+        final cached = await localDataSource.getCachedMovies();
+        if (cached.isNotEmpty) return cached;
       }
 
-      print('🔍 Getting movie details for ID: $movieId');
+      final response = await dio.get("https://yts.mx/api/v2/list_movies.json");
 
-      final response = await movieApiService.getMovieDetails(
-        movieId,
-        true,
-        true,
-      );
+      final data = response.data["data"];
+      final moviesJson = data?["movies"];
+      if (moviesJson == null) return [];
 
-      print('✅ API Response status: ${response.status}');
-      print('📝 API Response message: ${response.statusMessage}');
+      final movies = (moviesJson as List)
+          .map((movie) => MoviesModel.fromJson(movie))
+          .toList();
 
-      // Handle API errors
-      if (response.status == 'error') {
-        throw ApiException(
-          message: response.statusMessage,
-          statusCode: 400,
-          errorCode: 'API_ERROR',
-        );
-      }
+      await localDataSource.cacheMovies(movies);
 
-      if (response.data?.movie == null) {
-        throw ApiException(
-          message: 'Movie data is null',
-          statusCode: 404,
-          errorCode: 'MOVIE_NOT_FOUND',
-        );
-      }
-
-      return response.data!.movie!;
-    } on DioException catch (e) {
-      throw ApiException(
-        message: 'Network error: ${e.message}',
-        statusCode: e.response?.statusCode ?? 500,
-        errorCode: 'NETWORK_ERROR',
-      );
-    } on ApiException {
-      rethrow;
+      return movies;
     } catch (e) {
-      throw ApiException(message: 'Failed to load movie details: $e');
+      throw Exception("Failed to load movies: $e");
     }
   }
 
+
+  /// For search & list
+  Future<List<MoviesModel>> getMovies() async {
+    try {
+      final response = await dio.get(
+        "https://yts.mx/api/v2/list_movies.json",
+      );
+
+      final data = response.data["data"];
+      final moviesJson = data?["movies"];
+      if (moviesJson == null) return [];
+
+      return (moviesJson as List)
+          .map((movie) => MoviesModel.fromJson(movie))
+          .toList();
+    } catch (e) {
+      throw Exception("Failed to load movies: $e");
+    }
+  }
+
+  /// For search with query
+  Future<List<MoviesModel>> searchMovies(String query) async {
+    try {
+      final response = await dio.get(
+        "https://yts.mx/api/v2/list_movies.json",
+        queryParameters: {
+          if (query.isNotEmpty) "query_term": query,
+        },
+      );
+
+      final data = response.data["data"];
+      final moviesJson = data?["movies"];
+      if (moviesJson == null) return [];
+
+      return (moviesJson as List)
+          .map((movie) => MoviesModel.fromJson(movie))
+          .toList();
+    } catch (e) {
+      throw Exception("Failed to search movies: $e");
+    }
+  }
+
+  /// For details
+  Future<MovieModel> getMovieDetails(int movieId) async {
+    try {
+      final response = await dio.get(
+        "https://yts.mx/api/v2/movie_details.json",
+        queryParameters: {
+          "movie_id": movieId,
+          "with_images": true,
+          "with_cast": true,
+        },
+      );
+
+      final data = response.data["data"]["movie"];
+      return MovieModel.fromJson(data);
+    } catch (e) {
+      throw Exception("Failed to load movie details: $e");
+    }
+  }
+
+  /// For similar movies
   Future<List<MovieModel>> getSimilarMovies(int movieId) async {
     try {
-      if (movieId == null) {
-        throw ApiException(
-          message: 'Movie ID cannot be null for similar movies',
-          statusCode: 400,
-          errorCode: 'NULL_MOVIE_ID',
-        );
-      }
-
-      print('🔍 Getting similar movies for ID: $movieId');
-
-      final response = await movieApiService.getMovieSuggestions(movieId);
-
-      print('✅ Found ${response.length} similar movies');
-
-      return response;
-    } on DioException catch (e) {
-      throw ApiException(
-        message: 'Network error: ${e.message}',
-        statusCode: e.response?.statusCode ?? 500,
-        errorCode: 'NETWORK_ERROR',
+      final response = await dio.get(
+        "https://yts.mx/api/v2/movie_suggestions.json",
+        queryParameters: {"movie_id": movieId},
       );
-    } on ApiException {
-      rethrow;
+
+      final moviesJson = response.data["data"]["movies"];
+      if (moviesJson == null) return [];
+
+      return (moviesJson as List)
+          .map((movie) => MovieModel.fromJson(movie))
+          .toList();
     } catch (e) {
-      print('❌ Error loading similar movies: $e');
-      throw ApiException(message: 'Failed to load similar movies: $e');
+      throw Exception("Failed to load similar movies: $e");
     }
   }
 }

@@ -12,7 +12,6 @@ import 'package:movies_app/view/widgets/custom_text_form_field.dart';
 import 'package:movies_app/view/widgets/custome_elevated_button.dart';
 import 'package:movies_app/view_model/profile/profile_cubit.dart';
 import 'package:movies_app/view_model/profile/profile_states.dart';
-
 import '../../../core/constants/styles/app_assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,27 +35,28 @@ class _UpdateProfileState extends State<UpdateProfile> {
     AppAssets.avatar9,
   ];
 
-  int currentAvatar = 0;
+  late int currentAvatar;
 
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
 
   final _updateFormKey = GlobalKey<FormState>();
+
   @override
   void initState() {
+    nameController.text = context.read<ProfileCubit>().user!.name;
+    phoneController.text =
+        context.read<ProfileCubit>().user!.phone.replaceFirst("+2", "");
+    currentAvatar = context.read<ProfileCubit>().user!.avaterId;
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<ProfileCubit>(context).getProfile();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.blackPrimaryColor,
       appBar: AppBar(
         backgroundColor: AppColors.blackPrimaryColor,
@@ -72,141 +72,145 @@ class _UpdateProfileState extends State<UpdateProfile> {
           SizedBox(
             height: 37.h,
           ),
-          BlocBuilder<ProfileCubit, ProfileStates>(builder: (context, state) {
-            if (state is GetProfileSuccess) {
-              currentAvatar = state.user.avaterId;
-            }
-            return GestureDetector(
-              onTap: () => bottomSheet(context),
-              child: Center(
-                child: Image.asset(
-                  avatars[currentAvatar],
-                  height: 150.h,
-                  width: 150.h,
-                  fit: BoxFit.fill,
-                ),
+          GestureDetector(
+            onTap: () async {
+              final selected = await bottomSheet(context);
+              if (selected != null) {
+                currentAvatar = selected;
+                setState(() {});
+              }
+            },
+            child: Center(
+              child: Image.asset(
+                avatars[currentAvatar],
+                height: 150.h,
+                width: 150.h,
+                fit: BoxFit.fill,
               ),
-            );
-          }),
+            ),
+          ),
           SizedBox(
             height: 35.h,
           ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-              child: BlocConsumer<ProfileCubit, ProfileStates>(
-                listener: (context, state) {
-                  if (state is GetProfileLoading) {
-                    UIUtils.showLoading(context);
-                  } else if (state is GetProfileError) {
-                    UIUtils.hideLoading(context);
-
-                    UIUtils.showMessage(state.message, context, AppColors.red);
-                  } else if (state is GetProfileSuccess) {
-                    UIUtils.hideLoading(context);
-                    nameController.text = state.user.name;
-                    phoneController.text =
-                        state.user.phone.replaceFirst("+2", "");
-                  }
-                },
-                builder: (context, state) => Form(
-                  key: _updateFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomTextFormField(
-                        controller: nameController,
-                        image: AppAssets.nameIcon,
-                        hint: AppLocalizations.of(context)!.name,
-                        validator: (value) {
-                          return Validators.validateName(value);
+              child: Form(
+                key: _updateFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    BlocBuilder<ProfileCubit, ProfileStates>(
+                      builder: (context, state) {
+                        if (state is UpdateProfileSuccess) {
+                          nameController.text =
+                              context.read<ProfileCubit>().user!.name;
+                        }
+                        return CustomTextFormField(
+                          controller: nameController,
+                          image: AppAssets.nameIcon,
+                          hint: '',
+                          validator: (value) {
+                            return Validators.validateName(value);
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 19.28.h,
+                    ),
+                    BlocBuilder<ProfileCubit, ProfileStates>(
+                      builder: (context, state) {
+                        if (state is UpdateProfileSuccess) {
+                          phoneController.text = context
+                              .read<ProfileCubit>()
+                              .user!
+                              .phone
+                              .replaceFirst("+2", "");
+                        }
+                        return CustomTextFormField(
+                          controller: phoneController,
+                          image: AppAssets.phoneIcon,
+                          hint: '',
+                          validator: (value) {
+                            return Validators.validatePhone(value);
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    TextButton(
+                      onPressed: () => showResetPasswordDialog(
+                        context,
+                      ),
+                      child: Text(
+                        'Reset Password',
+                        style: AppStyles.regular16white.copyWith(
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    BlocListener<ProfileCubit, ProfileStates>(
+                      listener: (context, state) {
+                        if (state is DeleteProfileLoading) {
+                          UIUtils.showLoading(context);
+                        } else if (state is DeleteProfileError) {
+                          UIUtils.hideLoading(context);
+                          UIUtils.showMessage(
+                              state.message, context, AppColors.red);
+                        } else if (state is DeleteProfileSuccess) {
+                          UIUtils.hideLoading(context);
+                          Navigator.of(context)
+                              .pushReplacementNamed(AppRoutes.loginScreenRoute);
+                        }
+                      },
+                      child: CustomeElevatedButton(
+                        label: 'Delete Account',
+                        backGrounColor: AppColors.red,
+                        labelColor: AppColors.white,
+                        onPressed: () {
+                          showDeleteAccountDialog(context);
                         },
                       ),
-                      SizedBox(
-                        height: 19.28.h,
-                      ),
-                      CustomTextFormField(
-                        controller: phoneController,
-                        image: AppAssets.phoneIcon,
-                        hint: AppLocalizations.of(context)!.phone_number,
-                        validator: (value) {
-                          return Validators.validatePhone(value);
-                        },
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      TextButton(
-                        onPressed: () => showResetPasswordDialog(
-                          context,
-                        ),
-                        child: Text(
-                         AppLocalizations.of(context)!.reset_password,
-                          style: AppStyles.regular16white.copyWith(
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                      BlocListener<ProfileCubit, ProfileStates>(
-                        listener: (context, state) {
-                          if (state is DeleteProfileLoading) {
-                            UIUtils.showLoading(context);
-                          } else if (state is DeleteProfileError) {
-                            UIUtils.hideLoading(context);
-                            UIUtils.showMessage(
-                                state.message, context, AppColors.red);
-                          } else if (state is DeleteProfileSuccess) {
-                            UIUtils.hideLoading(context);
-                            Navigator.of(context).pushReplacementNamed(
-                                AppRoutes.loginScreenRoute);
+                    ),
+                    SizedBox(
+                      height: 19.h,
+                    ),
+                    BlocListener<ProfileCubit, ProfileStates>(
+                      listener: (context, state) {
+                        if (state is UpdateProfileLoading) {
+                          UIUtils.showLoading(context);
+                        } else if (state is UpdateProfileError) {
+                          UIUtils.hideLoading(context);
+                          UIUtils.showMessage(
+                              state.message, context, AppColors.red);
+                        } else if (state is UpdateProfileSuccess) {
+                          UIUtils.hideLoading(context);
+                          UIUtils.showMessage(state.message, context,
+                              AppColors.yellowPrimaryColor);
+                        }
+                      },
+                      child: CustomeElevatedButton(
+                        label: 'Update Data',
+                        onPressed: () async {
+                          if (_updateFormKey.currentState!.validate()) {
+                            BlocProvider.of<ProfileCubit>(context)
+                                .updateProfile(UpdateUserProfileRequest(
+                                    avatarId: currentAvatar,
+                                    name: nameController.text,
+                                    phone: phoneController.text));
                           }
                         },
-                        child: CustomeElevatedButton(
-                          label: AppLocalizations.of(context)!.delete_account,
-                          backGrounColor: AppColors.red,
-                          labelColor: AppColors.white,
-                          onPressed: () {
-                            showDeleteAccountDialog(context);
-                          },
-                        ),
+                        labelColor: AppColors.blackPrimaryColor,
                       ),
-                      SizedBox(
-                        height: 19.h,
-                      ),
-                      BlocListener<ProfileCubit, ProfileStates>(
-                        listener: (context, state) {
-                          if (state is UpdateProfileLoading) {
-                            UIUtils.showLoading(context);
-                          } else if (state is UpdateProfileError) {
-                            UIUtils.hideLoading(context);
-                            UIUtils.showMessage(
-                                state.message, context, AppColors.red);
-                          } else if (state is UpdateProfileSuccess) {
-                            UIUtils.hideLoading(context);
-                            UIUtils.showMessage(state.message, context,
-                                AppColors.yellowPrimaryColor);
-                          }
-                        },
-                        child: CustomeElevatedButton(
-                          label: AppLocalizations.of(context)!.update_data,
-                          onPressed: () async {
-                            if (_updateFormKey.currentState!.validate()) {
-                              BlocProvider.of<ProfileCubit>(context)
-                                  .updateProfile(UpdateUserProfileRequest(
-                                      avatarId: currentAvatar,
-                                      name: nameController.text,
-                                      phone: phoneController.text));
-                            }
-                          },
-                          labelColor: AppColors.blackPrimaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 33.h,
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 33.h,
+                    )
+                  ],
                 ),
               ),
             ),
@@ -216,59 +220,46 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
-  void bottomSheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<int?> bottomSheet(BuildContext context) {
+    return showModalBottomSheet<int>(
       backgroundColor: Colors.transparent,
       context: context,
-      builder: (context) {
+      builder: (ctx) {
         return Padding(
           padding: EdgeInsets.all(14.0.w),
           child: Container(
             padding: EdgeInsets.all(16.w),
-            height: MediaQuery.sizeOf(context).height * .42,
+            height: MediaQuery.of(context).size.height * .42,
             decoration: BoxDecoration(
-                color: AppColors.grey,
-                borderRadius: BorderRadius.circular(24.r)),
-            child: Column(
-              children: [
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: avatars.length,
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 19,
-                      crossAxisSpacing: 18,
+              color: AppColors.grey,
+              borderRadius: BorderRadius.circular(24.r),
+            ),
+            child: GridView.builder(
+              itemCount: avatars.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 19,
+                crossAxisSpacing: 18,
+              ),
+              itemBuilder: (context, index) {
+                final isSelected = index == currentAvatar;
+                return InkWell(
+                  onTap: () => Navigator.of(ctx).pop(index),
+                  child: Container(
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: isSelected
+                          ? AppColors.yellowPrimaryColor
+                          : Colors.transparent,
+                      border: Border.all(color: AppColors.yellowPrimaryColor),
                     ),
-                    itemBuilder: (context, index) {
-                      bool isSeleected = index == currentAvatar;
-
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            currentAvatar = index;
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: isSeleected
-                                ? AppColors.yellowPrimaryColor
-                                : Colors.transparent,
-                            border:
-                                Border.all(color: AppColors.yellowPrimaryColor),
-                          ),
-                          child: CircleAvatar(
-                            backgroundImage: AssetImage(avatars[index]),
-                          ),
-                        ),
-                      );
-                    },
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(avatars[index]),
+                    ),
                   ),
-                )
-              ],
+                );
+              },
             ),
           ),
         );
@@ -314,7 +305,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 TextButton(
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
                   ),
                   onPressed: () => Navigator.of(ctx).pop(false),
                   child: Text(AppLocalizations.of(context)!.cancel),
@@ -323,7 +315,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.red,
                     foregroundColor: AppColors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
                     textStyle: TextStyle(fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.r),

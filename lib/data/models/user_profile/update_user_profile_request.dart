@@ -8,7 +8,7 @@ class UpdateUserProfileRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      "avatarId": avatarId,
+      "avaterId": avatarId,
       "name": name,
       "phone": "+2$phone",
     };

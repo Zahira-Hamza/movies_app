@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies_app/core/constants/styles/app_theme.dart';
+import 'package:movies_app/data/data_sources/local_data_sources/movies_shared_pref_local_data_sources.dart';
 import 'package:movies_app/data/data_sources/remote_data_sources/movies_remote_data_source.dart';
 import 'package:movies_app/data/repositories/movies_repository.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
@@ -16,8 +17,8 @@ import 'package:movies_app/view_model/movies/fav_movies_cubit.dart';
 import 'package:movies_app/view_model/movies/movie_details_cubit.dart';
 import 'package:movies_app/view_model/movies/movies_cubit.dart';
 import 'package:movies_app/view_model/profile/profile_cubit.dart';
+import 'package:movies_app/view_model/search/search_cubit.dart';
 import 'core/routes/app_routes.dart';
-import 'data/data_sources/movie_api_service.dart';
 import 'view/screens/auth/forget_password.dart';
 import 'view/screens/auth/login_screen.dart';
 
@@ -27,14 +28,11 @@ void main() {
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-
-    final movieApiService = MovieApiService(dio);
-    final movieRepository = MoviesRepository(movieApiService: movieApiService);
-
+    final localDataSource = MoviesSharedPrefLocalDataSources();
+    final movieRepository = MoviesRepository(dio, localDataSource);
     return ScreenUtilInit(
       designSize: const Size(430, 932),
       minTextAdapt: true,
@@ -48,14 +46,17 @@ class MoviesApp extends StatelessWidget {
             BlocProvider<ProfileCubit>(
               create: (context) => ProfileCubit(),
             ),
+            BlocProvider(create: (context) => FavMoviesCubit()),
             BlocProvider<MoviesCubit>(
-              create: (context) => MoviesCubit(MoviesRemoteDataSource()),
+              create: (context) => MoviesCubit(MoviesRemoteDataSource(),MoviesSharedPrefLocalDataSources()),
             ),
             BlocProvider<MovieDetailsCubit>(
               create: (context) =>
                   MovieDetailsCubit(movieRepository: movieRepository),
             ),
-            BlocProvider<FavMoviesCubit>(create: (context) => FavMoviesCubit()),
+            BlocProvider<SearchCubit>(
+              create: (context) => SearchCubit(movieRepository),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

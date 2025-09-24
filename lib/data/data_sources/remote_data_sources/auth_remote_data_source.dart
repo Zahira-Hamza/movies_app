@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:movies_app/core/constants/constants.dart';
 import 'package:movies_app/core/constants/errors/app_exception.dart';
@@ -20,7 +18,6 @@ class AuthRemoteDataSource {
 
   Future<UserDataResponse> register(RegisterRequest request) async {
     try {
-      log(request.toJson().toString());
       final response = await _dio.post(
         ApiConstants.registerEndpoint,
         data: request.toJson(),
@@ -57,7 +54,6 @@ class AuthRemoteDataSource {
         ApiConstants.loginEndpoint,
         data: request.toJson(),
       );
-      log('i am in remote');
       return LoginResponse.fromJson(response.data);
     } on DioException catch (exception) {
       switch (exception.type) {

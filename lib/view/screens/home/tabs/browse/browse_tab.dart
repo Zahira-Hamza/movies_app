@@ -5,11 +5,12 @@ import 'package:movies_app/data/models/movies/movies_model.dart';
 import 'package:movies_app/data/models/categories/category_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // استيراد المكتبة
 import 'package:movies_app/core/routes/app_routes.dart';
+import 'package:movies_app/view/widgets/movies/custom_film_poster.dart';
 
 
 import '../../../../../view_model/movies/movies_cubit.dart';
 import '../../../../../view_model/movies/movies_states.dart';
-import '../../../movie_details/widgets/custom_film_poster..dart';
+
 
 class BrowseTab extends StatefulWidget {
   const BrowseTab({super.key});
